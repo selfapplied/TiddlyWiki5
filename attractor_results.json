@@ -1,0 +1,164 @@
+{
+  "prime": {
+    "type": "prime_attractors",
+    "fixed_points": [
+      [
+        "Riemann Zeta",
+        "zeta(s)"
+      ],
+      [
+        "Log Zeta",
+        "log(zeta(s))"
+      ],
+      [
+        "Zeta Derivative",
+        "Derivative(zeta(s), s)"
+      ],
+      [
+        "M\u00f6bius Transform",
+        "1/zeta(s)"
+      ]
+    ],
+    "zero_curvature_count": "56",
+    "symmetries": "{}",
+    "total_attractors": "5"
+  },
+  "geometric": {
+    "type": "geometric_attractors",
+    "fixed_points": [
+      [
+        "Riemann Zeta",
+        "zeta(s)"
+      ],
+      [
+        "Dirichlet Eta",
+        "(2**((21*s + 13)/(34*s + 21)) - 1)*zeta((55*s + 34)/(34*s + 21))/2**((21*s + 13)/(34*s + 21))"
+      ],
+      [
+        "Log Zeta",
+        "log(zeta(s))"
+      ],
+      [
+        "Zeta Derivative",
+        "Derivative(zeta(s), s)"
+      ],
+      [
+        "M\u00f6bius Transform",
+        "1/zeta(s)"
+      ],
+      [
+        "Sphere",
+        "x**2 + y**2 + z**2"
+      ],
+      [
+        "Hyperboloid",
+        "x**2 + y**2 - z**2"
+      ],
+      [
+        "Cubic Surface",
+        "x*y*z"
+      ],
+      [
+        "Gaussian",
+        "exp(-x**2 - y**2)"
+      ],
+      [
+        "Curvature Function",
+        "1/(x**2 + y**2 + 1)"
+      ],
+      [
+        "Wave Pattern",
+        "sin(x)*cos(y)"
+      ]
+    ],
+    "zero_curvature_count": "108",
+    "symmetries": "{}",
+    "total_attractors": "11"
+  },
+  "analytic": {
+    "type": "analytic_attractors",
+    "fixed_points": [
+      [
+        "Riemann Zeta",
+        "zeta(s)"
+      ],
+      [
+        "Dirichlet Eta",
+        "(2**((21*s + 13)/(34*s + 21)) - 1)*zeta((55*s + 34)/(34*s + 21))/2**((21*s + 13)/(34*s + 21))"
+      ],
+      [
+        "Log Zeta",
+        "log(zeta(s))"
+      ],
+      [
+        "Zeta Derivative",
+        "Derivative(zeta(s), s)"
+      ],
+      [
+        "M\u00f6bius Transform",
+        "1/zeta(s)"
+      ],
+      [
+        "Sphere",
+        "x**2 + y**2 + z**2"
+      ],
+      [
+        "Hyperboloid",
+        "x**2 + y**2 - z**2"
+      ],
+      [
+        "Cubic Surface",
+        "x*y*z"
+      ],
+      [
+        "Gaussian",
+        "exp(-x**2 - y**2)"
+      ],
+      [
+        "Curvature Function",
+        "1/(x**2 + y**2 + 1)"
+      ],
+      [
+        "Wave Pattern",
+        "sin(x)*cos(y)"
+      ],
+      [
+        "Exponential",
+        "exp(z)"
+      ],
+      [
+        "Sine",
+        "sin(z)"
+      ],
+      [
+        "Cosine",
+        "cos(z)"
+      ],
+      [
+        "Logarithm",
+        "log(z)"
+      ],
+      [
+        "Quadratic",
+        "z**2"
+      ],
+      [
+        "Reciprocal",
+        "1/z"
+      ]
+    ],
+    "zero_curvature_count": "204",
+    "symmetries": "{}",
+    "total_attractors": "17"
+  },
+  "summary": {
+    "total_fixed_points": "32",
+    "total_zero_curvature_points": "368",
+    "total_attractors": "33",
+    "analysis_types": [
+      "prime",
+      "geometric",
+      "analytic"
+    ]
+  }
+}
