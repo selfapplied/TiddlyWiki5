@@ -1281,8 +1281,8 @@ $tw.Wiki = function(options) {
 		}
 	};
 
-	// NEW: Load a shadow tiddler on-demand
-	this.loadShadowTiddlerOnDemand = function(title) {
+	// NEW: Load a shadow tiddler on-demand (closure-based to avoid context issues)
+	var loadShadowTiddlerOnDemand = function(title) {
 		if(!title || shadowTiddlers[title]) {
 			return shadowTiddlers[title] ? shadowTiddlers[title].tiddler : undefined;
 		}
@@ -1302,6 +1302,9 @@ $tw.Wiki = function(options) {
 		}
 		return undefined;
 	};
+	
+	// Expose the function on the wiki object too for direct calls
+	this.loadShadowTiddlerOnDemand = loadShadowTiddlerOnDemand;
 
 	// Get a tiddler from the store
 	this.getTiddler = function(title) {
@@ -1316,7 +1319,7 @@ $tw.Wiki = function(options) {
 					return s.tiddler;
 				}
 				// NEW: Lazy load shadow tiddler on-demand
-				return this.loadShadowTiddlerOnDemand(title);
+				return loadShadowTiddlerOnDemand(title);
 			}
 		}
 		return undefined;
@@ -1352,7 +1355,7 @@ $tw.Wiki = function(options) {
 				callback(tiddlers[title],title);
 			} else {
 				// NEW: Lazy load the shadow tiddler if needed
-				var shadowTiddler = this.loadShadowTiddlerOnDemand(title);
+				var shadowTiddler = loadShadowTiddlerOnDemand(title);
 				if(shadowTiddler) {
 					callback(shadowTiddler,title);
 				}
@@ -1373,7 +1376,7 @@ $tw.Wiki = function(options) {
 			title = titles[index];
 			if(!tiddlers[title]) {
 				// NEW: Lazy load the shadow tiddler if needed
-				var shadowTiddler = this.loadShadowTiddlerOnDemand(title);
+				var shadowTiddler = loadShadowTiddlerOnDemand(title);
 				if(shadowTiddler) {
 					callback(shadowTiddler,title);
 				}
@@ -1391,7 +1394,7 @@ $tw.Wiki = function(options) {
 				callback(tiddlers[title],title);
 			} else {
 				// NEW: Lazy load the shadow tiddler if needed
-				var shadowTiddler = this.loadShadowTiddlerOnDemand(title);
+				var shadowTiddler = loadShadowTiddlerOnDemand(title);
 				if(shadowTiddler) {
 					callback(shadowTiddler,title);
 				}
