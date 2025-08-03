@@ -162,7 +162,7 @@ class SemanticTextParser:
             return LineType.CODE
         
         # Explore branches (questions, options)
-        if re.search(r'\?+|(?i)(what if|consider|option \d+)', content):
+        if re.search(r'\?+', content) or re.search(r'(?i)(what if|consider|option \d+)', content):
             return LineType.EXPLORE
         
         return LineType.TEXT
