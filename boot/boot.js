@@ -1174,9 +1174,12 @@ $tw.Wiki = function(options) {
 		pluginInfo = Object.create(null), // Hashmap of parsed plugin content
 		shadowTiddlers = Object.create(null), // Hashmap by title of {source:, tiddler:}
 		shadowTiddlerTitles = null,
+		// NEW: Index of which plugins contain which shadow tiddler titles
+		shadowTiddlerIndex = Object.create(null), // title -> pluginTitle mapping
 		getShadowTiddlerTitles = function() {
 			if(!shadowTiddlerTitles) {
-				shadowTiddlerTitles = Object.keys(shadowTiddlers).sort(function(a,b) {return a.localeCompare(b);});
+				// NEW: Use the index to get all shadow tiddler titles
+				shadowTiddlerTitles = Object.keys(shadowTiddlerIndex).sort(function(a,b) {return a.localeCompare(b);});
 			}
 			return shadowTiddlerTitles;
 		},
@@ -1278,6 +1281,28 @@ $tw.Wiki = function(options) {
 		}
 	};
 
+	// NEW: Load a shadow tiddler on-demand
+	this.loadShadowTiddlerOnDemand = function(title) {
+		if(!title || shadowTiddlers[title]) {
+			return shadowTiddlers[title] ? shadowTiddlers[title].tiddler : undefined;
+		}
+		
+		// Check if any plugin contains this shadow tiddler
+		var pluginTitle = shadowTiddlerIndex[title];
+		if(pluginTitle && $tw.utils.hop(pluginInfo, pluginTitle)) {
+			var constituentTiddler = pluginInfo[pluginTitle].tiddlers[title];
+			if(constituentTiddler) {
+				// Create and cache the shadow tiddler
+				shadowTiddlers[title] = {
+					source: pluginTitle,
+					tiddler: new $tw.Tiddler(constituentTiddler, {title: title})
+				};
+				return shadowTiddlers[title].tiddler;
+			}
+		}
+		return undefined;
+	};
+
 	// Get a tiddler from the store
 	this.getTiddler = function(title) {
 		if(title) {
@@ -1285,10 +1310,13 @@ $tw.Wiki = function(options) {
 			if(t !== undefined) {
 				return t;
 			} else {
+				// Check if we already have this shadow tiddler loaded
 				var s = shadowTiddlers[title];
 				if(s !== undefined) {
 					return s.tiddler;
 				}
+				// NEW: Lazy load shadow tiddler on-demand
+				return this.loadShadowTiddlerOnDemand(title);
 			}
 		}
 		return undefined;
@@ -1323,8 +1351,11 @@ $tw.Wiki = function(options) {
 			if(tiddlers[title]) {
 				callback(tiddlers[title],title);
 			} else {
-				var shadowInfo = shadowTiddlers[title];
-				callback(shadowInfo.tiddler,title);
+				// NEW: Lazy load the shadow tiddler if needed
+				var shadowTiddler = this.loadShadowTiddlerOnDemand(title);
+				if(shadowTiddler) {
+					callback(shadowTiddler,title);
+				}
 			}
 		}
 	};
@@ -1341,8 +1372,11 @@ $tw.Wiki = function(options) {
 		for(index = 0, titlesLength = titles.length; index < titlesLength; index++) {
 			title = titles[index];
 			if(!tiddlers[title]) {
-				var shadowInfo = shadowTiddlers[title];
-				callback(shadowInfo.tiddler,title);
+				// NEW: Lazy load the shadow tiddler if needed
+				var shadowTiddler = this.loadShadowTiddlerOnDemand(title);
+				if(shadowTiddler) {
+					callback(shadowTiddler,title);
+				}
 			}
 		}
 	};
@@ -1356,14 +1390,17 @@ $tw.Wiki = function(options) {
 			if(tiddlers[title]) {
 				callback(tiddlers[title],title);
 			} else {
-				var shadowInfo = shadowTiddlers[title];
-				callback(shadowInfo.tiddler,title);
+				// NEW: Lazy load the shadow tiddler if needed
+				var shadowTiddler = this.loadShadowTiddlerOnDemand(title);
+				if(shadowTiddler) {
+					callback(shadowTiddler,title);
+				}
 			}
 		}
 		titles = getTiddlerTitles();
 		for(index = 0, titlesLength = titles.length; index < titlesLength; index++) {
 			title = titles[index];
-			if(!shadowTiddlers[title]) {
+			if(!shadowTiddlerIndex[title]) {
 				callback(tiddlers[title],title);
 			}
 		}
@@ -1376,12 +1413,18 @@ $tw.Wiki = function(options) {
 
 	// Determines if a tiddler is a shadow tiddler, regardless of whether it has been overridden by a real tiddler
 	this.isShadowTiddler = function(title) {
-		return $tw.utils.hop(shadowTiddlers,title);
+		// NEW: Use the index to check if it's a shadow tiddler
+		return $tw.utils.hop(shadowTiddlerIndex,title);
 	};
 
 	this.getShadowSource = function(title) {
+		// Check if loaded shadow tiddler exists
 		if($tw.utils.hop(shadowTiddlers,title)) {
 			return shadowTiddlers[title].source;
+		}
+		// NEW: Use the index to get the source plugin
+		if($tw.utils.hop(shadowTiddlerIndex,title)) {
+			return shadowTiddlerIndex[title];
 		}
 		return null;
 	};
@@ -1484,22 +1527,21 @@ $tw.Wiki = function(options) {
 				return +1;
 			}
 		});
-		// Now go through the plugins in ascending order and assign the shadows
+		// Now go through the plugins in ascending order and build the shadow tiddler index
 		shadowTiddlers = Object.create(null);
+		shadowTiddlerIndex = Object.create(null);
 		$tw.utils.each(pluginTiddlers,function(tiddler) {
-			// Extract the constituent tiddlers
+			// Extract the constituent tiddler titles for indexing
 			if($tw.utils.hop(pluginInfo,tiddler.fields.title)) {
 				$tw.utils.each(pluginInfo[tiddler.fields.title].tiddlers,function(constituentTiddler,constituentTitle) {
-					// Save the tiddler object
+					// Index which plugin contains this shadow tiddler (last plugin wins for conflicts)
 					if(constituentTitle) {
-						shadowTiddlers[constituentTitle] = {
-							source: tiddler.fields.title,
-							tiddler: new $tw.Tiddler(constituentTiddler,{title: constituentTitle})
-						};
+						shadowTiddlerIndex[constituentTitle] = tiddler.fields.title;
 					}
 				});
 			}
 		});
+		// Clear the cached shadow tiddler titles since we rebuilt the index
 		shadowTiddlerTitles = null;
 		this.clearCache(null);
 		this.clearGlobalCache();
