@@ -14,7 +14,6 @@ from sympy.core.expr import Expr
 from typing import List, Dict, Tuple, Optional, Union, Any, Set
 from dataclasses import dataclass
 from enum import Enum
-import tomllib
 
 # Mathematical symbols for code analysis
 f, g, h = sp.Function('f'), sp.Function('g'), sp.Function('h')  # Function symbols
@@ -336,6 +335,7 @@ class SymPyASTParser:
 """
         
         return final_code
+
     def generate_mathematical_insights(self) -> Dict:
         """Generate mathematical insights using pure SymPy reasoning"""
         insights = {
@@ -739,16 +739,6 @@ matrix = Matrix([[1, 2], [3, 4]])
         print(f"    • {transform}")
     print()
     
-    print("  Algebraic Properties:")
-    for prop in insights['algebraic_properties']:
-        print(f"    • {prop}")
-    print()
-    
-    print("  Geometric Insights:")
-    for insight in insights['geometric_insights']:
-        print(f"    • {insight}")
-    print()
-    
     # Export mathematical model
     parser.export_mathematical_model()
     
@@ -805,153 +795,6 @@ def test_function():
     
     print("📐 Mathematical Equivalence:")
     print(f"  {discovery['mathematical_equivalence']}")
-    print()
-    
-    # Demonstrate transformation discovery
-    print("\n🔍 SymPy Transformation Discovery Demo:")
-    print("=" * 50)
-    
-    # Define two equivalent pieces of code
-    original_code = '''
-import json
-
-def process_data():
-    print("Processing...")
-    assert len(data) > 0, "Data must not be empty"
-    
-    try:
-        with open("config.json", "r") as f:
-            config = json.load(f)
-    except Exception as e:
-        print(f"Error: {e}")
-    
-    return "result.json"
-'''
-    
-    transformed_code = '''
-import tomllib
-
-def process_data():
-    (UNASSERTED)("Processing...")
-    spoken_assert(len(data) > 0, "Data must not be empty")
-    
-    try:
-        with open("config.toml", "r") as f:
-            config = tomllib.load(f)
-    except Exception as e:
-        (UNASSERTED)(f"Error: {e}")
-    
-    return "result.toml"
-'''
-    
-    print("Original Code:")
-    print(original_code)
-    print("Transformed Code:")
-    print(transformed_code)
-    print()
-    
-    # Discover the transformation
-    discovery = parser.transform(original_code, transformed_code)
-    
-    print("🔍 Discovered Mathematical Transformations:")
-    for name, equation in discovery['transformations'].items():
-        print(f"  {name}: {equation}")
-    print()
-    
-    print("📐 Mathematical Equivalence:")
-    print(f"  {discovery['mathematical_equivalence']}")
-    print()
-    
-    # Demonstrate composition of transformations
-    print("\n🔄 Transformation Composition Demo:")
-    print("=" * 50)
-    
-    # Example 1: Dataclass ↔ Dict transformation
-    dataclass_code = '''
-from dataclasses import dataclass
-
-@dataclass
-class Config:
-    name: str
-    value: int
-
-config = Config("test", 42)
-'''
-    
-    dict_code = '''
-config_dict = {
-    'name': 'test',
-    'value': 42
-}
-'''
-    
-    # Example 2: TOML ↔ JSON transformation
-    toml_code = '''
-import tomllib
-
-with open("config.toml", "r") as f:
-    config = tomllib.load(f)
-'''
-    
-    json_code = '''
-import json
-
-with open("config.json", "r") as f:
-    config = json.load(f)
-'''
-    
-    print("Example 1: Dataclass ↔ Dict")
-    print("Dataclass Code:")
-    print(dataclass_code)
-    print("Dict Code:")
-    print(dict_code)
-    
-    discovery1 = parser.transform(dataclass_code, dict_code)
-    print("🔍 Discovered Transformations:")
-    for name, equation in discovery1['transformations'].items():
-        print(f"  {name}: {equation}")
-    print()
-    
-    print("Example 2: TOML ↔ JSON")
-    print("TOML Code:")
-    print(toml_code)
-    print("JSON Code:")
-    print(json_code)
-    
-    discovery2 = parser.transform(toml_code, json_code)
-    print("🔍 Discovered Transformations:")
-    for name, equation in discovery2['transformations'].items():
-        print(f"  {name}: {equation}")
-    print()
-    
-    # Example 3: F₂ⁿ Type Narrowing & Existential Types
-    print("Example 3: F₂ⁿ Type Narrowing & Existential Types")
-    wide_code = '''
-def process_data(x, y, z):
-    result = x + y + z
-    return result
-'''
-    
-    narrow_code = '''
-def process_data(x, y):
-    result = x + y
-    return result
-'''
-    
-    print("Wide Type (F₂³):")
-    print(wide_code)
-    print("Narrow Type (F₂²):")
-    print(narrow_code)
-    
-    narrowing_analysis = parser.type_narrowing_analysis(wide_code, narrow_code)
-    print("🔍 F₂ⁿ Type Analysis:")
-    for key, value in narrowing_analysis.items():
-        if isinstance(value, dict):
-            print(f"  {key}:")
-            for subkey, subvalue in value.items():
-                print(f"    {subkey}: {subvalue}")
-        else:
-            print(f"  {key}: {value}")
     print()
     
     return parser, results, insights
