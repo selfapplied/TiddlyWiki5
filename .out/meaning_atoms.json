@@ -1,0 +1,362 @@
+{
+  "atoms": [
+    {
+      "pattern": "):",
+      "frequency": 3,
+      "compression_ratio": 5.0,
+      "semantic_weight": 0.3255,
+      "meaning_type": "code"
+    },
+    {
+      "pattern": "def",
+      "frequency": 3,
+      "compression_ratio": 3.6666666666666665,
+      "semantic_weight": 0.26520000000000005,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "fibonacci",
+      "frequency": 3,
+      "compression_ratio": 1.8888888888888888,
+      "semantic_weight": 0.24500000000000002,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "processed",
+      "frequency": 2,
+      "compression_ratio": 1.8888888888888888,
+      "semantic_weight": 0.24200000000000002,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "self",
+      "frequency": 8,
+      "compression_ratio": 3.0,
+      "semantic_weight": 0.24,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "process",
+      "frequency": 3,
+      "compression_ratio": 2.142857142857143,
+      "semantic_weight": 0.23700000000000002,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "data",
+      "frequency": 6,
+      "compression_ratio": 3.0,
+      "semantic_weight": 0.23399999999999999,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "return",
+      "frequency": 3,
+      "compression_ratio": 2.3333333333333335,
+      "semantic_weight": 0.233,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "def",
+      "frequency": 3,
+      "compression_ratio": 3.6666666666666665,
+      "semantic_weight": 0.22100000000000003,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "in",
+      "frequency": 2,
+      "compression_ratio": 5.0,
+      "semantic_weight": 0.21400000000000002,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "computational",
+      "frequency": 2,
+      "compression_ratio": 1.6153846153846154,
+      "semantic_weight": 0.258,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "computation",
+      "frequency": 4,
+      "compression_ratio": 1.7272727272727273,
+      "semantic_weight": 0.256,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "automorphism",
+      "frequency": 2,
+      "compression_ratio": 1.6666666666666667,
+      "semantic_weight": 0.254,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "in",
+      "frequency": 15,
+      "compression_ratio": 5.0,
+      "semantic_weight": 0.253,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "combinator",
+      "frequency": 2,
+      "compression_ratio": 1.8,
+      "semantic_weight": 0.24600000000000002,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "universal",
+      "frequency": 2,
+      "compression_ratio": 1.8888888888888888,
+      "semantic_weight": 0.24200000000000002,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "theory",
+      "frequency": 4,
+      "compression_ratio": 2.3333333333333335,
+      "semantic_weight": 0.23600000000000002,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "the",
+      "frequency": 6,
+      "compression_ratio": 3.6666666666666665,
+      "semantic_weight": 0.23,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "codes",
+      "frequency": 2,
+      "compression_ratio": 2.6,
+      "semantic_weight": 0.22600000000000003,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "model",
+      "frequency": 2,
+      "compression_ratio": 2.6,
+      "semantic_weight": 0.22600000000000003,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "and",
+      "frequency": 3,
+      "compression_ratio": 3.6666666666666665,
+      "semantic_weight": 0.22100000000000003,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "as",
+      "frequency": 2,
+      "compression_ratio": 5.0,
+      "semantic_weight": 0.21400000000000002,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "f(lambda v: x(x)",
+      "frequency": 2,
+      "compression_ratio": 1.5,
+      "semantic_weight": 0.36,
+      "meaning_type": "code"
+    },
+    {
+      "pattern": "\"\"\"",
+      "frequency": 4,
+      "compression_ratio": 3.6666666666666665,
+      "semantic_weight": 0.3360000000000001,
+      "meaning_type": "structural"
+    },
+    {
+      "pattern": "(lambda x: f(lambda",
+      "frequency": 2,
+      "compression_ratio": 1.1578947368421053,
+      "semantic_weight": 0.3317052631578947,
+      "meaning_type": "code"
+    },
+    {
+      "pattern": ")))",
+      "frequency": 2,
+      "compression_ratio": 3.6666666666666665,
+      "semantic_weight": 0.32700000000000007,
+      "meaning_type": "code"
+    },
+    {
+      "pattern": ")(",
+      "frequency": 3,
+      "compression_ratio": 5.0,
+      "semantic_weight": 0.3255,
+      "meaning_type": "code"
+    },
+    {
+      "pattern": "):",
+      "frequency": 3,
+      "compression_ratio": 5.0,
+      "semantic_weight": 0.3255,
+      "meaning_type": "code"
+    },
+    {
+      "pattern": "f(lambda v: x(x)(v)))",
+      "frequency": 2,
+      "compression_ratio": 1.380952380952381,
+      "semantic_weight": 0.28457142857142864,
+      "meaning_type": "code"
+    },
+    {
+      "pattern": "def",
+      "frequency": 3,
+      "compression_ratio": 3.6666666666666665,
+      "semantic_weight": 0.26520000000000005,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "for",
+      "frequency": 2,
+      "compression_ratio": 3.6666666666666665,
+      "semantic_weight": 0.2616,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "frequencies",
+      "frequency": 5,
+      "compression_ratio": 1.7272727272727273,
+      "semantic_weight": 0.259,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "lambda",
+      "frequency": 4,
+      "compression_ratio": 2.3333333333333335,
+      "semantic_weight": 0.23600000000000002,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "self",
+      "frequency": 6,
+      "compression_ratio": 3.0,
+      "semantic_weight": 0.23399999999999999,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "return",
+      "frequency": 2,
+      "compression_ratio": 2.3333333333333335,
+      "semantic_weight": 0.23,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "text",
+      "frequency": 2,
+      "compression_ratio": 3.0,
+      "semantic_weight": 0.22200000000000003,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "char",
+      "frequency": 2,
+      "compression_ratio": 3.0,
+      "semantic_weight": 0.22200000000000003,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "def",
+      "frequency": 3,
+      "compression_ratio": 3.6666666666666665,
+      "semantic_weight": 0.22100000000000003,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "in",
+      "frequency": 4,
+      "compression_ratio": 5.0,
+      "semantic_weight": 0.22000000000000003,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "for",
+      "frequency": 2,
+      "compression_ratio": 3.6666666666666665,
+      "semantic_weight": 0.21800000000000003,
+      "meaning_type": "text"
+    },
+    {
+      "pattern": "x: f(lambda v:",
+      "frequency": 2,
+      "compression_ratio": 1.5714285714285714,
+      "semantic_weight": 0.21645714285714288,
+      "meaning_type": "code"
+    }
+  ],
+  "summary": {
+    "total_atoms": 41,
+    "average_semantic_weight": 0.25400570328259675,
+    "atoms_by_type": {
+      "code": 8,
+      "text": 32,
+      "structural": 1
+    },
+    "top_atoms": [
+      {
+        "pattern": "f(lambda v: x(x)",
+        "weight": 0.36,
+        "frequency": 2,
+        "type": "code"
+      },
+      {
+        "pattern": "\"\"\"",
+        "weight": 0.3360000000000001,
+        "frequency": 4,
+        "type": "structural"
+      },
+      {
+        "pattern": "(lambda x: f(lambda",
+        "weight": 0.3317052631578947,
+        "frequency": 2,
+        "type": "code"
+      },
+      {
+        "pattern": ")))",
+        "weight": 0.32700000000000007,
+        "frequency": 2,
+        "type": "code"
+      },
+      {
+        "pattern": "):",
+        "weight": 0.3255,
+        "frequency": 3,
+        "type": "code"
+      },
+      {
+        "pattern": ")(",
+        "weight": 0.3255,
+        "frequency": 3,
+        "type": "code"
+      },
+      {
+        "pattern": "):",
+        "weight": 0.3255,
+        "frequency": 3,
+        "type": "code"
+      },
+      {
+        "pattern": "f(lambda v: x(x)(v)))",
+        "weight": 0.28457142857142864,
+        "frequency": 2,
+        "type": "code"
+      },
+      {
+        "pattern": "def",
+        "weight": 0.26520000000000005,
+        "frequency": 3,
+        "type": "text"
+      },
+      {
+        "pattern": "def",
+        "weight": 0.26520000000000005,
+        "frequency": 3,
+        "type": "text"
+      }
+    ]
+  }
+}
