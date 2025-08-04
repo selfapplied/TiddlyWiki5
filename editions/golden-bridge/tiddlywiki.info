@@ -1,0 +1,21 @@
+{
+    "description": "Golden Bridge Hypothesis Research Wiki",
+    "title": "Golden Bridge Research",
+    "plugins": [
+        "tiddlywiki/markdown",
+        "tiddlywiki/katex",
+        "tiddlywiki/highlight",
+        "tiddlywiki/codemirror"
+    ],
+    "themes": [
+        "tiddlywiki/vanilla"
+    ],
+    "build": {
+        "index": [
+            "--rendertiddler",
+            "$:/core/save/all",
+            "index.html",
+            "text/plain"
+        ]
+    }
+} 
