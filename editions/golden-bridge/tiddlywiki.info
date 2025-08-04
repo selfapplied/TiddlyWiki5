@@ -3,9 +3,12 @@
     "title": "Golden Bridge Research",
     "plugins": [
         "tiddlywiki/markdown",
+        "tiddlywiki/markdown-legacy",
         "tiddlywiki/katex",
         "tiddlywiki/highlight",
-        "tiddlywiki/codemirror"
+        "tiddlywiki/codemirror",
+        "tiddlywiki/codemirror-mode-markdown",
+        "tiddlywiki/freelinks"
     ],
     "themes": [
         "tiddlywiki/vanilla"

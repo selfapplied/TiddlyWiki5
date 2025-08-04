@@ -1,0 +1,62 @@
+title: Markdown Renderer Configuration
+tags: configuration markdown renderer
+created: 20241220
+modified: 20241220
+
+This tiddler configures enhanced markdown rendering for the Golden Bridge research wiki.
+
+## Configuration
+
+### Markdown Parser Settings
+- **Parser**: Uses both modern and legacy markdown parsers for maximum compatibility
+- **Math Support**: KaTeX integration for mathematical formulas
+- **Code Highlighting**: Syntax highlighting for code blocks
+- **Link Processing**: Enhanced link handling with freelinks plugin
+
+### Features Enabled
+- ✅ **Mathematical Formulas**: `$f(x) = \frac{1}{2}$` and `$$\int_{-\infty}^{\infty} f(x) dx$$`
+- ✅ **Code Blocks**: Syntax highlighting for Python, JavaScript, etc.
+- ✅ **Tables**: Full table support with alignment
+- ✅ **Lists**: Ordered and unordered lists
+- ✅ **Links**: Internal and external link processing
+- ✅ **Images**: Image embedding and display
+- ✅ **Blockquotes**: Quote formatting
+- ✅ **Headers**: All header levels (H1-H6)
+- ✅ **Emphasis**: Bold, italic, and strikethrough
+- ✅ **Code Inline**: `inline code` formatting
+
+### Usage Examples
+
+#### Mathematical Content
+```markdown
+# Golden Bridge Function
+
+The well-behaved function is defined as:
+
+$$f(x) = \frac{1}{2} + \frac{1}{2} \cdot \frac{e^{x} - 1}{e^{x} + 1}$$
+
+This function satisfies $f(0) = \frac{1}{2}$.
+```
+
+#### Code Examples
+```markdown
+```python
+def golden_bridge_function(x):
+    return 0.5 + 0.5 * (math.exp(x) - 1) / (math.exp(x) + 1)
+```
+```
+
+#### Tables
+```markdown
+| Property | Value | Description |
+|----------|-------|-------------|
+| Continuity | ✅ | Function is continuous |
+| Differentiability | ✅ | Function is differentiable |
+| Golden Property | ✅ | f(0) = 1/2 |
+```
+
+### Editor Integration
+- **CodeMirror**: Enhanced editing with markdown mode
+- **Syntax Highlighting**: Real-time code highlighting
+- **Auto-completion**: Smart suggestions for markdown syntax
+- **Live Preview**: Real-time rendering preview 
