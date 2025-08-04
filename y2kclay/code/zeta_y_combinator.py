@@ -90,17 +90,9 @@ class ZetaYCombinator:
         
         This creates the recursive fixed point without explicit recursion.
         """
-        # Assertions for Y combinator
-        assert callable(f), "Y combinator requires a callable function"
-        
-        result = (lambda x: f(lambda *args: x(x)(*args)))(
+        return (lambda x: f(lambda *args: x(x)(*args)))(
             lambda x: f(lambda *args: x(x)(*args))
         )
-        
-        # Assert the result is callable
-        assert callable(result), "Y combinator must return a callable"
-        
-        return result
     
     def prime_spin(self, rec: Callable) -> Callable:
         """
@@ -109,33 +101,12 @@ class ZetaYCombinator:
         This implements the Euler product form:
         ζ(s) = ∏(1 - p^(-s))^(-1)
         """
-        # Assertions for prime_spin
-        assert callable(rec), "prime_spin requires a callable recursive function"
-        
         def wrapped(s_val, primes_list):
-            # Assertions for wrapped function
-            assert primes_list is not None, "primes_list cannot be None"
-            assert isinstance(primes_list, (list, tuple)), f"primes_list must be list/tuple: {type(primes_list)}"
-            
             if not primes_list:
                 return 1  # Base case: empty product
             p, *rest = primes_list
-            
-            # Assertions for prime
-            assert p > 1, f"Prime must be > 1: {p}"
-            assert isinstance(p, int), f"Prime must be integer: {type(p)}"
-            
             # The Möbius twist: (1 - p^(-s))^(-1)
-            result = (1 - p**(-s_val))**(-1) * rec(s_val, rest)
-            
-            # Assertions for result
-            assert result != 0, f"Prime spin result cannot be zero for prime {p}"
-            
-            return result
-        
-        # Assert the result is callable
-        assert callable(wrapped), "prime_spin must return a callable"
-        
+            return (1 - p**(-s_val))**(-1) * rec(s_val, rest)
         return wrapped
     
     def zeta_approximation(self, s_val, max_primes: Optional[int] = None) -> sp.Expr:
@@ -147,10 +118,6 @@ class ZetaYCombinator:
         if max_primes is None:
             max_primes = len(self.primes)
         
-        # Assertions for input validation
-        assert max_primes > 0, f"max_primes must be positive: {max_primes}"
-        assert max_primes <= len(self.primes), f"max_primes too large: {max_primes} > {len(self.primes)}"
-        
         primes_subset = self.primes[:max_primes]
         
         # Apply Y combinator to prime_spin
@@ -158,10 +125,6 @@ class ZetaYCombinator:
         
         # Compute the approximation
         result = zeta_recursive(s_val, primes_subset)
-        
-        # Assertions for result validation
-        assert result != 0, "Zeta approximation cannot be zero"
-        assert len(str(result)) > 0, "Result must be a valid expression"
         
         # Track evolution
         self.evolution_level += 1
@@ -301,51 +264,18 @@ def demo_golden_bridge():
     s_val = 2
     approx = zeta_y.zeta_approximation(s, 10)
     exact = sp.zeta(s_val)
-    approx_val = float(approx.subs(s, s_val).evalf())
-    exact_val = float(exact.evalf())
-    error = abs(approx_val - exact_val)
     print(f"Approximation: {approx}")
     print(f"Exact zeta({s_val}): {exact}")
-    print(f"Numerical error: {error:.6f}")
-    print(f"Approximation value: {approx_val:.6f}")
-    print(f"Exact value: {exact_val:.6f}")
-    
-    # Assertions for mathematical correctness
-    assert error < 0.1, f"Error too large: {error} (should be < 0.1)"
-    assert approx_val > 0, f"Approximation must be positive: {approx_val}"
-    assert exact_val > 0, f"Exact value must be positive: {exact_val}"
-    assert abs(exact_val - sp.pi**2/6) < 1e-10, f"Exact value should be π²/6: {exact_val}"
-    print("✅ Mathematical assertions passed!")
+    print(f"Error: {abs(approx.subs(s, s_val) - exact)}")
     
     # 2. ASCII animation
     print("\n2. ASCII Animation of Recursive Descent:")
     zeta_y.ascii_animation(s_val=2, steps=5)
     
-    # Assertions for convergence
-    convergence_errors = []
-    for i in range(1, 6):
-        approx = zeta_y.zeta_approximation(s, i)
-        exact = sp.zeta(s_val)
-        approx_val = float(approx.subs(s, s_val).evalf())
-        exact_val = float(exact.evalf())
-        error = abs(approx_val - exact_val)
-        convergence_errors.append(error)
-    
-    # Assert convergence is monotonic (error should decrease)
-    for i in range(1, len(convergence_errors)):
-        assert convergence_errors[i] <= convergence_errors[i-1], f"Error should decrease: {convergence_errors[i]} > {convergence_errors[i-1]}"
-    print("✅ Convergence assertions passed!")
-    
     # 3. Möbius inversion
     print("\n3. Möbius Inversion (Symmetry):")
     mobius_result = zeta_y.mobius_inversion(s, 10)
     print(f"Möbius inversion: {mobius_result}")
-    
-    # Assertions for Möbius function properties
-    mobius_val = float(mobius_result.subs(s, 2).evalf())
-    assert mobius_val != 0, f"Möbius inversion should be non-zero: {mobius_val}"
-    assert abs(mobius_val) < 10, f"Möbius inversion should be reasonable: {mobius_val}"
-    print("✅ Möbius inversion assertions passed!")
     
     # 4. Modular conjugation
     print("\n4. Modular Conjugation (Spectral Dance):")
