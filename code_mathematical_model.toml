@@ -1,0 +1,202 @@
+[mathematical_symbols]
+  [math]
+    type = 'module'
+    sympy_expression = 'math'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+        'math',
+      ]
+      mathematical_type = 'Symbol'
+  [numpy]
+    type = 'module'
+    sympy_expression = 'numpy'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+        'numpy',
+      ]
+      mathematical_type = 'Symbol'
+  [PI]
+    type = 'constant'
+    sympy_expression = 'PI'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+        'PI',
+      ]
+      mathematical_type = 'Symbol'
+  [MAX_ITERATIONS]
+    type = 'constant'
+    sympy_expression = 'MAX_ITERATIONS'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+        'MAX_ITERATIONS',
+      ]
+      mathematical_type = 'Symbol'
+  [fibonacci]
+    type = 'function'
+    sympy_expression = 'fibonacci'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+      ]
+      mathematical_type = 'UndefinedFunction'
+  [factorial]
+    type = 'function'
+    sympy_expression = 'factorial'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+      ]
+      mathematical_type = 'UndefinedFunction'
+  [Vector]
+    type = 'type'
+    sympy_expression = 'Vector'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+      ]
+      mathematical_type = 'UndefinedFunction'
+  [Matrix]
+    type = 'type'
+    sympy_expression = 'Matrix'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+      ]
+      mathematical_type = 'UndefinedFunction'
+  [compose_functions]
+    type = 'function'
+    sympy_expression = 'compose_functions'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+      ]
+      mathematical_type = 'UndefinedFunction'
+  [result]
+    type = 'variable'
+    sympy_expression = 'result'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+        'result',
+      ]
+      mathematical_type = 'Symbol'
+  [vector]
+    type = 'variable'
+    sympy_expression = 'vector'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+        'vector',
+      ]
+      mathematical_type = 'Symbol'
+  [matrix]
+    type = 'variable'
+    sympy_expression = 'matrix'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+        'matrix',
+      ]
+      mathematical_type = 'Symbol'
+  [__init__]
+    type = 'function'
+    sympy_expression = '__init__'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+      ]
+      mathematical_type = 'UndefinedFunction'
+  [magnitude]
+    type = 'function'
+    sympy_expression = 'magnitude'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+      ]
+      mathematical_type = 'UndefinedFunction'
+  [add]
+    type = 'function'
+    sympy_expression = 'add'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+      ]
+      mathematical_type = 'UndefinedFunction'
+  [determinant]
+    type = 'function'
+    sympy_expression = 'determinant'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+      ]
+      mathematical_type = 'UndefinedFunction'
+  [transpose]
+    type = 'function'
+    sympy_expression = 'transpose'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+      ]
+      mathematical_type = 'UndefinedFunction'
+  [h]
+    type = 'function'
+    sympy_expression = 'h'
+    [algebraic_properties]
+      is_function = True
+      is_symbol = True
+      free_symbols = [
+      ]
+      mathematical_type = 'UndefinedFunction'
+sympy_transformations = [
+  {
+    name = 'json_to_toml'
+    equation = 'Eq(json, tomllib)'
+    mathematical_property = 'module_substitution'
+  },
+  {
+    name = 'print_to_unasserted'
+    equation = 'Eq(print, (UNASSERTED))'
+    mathematical_property = 'function_replacement'
+  },
+  {
+    name = 'assert_to_spoken'
+    equation = 'Eq(assert, spoken_assert)'
+    mathematical_property = 'statement_transformation'
+  },
+]
+[mathematical_insights]
+  mathematical_theorems = [
+    'Theorem 1: Function composition associativity: True',
+    'Theorem 2: Identity function property: True',
+    'Theorem 3: Function inverse property: Eq(f(f_inv(x)), x)',
+  ]
+  sympy_transformations = [
+    'Transform 1: Eq(json, tomllib)',
+    'Transform 2: Eq(print, (UNASSERTED))',
+    'Transform 3: Eq(assert, spoken_assert)',
+  ]
+  algebraic_properties = [
+  ]
+  geometric_insights = [
+  ]
