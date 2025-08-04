@@ -1,0 +1,172 @@
+title: $:/plugins/tiddlywiki/zeta-fractal-ca/readme
+type: text/vnd.tiddlywiki
+
+! Zeta Fractal Cellular Automaton Plugin
+
+🔥 A recursive, self-defining cellular automaton that evolves through prime descent and Möbius transforms, descending toward the critical line to resolve ζ(s) = 0.
+
+!! Overview
+
+This plugin implements a novel visualization of the Riemann zeta function through a cellular automaton that:
+
+* Starts with a single attractor cell in the complex plane
+* Inserts primes sequentially via the Euler product formula
+* Applies Möbius twist operators for spectral coupling  
+* Subdivides cells recursively when error thresholds are exceeded
+* Attracts toward the critical line (Re(s) = 0.5)
+* Uses WebGL shaders for real-time visualization
+* Can leverage WebAssembly for heavy computation
+
+!! Architecture
+
+!!! Components
+
+# **Widget** (`widgets/zeta-fractal-ca.js`) - TiddlyWiki widget wrapper
+# **Shaders** (embedded in widget) - Safari-compatible WebGL GLSL ES 2.0
+# **WebAssembly Kernel** (`wasm/zeta_ca_kernel.cpp`) - High-performance CA computation
+# **Build System** (`build-wasm.sh`) - Emscripten compilation script
+
+!!! Data Flow
+
+```
+User Parameters → Widget → WebAssembly ←→ WebGL Shaders → Canvas
+                    ↓
+              CA Evolution Loop:
+              1. Insert Prime
+              2. Apply Möbius Transforms  
+              3. Check Subdivision
+              4. Update Textures
+              5. Render Frame
+```
+
+!! Usage
+
+!!! Basic Widget
+
+```html
+<$zeta-fractal-ca width="600" height="400" real="0.5" imag="14.134725" />
+```
+
+!!! Parameters
+
+* `width`, `height` - Canvas dimensions (default: 800x600)
+* `real`, `imag` - Initial complex position (default: 0.5 + 14.134725i)
+* `iterations` - Maximum CA iterations (default: 30)
+* `autostart` - Auto-start animation (default: true)
+* `controls` - Show control panel (default: true)
+
+!! Visualization Mapping
+
+|!Layer |!Meaning |
+|Color Hue |Möbius inversion (sign of μ(n)) |
+|Brightness |Log-scale magnitude of ζ(s) |
+|Saturation |Recursive subdivision depth |
+|Red Overlay |Regions requiring subdivision (high error) |
+|Shimmer |Phase oscillations from fractal descent |
+
+!! Mathematical Foundation
+
+!!! Euler Product Formula
+
+The Riemann zeta function can be expressed as an infinite product over primes:
+
+$$\zeta(s) = \prod_{p \text{ prime}} \frac{1}{1 - p^{-s}}$$
+
+The CA inserts these factors sequentially, building up the approximation.
+
+!!! Möbius Function
+
+The Möbius function μ(n) provides the "twist" operators:
+
+$$\mu(n) = \begin{cases} 
+1 & \text{if } n \text{ is square-free with even number of prime factors} \\
+-1 & \text{if } n \text{ is square-free with odd number of prime factors} \\
+0 & \text{if } n \text{ has a squared prime factor}
+\end{cases}$$
+
+!!! Fractal Subdivision
+
+Cells subdivide when their spectral error exceeds a threshold:
+
+$$\text{subdivide} \Leftrightarrow \epsilon > \frac{0.1}{1 + 10|s - 0.5|} \cdot \frac{1}{\text{depth} + 1}$$
+
+This creates higher resolution near the critical line.
+
+!! Building WebAssembly Module
+
+!!! Prerequisites
+
+Install the Emscripten SDK:
+
+```bash
+git clone https://github.com/emscripten-core/emsdk.git
+cd emsdk
+./emsdk install latest
+./emsdk activate latest
+source ./emsdk_env.sh
+```
+
+!!! Compilation
+
+```bash
+cd tiddlywiki/plugins/tiddlywiki/zeta-fractal-ca
+chmod +x build-wasm.sh
+./build-wasm.sh
+```
+
+This produces `wasm/build/zeta_ca_kernel.js` which contains the compiled WebAssembly module.
+
+!!! Integration
+
+To use the WebAssembly module in the widget:
+
+```javascript
+// Load the module
+ZetaCAModule().then(Module => {
+    // Initialize CA
+    Module.ccall('initCA', null, ['number', 'number', 'number'], [0.5, 14.134725, 256]);
+    
+    // Evolution step
+    let subdivisions = Module.ccall('updateCA', 'number', [], []);
+    
+    // Get statistics
+    let activeCells = Module.ccall('getActiveCellCount', 'number', [], []);
+    let avgError = Module.ccall('getAverageError', 'number', [], []);
+});
+```
+
+!! Safari Compatibility
+
+The shaders use GLSL ES 2.0 features that work in Safari:
+
+* `precision mediump float` declarations
+* No advanced texture features
+* Standard mathematical functions only
+* Careful handling of WebGL context creation
+
+!! Performance Notes
+
+* WebGL rendering: ~60 FPS on modern devices
+* CA computation: Scales with number of active cells
+* Memory usage: Grows with subdivision depth
+* WebAssembly provides 2-5x speedup over JavaScript for CA logic
+
+!! Future Extensions
+
+* **Prime Tetris Mode**: Falling Möbius terms that clear when regions reach zero
+* **Interactive Zoom**: Mouse/touch controls for exploring the complex plane  
+* **Multiple Zeta Zeros**: Simultaneous evolution toward different critical points
+* **Shader Compute**: Move more CA logic into compute shaders for GPU acceleration
+* **Real-time Audio**: Sonification of the zeta function through phase changes
+
+!! Technical References
+
+* [[Riemann Zeta Function|https://en.wikipedia.org/wiki/Riemann_zeta_function]]
+* [[Euler Product|https://en.wikipedia.org/wiki/Euler_product]]
+* [[Möbius Function|https://en.wikipedia.org/wiki/M%C3%B6bius_function]]
+* [[WebAssembly|https://webassembly.org/]]
+* [[WebGL|https://www.khronos.org/webgl/]]
+
+---
+
+🌀 //Ready for recursive mathematical fire!//

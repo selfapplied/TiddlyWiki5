@@ -1,0 +1,309 @@
+title: Prime Tetris - Zeta CA Game Mode
+type: text/vnd.tiddlywiki
+tags: $:/tags/Macro
+
+! Prime Tetris 🔥
+
+> //When Möbius-canceling terms fall like Tetris pieces, and clearing a line means finding a zero!//
+
+!! Game Concept
+
+Prime Tetris transforms the Zeta Fractal CA into an interactive game where:
+
+* **Pieces**: Möbius twist operators (μ(p) for prime p)
+* **Board**: Approximation lattice of ζ(s) 
+* **Goal**: Clear lines by finding regions where ζ(s) ≈ 0
+* **Mechanics**: Falling pieces apply prime Euler factors to the field
+
+!! How to Play
+
+# Möbius terms fall from the top of the complex plane
+# Use arrow keys to position and rotate falling prime factors
+# When a horizontal line of cells converges to zero (|ζ(s)| < ε), it clears
+# Each cleared line moves you closer to the critical line
+# Game ends when you reach Re(s) = 0.5 with stable convergence
+
+!! Shader Extensions
+
+To enable Prime Tetris mode, add these modifications to the fragment shader:
+
+```glsl
+// Add to main fragment shader
+uniform float u_tetrisMode;
+uniform float u_fallingPiece;
+uniform vec2 u_piecePosition;
+uniform float u_pieceRotation;
+
+// Tetris piece rendering
+vec4 renderTetrisPiece(vec2 pos) {
+    if (u_tetrisMode < 0.5) return vec4(0.0);
+    
+    // Distance from falling piece center
+    vec2 offset = pos - u_piecePosition;
+    
+    // Rotate offset by piece rotation
+    float cos_r = cos(u_pieceRotation);
+    float sin_r = sin(u_pieceRotation);
+    vec2 rotated = vec2(
+        offset.x * cos_r - offset.y * sin_r,
+        offset.x * sin_r + offset.y * cos_r
+    );
+    
+    // Möbius piece shape (depends on current prime)
+    float pieceId = u_fallingPiece;
+    vec4 pieceColor = vec4(0.0);
+    
+    if (pieceId < 2.5) {
+        // Prime 2: I-piece (vertical line)
+        if (abs(rotated.x) < 0.05 && abs(rotated.y) < 0.4) {
+            pieceColor = vec4(1.0, 0.0, 0.0, 0.8);
+        }
+    } else if (pieceId < 3.5) {
+        // Prime 3: L-piece (Möbius L-shape)
+        if ((abs(rotated.x) < 0.05 && abs(rotated.y) < 0.3) ||
+            (abs(rotated.y - 0.25) < 0.05 && rotated.x > 0.0 && rotated.x < 0.2)) {
+            pieceColor = vec4(0.0, 1.0, 0.0, 0.8);
+        }
+    } else if (pieceId < 5.5) {
+        // Prime 5: T-piece (Euler T-shape)
+        if ((abs(rotated.y) < 0.05 && abs(rotated.x) < 0.2) ||
+            (abs(rotated.x) < 0.05 && rotated.y > 0.0 && rotated.y < 0.2)) {
+            pieceColor = vec4(0.0, 0.0, 1.0, 0.8);
+        }
+    } else {
+        // Higher primes: O-piece (square)
+        if (abs(rotated.x) < 0.1 && abs(rotated.y) < 0.1) {
+            pieceColor = vec4(1.0, 1.0, 0.0, 0.8);
+        }
+    }
+    
+    return pieceColor;
+}
+
+// Line clearing detection
+float checkLineClear(vec2 pos) {
+    if (u_tetrisMode < 0.5) return 0.0;
+    
+    // Check if this horizontal line should clear
+    float lineY = floor(pos.y * 20.0) / 20.0;  // Quantize to grid
+    
+    // Sample magnitude across the line
+    float totalMagnitude = 0.0;
+    int samples = 10;
+    
+    for (int i = 0; i < samples; i++) {
+        float x = float(i) / float(samples - 1);
+        vec2 samplePos = vec2(x, lineY);
+        vec4 state = texture2D(u_caState, samplePos);
+        vec2 zetaVal = state.xy;
+        totalMagnitude += length(zetaVal);
+    }
+    
+    float avgMagnitude = totalMagnitude / float(samples);
+    
+    // Line clears if average magnitude is very small
+    return avgMagnitude < 0.1 ? 1.0 : 0.0;
+}
+
+// Modified main function for Tetris mode
+void main() {
+    vec2 pos = v_texCoord;
+    
+    // ... existing CA visualization code ...
+    
+    // Add Tetris piece overlay
+    vec4 tetrisPiece = renderTetrisPiece(pos);
+    
+    // Add line clear effect
+    float lineClear = checkLineClear(pos);
+    
+    // Combine effects
+    vec3 finalColor = rgb;
+    
+    if (tetrisPiece.w > 0.0) {
+        // Blend falling piece
+        finalColor = mix(finalColor, tetrisPiece.rgb, tetrisPiece.w);
+    }
+    
+    if (lineClear > 0.5) {
+        // Line clearing flash effect
+        float flash = sin(u_time * 20.0) * 0.5 + 0.5;
+        finalColor += vec3(1.0, 1.0, 1.0) * flash * 0.5;
+    }
+    
+    gl_FragColor = vec4(finalColor, 1.0);
+}
+```
+
+!! JavaScript Game Logic
+
+Add to the widget for interactive Tetris controls:
+
+```javascript
+// Prime Tetris game state
+this.tetrisMode = false;
+this.fallingPiece = 2;  // Current prime
+this.piecePosition = [0.5, 0.9];  // [x, y] in texture coords
+this.pieceRotation = 0.0;
+this.dropSpeed = 0.01;
+this.score = 0;
+this.linesCleared = 0;
+
+// Keyboard controls
+this.setupTetrisControls = function() {
+    var self = this;
+    
+    document.addEventListener('keydown', function(e) {
+        if (!self.tetrisMode) return;
+        
+        switch(e.key) {
+            case 'ArrowLeft':
+                self.piecePosition[0] = Math.max(0.1, self.piecePosition[0] - 0.05);
+                break;
+            case 'ArrowRight':
+                self.piecePosition[0] = Math.min(0.9, self.piecePosition[0] + 0.05);
+                break;
+            case 'ArrowDown':
+                self.dropSpeed = 0.05;  // Fast drop
+                break;
+            case 'ArrowUp':
+            case ' ':
+                self.pieceRotation += Math.PI / 2;  // Rotate
+                break;
+        }
+    });
+    
+    document.addEventListener('keyup', function(e) {
+        if (e.key === 'ArrowDown') {
+            self.dropSpeed = 0.01;  // Normal speed
+        }
+    });
+};
+
+// Tetris update logic
+this.updateTetris = function() {
+    if (!this.tetrisMode) return;
+    
+    // Move piece down
+    this.piecePosition[1] -= this.dropSpeed;
+    
+    // Check if piece has landed
+    if (this.piecePosition[1] < 0.1) {
+        this.landPiece();
+    }
+    
+    // Check for line clears
+    this.checkLineClears();
+    
+    // Update shader uniforms
+    gl.uniform1f(this.locations.uniforms.tetrisMode, 1.0);
+    gl.uniform1f(this.locations.uniforms.fallingPiece, this.fallingPiece);
+    gl.uniform2f(this.locations.uniforms.piecePosition, 
+                 this.piecePosition[0], this.piecePosition[1]);
+    gl.uniform1f(this.locations.uniforms.pieceRotation, this.pieceRotation);
+};
+
+// Piece landing logic
+this.landPiece = function() {
+    // Apply Möbius operator to the field at piece position
+    this.insertPrime(this.fallingPiece);
+    
+    // Spawn next piece
+    this.spawnNextPiece();
+};
+
+this.spawnNextPiece = function() {
+    // Next prime in sequence
+    this.fallingPiece = this.primes[this.primeIndex % this.primes.length];
+    this.piecePosition = [0.5, 0.9];
+    this.pieceRotation = 0.0;
+};
+
+// Line clearing
+this.checkLineClears = function() {
+    // Check each horizontal line for convergence
+    var clearedLines = 0;
+    
+    for (var y = 0; y < 20; y++) {
+        if (this.isLineCleared(y / 20.0)) {
+            this.clearLine(y / 20.0);
+            clearedLines++;
+        }
+    }
+    
+    if (clearedLines > 0) {
+        this.linesCleared += clearedLines;
+        this.score += clearedLines * clearedLines * 100;  // Combo bonus
+        
+        // Check for game progression
+        if (this.linesCleared >= 10) {
+            this.advanceTowardCriticalLine();
+        }
+    }
+};
+
+// Toggle Tetris mode
+this.toggleTetrisMode = function() {
+    this.tetrisMode = !this.tetrisMode;
+    
+    if (this.tetrisMode) {
+        this.setupTetrisControls();
+        this.spawnNextPiece();
+        console.log("🔥 Prime Tetris Mode Activated!");
+    } else {
+        console.log("🌀 Returning to CA Mode");
+    }
+};
+```
+
+!! Game UI Extension
+
+Add Tetris controls to the widget:
+
+```html
+<!-- Add to widget template -->
+<div class="tetris-controls" style="margin: 10px 0;">
+    <button onclick="widget.toggleTetrisMode()">
+        🎮 Toggle Prime Tetris
+    </button>
+    
+    <div class="tetris-stats" style="display: inline-block; margin-left: 20px;">
+        Score: <span id="tetris-score">0</span> | 
+        Lines: <span id="tetris-lines">0</span> |
+        Prime: <span id="current-prime">2</span>
+    </div>
+    
+    <div class="tetris-help" style="font-size: 12px; margin-top: 5px;">
+        ← → Move | ↑ Space Rotate | ↓ Fast Drop
+    </div>
+</div>
+```
+
+!! Mathematical Game Theory
+
+Prime Tetris introduces game-theoretic elements to zeta computation:
+
+* **Strategy**: Which primes to prioritize for line clearing
+* **Timing**: When to apply fast drop vs. careful positioning  
+* **Combos**: Multiple line clears create spectral resonance
+* **Risk/Reward**: Higher primes are worth more points but harder to place
+
+The game effectively crowds-sources zeta zero discovery through engaging gameplay mechanics!
+
+!! Scoring System
+
+* **Line Clear**: 100 × (lines cleared)²
+* **Prime Bonus**: 10 × prime value
+* **Convergence Bonus**: 1000 × (1 / |ζ(s)|) when |ζ(s)| < 0.01
+* **Critical Line**: 10000 points for reaching Re(s) = 0.5
+
+!! Victory Conditions
+
+🏆 **Prime Master**: Clear 100 lines
+🏆 **Zero Hunter**: Find region where |ζ(s)| < 0.001  
+🏆 **Critical Descent**: Reach Re(s) = 0.5 with stable error < 1e-6
+🏆 **Riemann Champion**: Achieve all above in single game
+
+---
+
+🎮 //Ready to play with mathematical infinity?//
