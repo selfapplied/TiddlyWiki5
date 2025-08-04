@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🚀 Garden - Opcode Convolution</title>
+    <style>
+        body { 
+            margin: 0; 
+            background: #000; 
+            color: #0f0; 
+            font-family: monospace; 
+            overflow: hidden;
+        }
+        #canvas { 
+            display: block; 
+            width: 100vw; 
+            height: 100vh; 
+        }
+        .info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border: 1px solid #0f0;
+            font-size: 12px;
+        }
+        .controls {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border: 1px solid #0f0;
+        }
+        button {
+            background: #0f0;
+            color: #000;
+            border: none;
+            padding: 5px 10px;
+            margin: 2px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    
+    <div class="info">
+        <div>🌱 Plants: <span id="plantCount">0</span></div>
+        <div>🧬 Opcodes: <span id="opcodeCount">0</span></div>
+        <div>⚡ FPS: <span id="fps">0</span></div>
+        <div>🔬 Convolution: <span id="convolution">0</span></div>
+        <div>🔄 Evolution: <span id="evolution">0</span></div>
+        <div>📊 Buffer: <span id="bufferSize">0</span></div>
+    </div>
+    
+    <div class="controls">
+        <button onclick="togglePause()">⏸️ PAUSE</button>
+        <button onclick="reset()">🔄 RESET</button>
+        <button onclick="clearBuffer()">🗑️ CLEAR</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Performance tracking
+        let frameCount = 0;
+        let lastTime = 0;
+        let fps = 0;
+        
+        // Opcode-based system with convolution
+        let plants = [];
+        let opcodes = ['GROW', 'SPLIT', 'TWIST', 'BLOOM', 'EVOLVE'];
+        let evolutionStep = 0;
+        let isPaused = false;
+        
+        // Pixel buffer for history
+        let pixelBuffer = [];
+        const MAX_PLANTS = 15;
+        const MAX_BUFFER_SIZE = 1000;
+        
+        // Convolution kernels for each opcode
+        const kernels = {
+            GROW: [[0,1,0], [1,2,1], [0,1,0]],
+            SPLIT: [[1,0,1], [0,2,0], [1,0,1]],
+            TWIST: [[0,0,1], [0,2,1], [1,1,0]],
+            BLOOM: [[1,1,1], [1,2,1], [1,1,1]],
+            EVOLVE: [[0,1,0], [1,3,1], [0,1,0]]
+        };
+        
+        // Spatial mapping grid
+        const GRID_SIZE = 50;
+        let spatialGrid = [];
+        
+        // Initialize spatial grid
+        function initSpatialGrid() {
+            const cols = Math.ceil(canvas.width / GRID_SIZE);
+            const rows = Math.ceil(canvas.height / GRID_SIZE);
+            spatialGrid = Array(rows).fill().map(() => Array(cols).fill(0));
+        }
+        
+        // Update spatial grid
+        function updateSpatialGrid() {
+            // Clear grid
+            spatialGrid.forEach(row => row.fill(0));
+            
+            // Map plants to grid
+            plants.forEach(plant => {
+                plant.branches.forEach(branch => {
+                    const gridX = Math.floor(branch.x / GRID_SIZE);
+                    const gridY = Math.floor(branch.y / GRID_SIZE);
+                    if (gridX >= 0 && gridX < spatialGrid[0].length && 
+                        gridY >= 0 && gridY < spatialGrid.length) {
+                        spatialGrid[gridY][gridX] += branch.energy;
+                    }
+                });
+            });
+        }
+        
+        // Apply convolution kernel to spatial neighborhood
+        function applyConvolution(x, y, kernel) {
+            let result = 0;
+            const halfSize = Math.floor(kernel.length / 2);
+            
+            for (let ky = -halfSize; ky <= halfSize; ky++) {
+                for (let kx = -halfSize; kx <= halfSize; kx++) {
+                    const gridX = Math.floor(x / GRID_SIZE) + kx;
+                    const gridY = Math.floor(y / GRID_SIZE) + ky;
+                    
+                    if (gridX >= 0 && gridX < spatialGrid[0].length && 
+                        gridY >= 0 && gridY < spatialGrid.length) {
+                        const kernelValue = kernel[ky + halfSize][kx + halfSize];
+                        const gridValue = spatialGrid[gridY][gridX];
+                        result += kernelValue * gridValue;
+                    }
+                }
+            }
+            
+            return result;
+        }
+        
+        // Plant class with opcode-based evolution
+        class Plant {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.branches = [{x, y, angle: -Math.PI/2, length: 30, energy: 1.0}];
+                this.opcodes = [];
+                this.age = 0;
+                this.evolution = 0;
+                this.color = `hsl(${Math.random() * 360}, 70%, 50%)`;
+                this.id = Math.random().toString(36).substr(2, 9);
+            }
+            
+            // Opcode-based evolution with convolution
+            evolve() {
+                this.age++;
+                
+                // Select opcode based on spatial convolution
+                const opcodeIndex = this.age % opcodes.length;
+                const opcode = opcodes[opcodeIndex];
+                const kernel = kernels[opcode];
+                
+                // Apply convolution to determine action strength
+                const convolutionResult = applyConvolution(this.x, this.y, kernel);
+                
+                // Apply opcode based on convolution result
+                this.applyOpcode(opcode, convolutionResult);
+                
+                // Autonomous branching with spatial awareness
+                if (this.age % 30 === 0 && this.branches.length < 20) {
+                    this.branches.forEach(branch => {
+                        const branchConvolution = applyConvolution(branch.x, branch.y, kernels.SPLIT);
+                        if (branch.energy > 0.3 && branchConvolution > 0.5 && this.branches.length < 20) {
+                            this.splitBranch(branch);
+                        }
+                    });
+                }
+                
+                // Energy management with spatial feedback
+                this.branches.forEach(branch => {
+                    const energyConvolution = applyConvolution(branch.x, branch.y, kernels.GROW);
+                    branch.energy *= (0.99 + energyConvolution * 0.01);
+                });
+                
+                // Remove dead branches
+                this.branches = this.branches.filter(branch => branch.energy > 0.1);
+                
+                this.evolution++;
+            }
+            
+            applyOpcode(opcode, convolutionResult) {
+                this.opcodes.push(opcode);
+                
+                switch(opcode) {
+                    case 'GROW':
+                        this.branches.forEach(b => {
+                            b.length += 5 * (convolutionResult + 1);
+                        });
+                        break;
+                    case 'SPLIT':
+                        this.branches.forEach(b => {
+                            b.energy += 0.1 * convolutionResult;
+                        });
+                        break;
+                    case 'TWIST':
+                        this.branches.forEach(b => {
+                            b.angle += (Math.random() - 0.5) * 0.2 * convolutionResult;
+                        });
+                        break;
+                    case 'BLOOM':
+                        this.branches.forEach(b => {
+                            b.energy += 0.2 * convolutionResult;
+                        });
+                        break;
+                    case 'EVOLVE':
+                        this.evolution++;
+                        this.branches.forEach(b => {
+                            b.length *= (1.1 + convolutionResult * 0.1);
+                        });
+                        break;
+                }
+            }
+            
+            splitBranch(branch) {
+                if (this.branches.length >= 20) return;
+                
+                const newAngle1 = branch.angle + 0.3;
+                const newAngle2 = branch.angle - 0.3;
+                
+                this.branches.push({
+                    x: branch.x + Math.cos(branch.angle) * branch.length,
+                    y: branch.y + Math.sin(branch.angle) * branch.length,
+                    angle: newAngle1,
+                    length: branch.length * 0.7,
+                    energy: branch.energy * 0.8
+                });
+                
+                this.branches.push({
+                    x: branch.x + Math.cos(branch.angle) * branch.length,
+                    y: branch.y + Math.sin(branch.angle) * branch.length,
+                    angle: newAngle2,
+                    length: branch.length * 0.7,
+                    energy: branch.energy * 0.8
+                });
+            }
+            
+            draw() {
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = 2;
+                
+                this.branches.forEach(branch => {
+                    const endX = branch.x + Math.cos(branch.angle) * branch.length;
+                    const endY = branch.y + Math.sin(branch.angle) * branch.length;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(branch.x, branch.y);
+                    ctx.lineTo(endX, endY);
+                    ctx.stroke();
+                    
+                    // Add to pixel buffer
+                    this.addToBuffer(endX, endY, this.color);
+                    
+                    // Bloom effect based on convolution
+                    if (this.opcodes.includes('BLOOM')) {
+                        const bloomConvolution = applyConvolution(endX, endY, kernels.BLOOM);
+                        if (bloomConvolution > 0.3) {
+                            ctx.fillStyle = '#ff0';
+                            ctx.beginPath();
+                            ctx.arc(endX, endY, 3, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    }
+                });
+            }
+            
+            addToBuffer(x, y, color) {
+                pixelBuffer.push({
+                    x: Math.floor(x),
+                    y: Math.floor(y),
+                    color: color,
+                    age: 0
+                });
+                
+                if (pixelBuffer.length > MAX_BUFFER_SIZE) {
+                    pixelBuffer = pixelBuffer.slice(-MAX_BUFFER_SIZE);
+                }
+            }
+        }
+        
+        // Initialize
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initSpatialGrid();
+            
+            // Add initial plants
+            for (let i = 0; i < 5; i++) {
+                addPlant();
+            }
+        }
+        
+        function addPlant() {
+            if (plants.length >= MAX_PLANTS) return;
+            
+            const x = Math.random() * canvas.width;
+            const y = canvas.height - 50;
+            plants.push(new Plant(x, y));
+        }
+        
+        function reset() {
+            plants = [];
+            pixelBuffer = [];
+            evolutionStep = 0;
+            initSpatialGrid();
+            for (let i = 0; i < 5; i++) {
+                addPlant();
+            }
+        }
+        
+        function clearBuffer() {
+            pixelBuffer = [];
+        }
+        
+        function togglePause() {
+            isPaused = !isPaused;
+        }
+        
+        // Draw pixel buffer history
+        function drawBuffer() {
+            pixelBuffer.forEach(pixel => {
+                pixel.age++;
+                const alpha = Math.max(0, 1 - pixel.age / 100);
+                ctx.fillStyle = pixel.color + Math.floor(alpha * 255).toString(16).padStart(2, '0');
+                ctx.fillRect(pixel.x, pixel.y, 1, 1);
+            });
+            
+            pixelBuffer = pixelBuffer.filter(pixel => pixel.age < 100);
+        }
+        
+        // Main animation loop
+        function animate(currentTime) {
+            frameCount++;
+            if (currentTime - lastTime >= 1000) {
+                fps = frameCount;
+                frameCount = 0;
+                lastTime = currentTime;
+            }
+            
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Update spatial grid
+            updateSpatialGrid();
+            
+            // Draw buffer history
+            drawBuffer();
+            
+            // Autonomous evolution with opcodes
+            if (!isPaused) {
+                plants.forEach(plant => plant.evolve());
+                evolutionStep++;
+                
+                if (Math.random() < 0.005 && plants.length < MAX_PLANTS) {
+                    addPlant();
+                }
+                
+                plants = plants.filter(plant => plant.branches.length > 0);
+            }
+            
+            // Draw all plants
+            plants.forEach(plant => plant.draw());
+            
+            // Update info
+            document.getElementById('plantCount').textContent = plants.length;
+            document.getElementById('opcodeCount').textContent = plants.reduce((sum, p) => sum + p.opcodes.length, 0);
+            document.getElementById('fps').textContent = fps;
+            document.getElementById('convolution').textContent = plants.reduce((sum, p) => {
+                return sum + p.branches.reduce((bSum, b) => bSum + applyConvolution(b.x, b.y, kernels.GROW), 0);
+            }, 0).toFixed(2);
+            document.getElementById('evolution').textContent = evolutionStep;
+            document.getElementById('bufferSize').textContent = pixelBuffer.length;
+            
+            requestAnimationFrame(animate);
+        }
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initSpatialGrid();
+        });
+        
+        init();
+        animate(0);
+    </script>
+</body>
+</html> 
