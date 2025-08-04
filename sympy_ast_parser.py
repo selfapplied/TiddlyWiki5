@@ -797,6 +797,39 @@ def test_function():
     print(f"  {discovery['mathematical_equivalence']}")
     print()
     
+    # Demonstrate F₂ⁿ finite field type analysis
+    print("\n🔬 F₂ⁿ Finite Field Type Analysis Demo:")
+    print("=" * 50)
+    
+    # Example: Type narrowing from F₂³ to F₂²
+    wide_code = '''
+def process_data(x, y, z):
+    result = x + y + z
+    return result
+'''
+    
+    narrow_code = '''
+def process_data(x, y):
+    result = x + y
+    return result
+'''
+    
+    print("Wide Type (F₂³):")
+    print(wide_code)
+    print("Narrow Type (F₂²):")
+    print(narrow_code)
+    
+    narrowing_analysis = parser.type_narrowing_analysis(wide_code, narrow_code)
+    print("🔍 F₂ⁿ Type Analysis:")
+    for key, value in narrowing_analysis.items():
+        if isinstance(value, dict):
+            print(f"  {key}:")
+            for subkey, subvalue in value.items():
+                print(f"    {subkey}: {subvalue}")
+        else:
+            print(f"  {key}: {value}")
+    print()
+    
     return parser, results, insights
 
 
