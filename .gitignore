@@ -1,0 +1,27 @@
+# Python
+*.pyc
+
+# Vim
+*.swp
+
+# macOS
+.DS_Store
+
+# Test output
+/refs/tiddlywiki/test-output/
+/refs/tiddlywiki/output/
+
+# Sourcemaps
+*.js.map
+
+# IDE
+.idea/
+.vscode/
+
+# Node
+node_modules/
+
+# Build artifacts
+/output
+/test-output
+.out
