@@ -1,0 +1,10 @@
+title: $:/GoldenBridge/StartupActions/AutoPalette
+tags: $:/tags/StartupAction/Browser
+
+<$reveal type="match" state="$:/info/darkmode" text="yes">
+<$action-setfield $tiddler="$:/palette" text="$:/palettes/FlexokiDark"/>
+</$reveal>
+
+<$reveal type="match" state="$:/info/darkmode" text="no">
+<$action-setfield $tiddler="$:/palette" text="$:/palettes/Vanilla"/>
+</$reveal> 

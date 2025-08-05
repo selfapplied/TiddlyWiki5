@@ -1,0 +1,34 @@
+{
+    "description": "Golden Bridge Hypothesis Research Wiki",
+    "title": "Golden Bridge Research",
+    "plugins": [
+        "tiddlywiki/markdown",
+        "tiddlywiki/katex",
+        "tiddlywiki/highlight",
+        "tiddlywiki/codemirror",
+        "tiddlywiki/codemirror-mode-markdown",
+        "tiddlywiki/freelinks"
+    ],
+    "themes": [
+        "tiddlywiki/vanilla"
+    ],
+    "build": {
+        "index": [
+            "--rendertiddler",
+            "$:/core/save/all",
+            "index.html",
+            "text/plain"
+        ],
+        "test": [
+            "--test",
+            "--rendertiddler",
+            "$:/core/save/all",
+            "test.html",
+            "text/plain"
+        ]
+    },
+    "palettes": [
+        "$:/palettes/Vanilla",
+        "$:/palettes/FlexokiDark"
+    ]
+} 
