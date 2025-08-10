@@ -1,0 +1,7 @@
+---
+description: User asks to clean up
+alwaysApply: false
+---
+Take an assessment of all files in the "working space"--this is typically git's unstaged / staged files, but also check the repo root hierarchy and look for stray files.
+
+Consolidate files, ideas, and findings up into a complete but succinct form. It might be a demo or a document or a tool that needs to be grounded into a real program. Describe things resonantly to capture overlaps and simpliyfy the model.
