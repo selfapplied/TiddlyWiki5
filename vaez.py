@@ -1,24 +1,13 @@
 #!/usr/bin/env python3
-from typing import NamedTuple
 from pathlib import Path
 import zipfile, zlib, struct, io, re, json, time
-from collections import Counter
+from collections import Counter, namedtuple
 from functools import reduce
 
 # Operators
-class Buf(NamedTuple):
-    data: bytes = b""
-    mounts: tuple = ()
-
-class Pen(NamedTuple):
-    k: tuple = (-1, -2, 0, 2, 1)
-    thresh: float = 0.95
-
-class Tick(NamedTuple):
-    w: float = 1.0
-    x: float = 0.0
-    y: float = 0.0
-    z: float = 0.0
+Buf = namedtuple('Buf', 'data mounts')
+Pen = namedtuple('Pen', 'k thresh')
+Tick = namedtuple('Tick', 'w x y z')
 
 PHI = 0x9E3779B97F4A7C15
 MASK = 0xFFFFFFFFFFFFFFFF
@@ -33,10 +22,12 @@ def mix(x):
 sig = lambda s: reduce(lambda h, b: mix(h + b), s.encode(), 0)
 
 # Buffer
+buf = lambda data=b"", mounts=(): Buf(data, mounts)
 mount = lambda buf, off=0, mir=False: buf._replace(mounts=buf.mounts + ((off, mir),))
 write = lambda buf, data: buf._replace(data=buf.data + data)
 
-# Pen  
+# Pen
+pen = lambda k=(-1, -2, 0, 2, 1), thresh=0.95: Pen(k, thresh)
 def convolve(pen, signal):
     k = pen.k
     return tuple(sum(signal[max(0, min(len(signal)-1, i+j-len(k)//2))] * k[j] 
@@ -49,9 +40,10 @@ def edges(pen, signal):
     hi = sorted(g)[int(len(g) * pen.thresh)]
     return tuple(i for i, v in enumerate(g) if v >= hi)
 
-# Tick
+# Tick  
+tick = lambda w=1.0, x=0.0, y=0.0, z=0.0: Tick(w, x, y, z)
 jump = lambda t, d: Tick(t.w * d - t.z * d, t.x * d + t.y * d, t.y * d - t.x * d, t.z * d + t.w * d)
-rewind = lambda t: Tick(t.w, -t.x, -t.y, -t.z)
+rewind = lambda t: Tick(t.w, -t.x, -t.y, -t.z)  
 split = lambda t, d: (jump(t, d), jump(t, -d))
 
 # Phase
