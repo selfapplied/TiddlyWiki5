@@ -3,6 +3,7 @@ from pathlib import Path
 import zipfile, zlib, struct, io, re, json, time
 from collections import Counter, namedtuple
 from functools import reduce
+import numpy as np
 
 # Operators
 Buf = namedtuple('Buf', 'data mounts')
@@ -28,17 +29,8 @@ write = lambda buf, data: buf._replace(data=buf.data + data)
 
 # Pen
 pen = lambda k=(-1, -2, 0, 2, 1), thresh=0.95: Pen(k, thresh)
-def convolve(pen, signal):
-    k = pen.k
-    return tuple(sum(signal[max(0, min(len(signal)-1, i+j-len(k)//2))] * k[j] 
-                    for j in range(len(k))) for i in range(len(signal)))
-
-def edges(pen, signal):
-    grad = convolve(pen, signal)
-    g = tuple(abs(x) for x in grad)
-    if not g: return ()
-    hi = sorted(g)[int(len(g) * pen.thresh)]
-    return tuple(i for i, v in enumerate(g) if v >= hi)
+convolve = lambda pen, signal: tuple(np.convolve(signal, pen.k, 'same'))
+edges = lambda pen, signal: tuple(np.where(np.abs(np.convolve(signal, pen.k, 'same')) >= np.quantile(np.abs(np.convolve(signal, pen.k, 'same')), pen.thresh))[0])
 
 # Tick  
 tick = lambda w=1.0, x=0.0, y=0.0, z=0.0: Tick(w, x, y, z)
@@ -62,9 +54,8 @@ def phase(counts):
 def analyze(text, preset=()):
     toks = tuple(re.findall(r"[A-Za-z0-9_]+", text))
     counts = Counter(toks + preset)
-    bits = text.encode()
-    ones = sum(b & 1 for b in bits)
-    bias = ones / len(bits) if bits else 0.5
+    bits = np.frombuffer(text.encode(), np.uint8)
+    bias = float(np.bitwise_and(bits, 1).mean()) if len(bits) else 0.5
     return {
         "toks": len(toks), "uniq": len(set(toks)), "phase": phase(counts),
         "bias": bias, "sig": f"{sig(text):08x}", "t": int(time.time())
