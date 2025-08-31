@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eonix"
+version = "0.1.0"
+description = "Eonix listener LM: emits minimal fragments by resonance, prefers silence."
+authors = [{ name = "Eonix" }]
+requires-python = ">=3.9"
+dependencies = []
+readme = "README.md"
+
+[project.scripts]
+eonix = "eonix.cli.main:main"
+
