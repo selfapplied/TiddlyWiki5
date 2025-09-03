@@ -35,3 +35,8 @@ rh-demo = "src.main:main"
 [tool.uv.sources]
 rh = { workspace = true }
 
+[tool.uv.workspace]
+members = [
+    "rh",
+]
+
