@@ -1,0 +1,61 @@
+title: ZetaFractalCA Example
+type: text/vnd.tiddlywiki
+tags: $:/tags/Macro
+
+! Zeta Fractal Cellular Automaton
+
+🔥 Recursive attractor descent toward the critical line through prime descent and Möbius transforms.
+
+!! Basic Usage
+
+<$zeta-fractal-ca width="600" height="400" real="0.5" imag="14.134725" />
+
+!! Interactive Parameters
+
+You can control the initial position and behavior:
+
+* `real` - Real part of initial complex number (default: 0.5)
+* `imag` - Imaginary part of initial complex number (default: 14.134725) 
+* `width` - Canvas width in pixels (default: 800)
+* `height` - Canvas height in pixels (default: 600)
+* `iterations` - Maximum CA iterations (default: 30)
+* `autostart` - Auto-start animation (default: true)
+* `controls` - Show control panel (default: true)
+
+!! Different Starting Points
+
+!!! First Known Zero
+<$zeta-fractal-ca width="400" height="300" real="0.5" imag="14.134725" iterations="20" />
+
+!!! Second Known Zero  
+<$zeta-fractal-ca width="400" height="300" real="0.5" imag="21.022040" iterations="20" />
+
+!!! Near Critical Line
+<$zeta-fractal-ca width="400" height="300" real="0.5" imag="10.0" iterations="25" />
+
+!! Visualization Legend
+
+* **Color Hue**: Möbius inversion (sign of μ(n))
+* **Brightness**: Log-scale magnitude of ζ(s)
+* **Saturation**: Recursive subdivision depth
+* **Red Overlay**: Regions requiring subdivision (high error)
+* **Shimmer**: Phase oscillations from fractal descent
+
+!! How It Works
+
+# Start with a single attractor cell covering the complex plane
+# Insert primes sequentially via Euler product: ζ(s) = ∏(1 - p^(-s))^(-1)
+# Apply Möbius twist operators for phase descent coupling
+# Subdivide cells when spectral error exceeds threshold
+# Attract toward critical line (Re(s) = 0.5)
+# Converge when error falls below ε or symmetry stabilizes
+
+The system uses WebGL shaders for real-time visualization and can be extended with WebAssembly for heavy computation.
+
+!! Technical Notes
+
+* Uses Safari-compatible GLSL ES 2.0 shaders
+* Implements complex number arithmetic in fragment shader
+* Texture-based CA state storage (RGBA channels)
+* Möbius transforms applied per-pixel in real-time
+* Fractal subdivision threshold based on distance from critical line

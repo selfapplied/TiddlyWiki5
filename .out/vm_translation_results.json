@@ -1,0 +1,127 @@
+{
+  "x86": {
+    "original": [
+      "MOV",
+      "ADD",
+      "CMP",
+      "JE",
+      "HLT"
+    ],
+    "translated": [
+      "LOAD",
+      "STORE",
+      "ADD",
+      "DISTANCE",
+      "DISTANCE",
+      "Y_COMBINATOR",
+      "HALT"
+    ],
+    "compression_ratio": 1.4,
+    "opcodes_used": [
+      "ADD",
+      "STORE",
+      "DISTANCE",
+      "LOAD",
+      "Y_COMBINATOR",
+      "HALT"
+    ]
+  },
+  "riscv": {
+    "original": [
+      "LI",
+      "ADD",
+      "BEQ",
+      "ECALL"
+    ],
+    "translated": [
+      "LOAD",
+      "ADD",
+      "DISTANCE",
+      "Y_COMBINATOR",
+      "HALT"
+    ],
+    "compression_ratio": 1.25,
+    "opcodes_used": [
+      "ADD",
+      "DISTANCE",
+      "LOAD",
+      "Y_COMBINATOR",
+      "HALT"
+    ]
+  },
+  "wasm": {
+    "original": [
+      "i32.const",
+      "i32.add",
+      "i32.eq",
+      "if",
+      "end"
+    ],
+    "translated": [
+      "LOAD",
+      "ADD",
+      "DISTANCE",
+      "DISTANCE",
+      "Y_COMBINATOR"
+    ],
+    "compression_ratio": 1.0,
+    "opcodes_used": [
+      "DISTANCE",
+      "LOAD",
+      "Y_COMBINATOR",
+      "ADD"
+    ]
+  },
+  "jvm": {
+    "original": [
+      "iconst_1",
+      "iload",
+      "iadd",
+      "ifeq",
+      "return"
+    ],
+    "translated": [
+      "LOAD",
+      "LOAD",
+      "ADD",
+      "DISTANCE",
+      "Y_COMBINATOR",
+      "Y_COMBINATOR"
+    ],
+    "compression_ratio": 1.2,
+    "opcodes_used": [
+      "DISTANCE",
+      "LOAD",
+      "Y_COMBINATOR",
+      "ADD"
+    ]
+  },
+  "gpu_shader": {
+    "original": [
+      "vec3",
+      "dot",
+      "normalize",
+      "mix",
+      "discard"
+    ],
+    "translated": [
+      "LOAD",
+      "LOAD",
+      "LOAD",
+      "MUL",
+      "ADD",
+      "AUTOMORPH",
+      "MUL",
+      "ADD",
+      "HALT"
+    ],
+    "compression_ratio": 1.8,
+    "opcodes_used": [
+      "ADD",
+      "MUL",
+      "AUTOMORPH",
+      "LOAD",
+      "HALT"
+    ]
+  }
+}
