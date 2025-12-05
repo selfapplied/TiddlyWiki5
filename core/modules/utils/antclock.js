@@ -24,9 +24,17 @@ This enables:
 /*global $tw: false */
 "use strict";
 
-// Constants
-var SIGNIFICANCE_THRESHOLD = 0.1; // Minimum clock rate to record an antclock tick
-var CHI_FEG = 0.638; // Transform quality measure from antclock research
+// Constants from antclock research
+// SIGNIFICANCE_THRESHOLD: Minimum clock rate to record an antclock tick
+// This threshold prevents tracking trivial changes (typos, formatting)
+// while capturing semantically meaningful revisions
+var SIGNIFICANCE_THRESHOLD = 0.1;
+
+// CHI_FEG: Transform quality measure from antclock research
+// χ_FEG ≈ 0.638 is derived from the CE Tower's transform operator
+// This constant scales the clock rate to match experiential significance
+// Source: https://github.com/selfapplied/antclock/blob/main/arXiv/working.md
+var CHI_FEG = 0.638;
 
 /**
  * Calculate semantic change between two versions of content
@@ -210,9 +218,13 @@ exports.recordAnticlockTick = function(wiki, tiddler, clockRate, details) {
 	
 	history.push(event);
 	
-	// Limit history size
-	if(history.length > 100) {
-		history = history.slice(-100);
+	// Limit history size to prevent unbounded growth
+	// Default limit of 100 events provides sufficient history
+	// while keeping storage manageable. Could be made configurable
+	// via a system tiddler field in future versions.
+	var MAX_HISTORY_SIZE = 100;
+	if(history.length > MAX_HISTORY_SIZE) {
+		history = history.slice(-MAX_HISTORY_SIZE);
 	}
 	
 	return {

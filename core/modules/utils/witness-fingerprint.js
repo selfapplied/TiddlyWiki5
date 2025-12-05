@@ -98,8 +98,12 @@ function calculateHierarchyDepth(tiddler, wiki) {
  * Recursively calculate tag depth
  */
 function getTagDepth(tag, wiki, currentDepth, visited) {
-	// Prevent infinite loops
-	if(visited[tag] || currentDepth > 20) {
+	// Prevent infinite loops and limit maximum depth
+	// Maximum depth of 20 is chosen to handle deeply nested tag hierarchies
+	// while preventing stack overflow from circular tag relationships
+	var MAX_TAG_DEPTH = 20;
+	
+	if(visited[tag] || currentDepth > MAX_TAG_DEPTH) {
 		return currentDepth;
 	}
 	
@@ -210,7 +214,10 @@ function calculateFieldComplexity(tiddler) {
 	var fieldCount = Object.keys(tiddler.fields).length;
 	
 	// Standard fields don't count toward complexity
-	var standardFields = ["title", "text", "created", "modified", "tags", "type"];
+	// These are the core fields that every tiddler has by default
+	// If TiddlyWiki adds more standard fields in the future, update this list
+	var standardFields = ["title", "text", "created", "modified", "tags", "type", 
+	                      "revision", "bag", "creator", "modifier"];
 	var customFieldCount = 0;
 	
 	$tw.utils.each(tiddler.fields, function(value, key) {
