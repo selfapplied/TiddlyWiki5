@@ -1,0 +1,48 @@
+title: $:/plugins/awildsort/products/readme
+tags: [[$:/tags/Plugin]]
+
+! Products Widget Plugin
+
+Display products in elegant card grids with glass-fog styling.
+
+!! Usage
+
+Create product tiddlers with the `Product` tag and these fields:
+
+* `image` - Product image URL
+* `description` - Short description
+* `fulldescription` - Full description (optional)
+* `price` - Price string
+* `category` - Category (Education, Consulting, Tools, Research Artifacts)
+* `link` - Product link
+* `cta` - Call-to-action text (default: "Learn More")
+
+!! Widget Syntax
+
+Display all products:
+
+```
+<$product-grid filter="[tag[Product]]" />
+```
+
+Display products by category:
+
+```
+<$product-grid filter="[tag[Product]category[Education]]" />
+```
+
+Individual product card:
+
+```
+<$product 
+	title="Product Name"
+	image="path/to/image.jpg"
+	description="Short description"
+	price="$99"
+	category="Tools"
+	link="https://example.com"
+	cta="Buy Now"
+/>
+```
+
+

@@ -1,0 +1,6 @@
+title: $:/themes/awildsort/base/TopRightBar-DarkMode
+tags: [[$:/tags/TopRightBar]]
+
+<$dark-mode-toggle />
+
+

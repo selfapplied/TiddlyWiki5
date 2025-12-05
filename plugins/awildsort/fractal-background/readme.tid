@@ -1,0 +1,35 @@
+title: $:/plugins/awildsort/fractal-background/readme
+tags: [[$:/tags/Plugin]]
+
+! Fractal Background Plugin
+
+This plugin provides an ambient WebGL fractal background that renders stellar nebula animations behind all content.
+
+!! Features
+
+* WebGL-based stellar nebula shader
+* Automatic pause when tab/window loses focus
+* Performance-optimized rendering
+* Intensity control via tiddler state
+* Non-intrusive, ambient-only rendering
+
+!! Usage
+
+The fractal background automatically activates when the theme is loaded. To control intensity, set the tiddler:
+
+```
+$:/plugins/awildsort/fractal-background/intensity
+```
+
+Value should be between 0.0 and 1.0 (default: 0.4).
+
+!! Controls
+
+The background automatically pauses when:
+* The browser tab loses focus
+* The window is minimized
+* The page is hidden
+
+This prevents unnecessary CPU/GPU usage when the page isn't visible.
+
+

@@ -1,0 +1,17 @@
+title: $:/plugins/awildsort/popout-icon/popout-icon-viewtemplate
+tags: [[$:/tags/ViewTemplate]]
+
+<$list filter="[<currentTiddler>has[popout-icon]]">
+	<$popout-icon 
+		text={{!!popout-icon}}
+		size={{!!popout-icon-size}}
+		position={{!!popout-icon-position}}
+		color={{!!popout-icon-color}}
+		animation={{!!popout-icon-animation}}
+		tooltip={{!!popout-icon-tooltip}}
+		action={{!!popout-icon-action}}
+		actionTarget={{!!popout-icon-action-target}}
+	/>
+</$list>
+
+

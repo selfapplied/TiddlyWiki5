@@ -1,0 +1,42 @@
+title: Home
+tags: [[$:/tags/HomePage]]
+
+! A Wild Sort
+
+Welcome to A Wild Sort LLC — where mathematics meets art, and research breathes with code.
+
+<div class="aws-hero">
+	<h1 style="font-size: 3rem; margin-bottom: 1rem; font-family: 'Crimson Pro', serif;">A Wild Sort</h1>
+	<p style="font-size: 1.25rem; opacity: 0.9; margin-bottom: 2rem;">
+		Elegant solutions at the intersection of chaos, computation, and creativity.
+	</p>
+</div>
+
+!! Products
+
+<$product-grid filter="[tag[Product]]" />
+
+!! Projects
+
+<$github-projects org="selfapplied" />
+
+!! Research
+
+<$research-library filter="[tag[Research]]" />
+
+!! Gallery
+
+<$gallery filter="[tag[Gallery]]" layout="grid" />
+
+!! About
+
+A Wild Sort LLC specializes in:
+
+* **Mathematical Research** — Chaos theory, renormalization, symbolic dynamics
+* **Software Development** — Tools for researchers and practitioners
+* **Consulting** — Custom solutions for complex problems
+* **Art & Visualization** — Fractal art and mathematical visualization
+
+[[Contact|Contact Us]] for consulting inquiries or collaborations.
+
+

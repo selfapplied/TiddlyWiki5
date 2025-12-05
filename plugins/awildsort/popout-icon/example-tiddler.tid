@@ -1,0 +1,12 @@
+title: Example Pop-out Icon Tiddler
+tags: 
+popout-icon: "2"
+popout-icon-size: "small"
+popout-icon-position: "top-right"
+popout-icon-animation: "pulse"
+popout-icon-tooltip: "2 new notifications"
+popout-icon-color: "#7db3ff"
+
+This tiddler has a pop-out icon showing "2" in the top-right corner with a pulse animation.
+
+

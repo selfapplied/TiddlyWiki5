@@ -1,0 +1,52 @@
+title: $:/plugins/awildsort/gallery/readme
+tags: [[$:/tags/Plugin]]
+
+! Art Gallery Plugin
+
+Display art in responsive layouts with fullscreen lightbox viewing.
+
+!! Usage
+
+Create gallery tiddlers with the `Gallery` tag and these fields:
+
+* `image` - Image URL
+* `video` - Video URL (alternative to image)
+* `title` - Artwork title
+* `notes` - Artist notes or description
+* `tags` - Additional tags for filtering
+
+!! Widget Syntax
+
+Masonry layout (default):
+
+```
+<$gallery filter="[tag[Gallery]]" />
+```
+
+Grid layout:
+
+```
+<$gallery filter="[tag[Gallery]]" layout="grid" />
+```
+
+Carousel layout:
+
+```
+<$gallery filter="[tag[Gallery]]" layout="carousel" />
+```
+
+Filter by tags:
+
+```
+<$gallery filter="[tag[Gallery]tag[fractal]]" />
+```
+
+!! Features
+
+* Responsive masonry, grid, and carousel layouts
+* Fullscreen lightbox with smooth fade transitions
+* Support for images and videos
+* Hover effects and smooth animations
+* Keyboard navigation (Escape to close)
+
+

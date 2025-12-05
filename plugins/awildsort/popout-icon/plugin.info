@@ -1,0 +1,11 @@
+{
+	"title": "$:/plugins/awildsort/popout-icon",
+	"name": "Pop-out Icon",
+	"author": "A Wild Sort LLC",
+	"description": "Add customizable pop-out icon effects to tiddlers",
+	"core-version": ">=5.0.0",
+	"plugin-type": "plugin",
+	"list": "readme"
+}
+
+

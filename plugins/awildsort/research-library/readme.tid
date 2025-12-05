@@ -1,0 +1,61 @@
+title: $:/plugins/awildsort/research-library/readme
+tags: [[$:/tags/Plugin]]
+
+! Research Library Plugin
+
+Display research papers with filtering, abstracts, and KaTeX math support.
+
+!! Usage
+
+Create research tiddlers with the `Research` tag and these fields:
+
+* `authors` - Author names
+* `abstract` - Paper abstract
+* `pdf` - PDF link
+* `arxiv` - arXiv link
+* `link` - General link
+* `tags` - Topic tags (chaos, renormalization, symbolic-dynamics, CE1, field-equations, fractals)
+
+!! Widget Syntax
+
+Display all research papers:
+
+```
+<$research-library filter="[tag[Research]]" />
+```
+
+With filters hidden:
+
+```
+<$research-library filter="[tag[Research]]" showFilters="no" />
+```
+
+Filter by topic:
+
+```
+<$research-library filter="[tag[Research]tag[chaos]]" />
+```
+
+!! Math Support
+
+The plugin integrates with KaTeX for mathematical expressions. Use standard KaTeX syntax in your paper tiddlers:
+
+```
+Inline math: $E = mc^2$
+
+Block math:
+$$
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+$$
+```
+
+!! Features
+
+* Topic-based filtering
+* Abstract display
+* PDF, arXiv, and general links
+* Tag display
+* Full paper viewing
+* KaTeX math rendering
+
+

@@ -1,0 +1,32 @@
+title: $:/plugins/awildsort/github-projects/readme
+tags: [[$:/tags/Plugin]]
+
+! GitHub Projects Browser Plugin
+
+Display GitHub repositories in a clean card grid layout.
+
+!! Usage
+
+Display repositories from an organization:
+
+```
+<$github-projects org="selfapplied" />
+```
+
+The widget fetches repositories from the GitHub API and displays:
+* Repository name
+* Description
+* Star count
+* Last updated date
+* Primary language
+* Link to GitHub
+
+!! Features
+
+* Fetches from GitHub API
+* Responsive card grid layout
+* Shows stars, update dates, and languages
+* Direct links to GitHub repositories
+* Error handling for API failures
+
+

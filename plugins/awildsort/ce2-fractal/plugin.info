@@ -1,0 +1,11 @@
+{
+	"title": "$:/plugins/awildsort/ce2-fractal",
+	"name": "CE2 Fractal Background",
+	"author": "A Wild Sort LLC",
+	"description": "Declarative SVG CE2 (Dynamical Flow Category) fractal background",
+	"core-version": ">=5.0.0",
+	"plugin-type": "plugin",
+	"list": "readme"
+}
+
+

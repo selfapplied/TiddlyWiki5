@@ -1,0 +1,17 @@
+title: $:/themes/awildsort/base/dark-mode-toggle-template
+tags: [[$:/tags/ViewTemplate]]
+
+Add the dark mode toggle to your navigation by including this widget:
+
+<$dark-mode-toggle />
+
+You can place it in the topbar, sidebar, or anywhere in your layout. For example, in a custom topbar template:
+
+```
+<div class="tc-topbar-right">
+	<$dark-mode-toggle />
+	<!-- other navigation items -->
+</div>
+```
+
+

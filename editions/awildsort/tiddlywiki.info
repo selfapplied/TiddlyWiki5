@@ -1,0 +1,24 @@
+{
+	"description": "A Wild Sort LLC website edition",
+	"plugins": [
+		"tiddlywiki/katex",
+		"awildsort/fractal-background",
+		"awildsort/ce2-fractal",
+		"awildsort/products",
+		"awildsort/gallery",
+		"awildsort/github-projects",
+		"awildsort/research-library",
+		"awildsort/popout-icon",
+		"awildsort/fog-emergence"
+	],
+	"themes": [
+		"tiddlywiki/vanilla",
+		"awildsort/base"
+	],
+	"build": {
+		"index": [
+			"--render", "$:/core/save/all", "index.html", "text/plain"
+		]
+	}
+}
+
