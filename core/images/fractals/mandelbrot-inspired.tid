@@ -1,0 +1,29 @@
+title: $:/core/images/fractals/mandelbrot-inspired
+tags: $:/tags/Image $:/tags/FractalBackground
+caption: Mandelbrot Inspired
+description: A decorative pattern inspired by the Mandelbrot set
+
+\parameters (width:"100%" height:"100%")
+<svg width=<<width>> height=<<height>> class="tc-fractal-background" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+<defs>
+<pattern id="mandelbrot-pattern" x="0" y="0" width="250" height="250" patternUnits="userSpaceOnUse">
+<circle cx="125" cy="125" r="80" fill="none" stroke="<<colour primary>>" stroke-width="2" opacity="0.15"/>
+<circle cx="125" cy="125" r="60" fill="none" stroke="<<colour primary>>" stroke-width="1.5" opacity="0.2"/>
+<circle cx="125" cy="125" r="40" fill="none" stroke="<<colour primary>>" stroke-width="1.5" opacity="0.25"/>
+<circle cx="125" cy="125" r="20" fill="none" stroke="<<colour primary>>" stroke-width="1" opacity="0.3"/>
+<!-- Cardioid-like shapes -->
+<ellipse cx="85" cy="125" rx="25" ry="35" fill="none" stroke="<<colour primary>>" stroke-width="1" opacity="0.2" transform="rotate(-30 85 125)"/>
+<ellipse cx="165" cy="125" rx="25" ry="35" fill="none" stroke="<<colour primary>>" stroke-width="1" opacity="0.2" transform="rotate(30 165 125)"/>
+<ellipse cx="125" cy="85" rx="35" ry="25" fill="none" stroke="<<colour primary>>" stroke-width="1" opacity="0.2" transform="rotate(60 125 85)"/>
+<ellipse cx="125" cy="165" rx="35" ry="25" fill="none" stroke="<<colour primary>>" stroke-width="1" opacity="0.2" transform="rotate(-60 125 165)"/>
+<!-- Detail circles -->
+<circle cx="85" cy="85" r="8" fill="<<colour primary>>" opacity="0.2"/>
+<circle cx="165" cy="85" r="8" fill="<<colour primary>>" opacity="0.2"/>
+<circle cx="85" cy="165" r="8" fill="<<colour primary>>" opacity="0.2"/>
+<circle cx="165" cy="165" r="8" fill="<<colour primary>>" opacity="0.2"/>
+<!-- Central detail -->
+<circle cx="125" cy="125" r="5" fill="<<colour primary>>" opacity="0.35"/>
+</pattern>
+</defs>
+<rect width="100%" height="100%" fill="url(#mandelbrot-pattern)"/>
+</svg>
