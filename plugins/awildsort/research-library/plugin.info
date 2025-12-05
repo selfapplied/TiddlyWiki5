@@ -1,0 +1,12 @@
+{
+	"title": "$:/plugins/awildsort/research-library",
+	"name": "Research Library",
+	"author": "A Wild Sort LLC",
+	"description": "Research paper library with filtering, abstracts, and KaTeX math support",
+	"core-version": ">=5.0.0",
+	"plugin-type": "plugin",
+	"list": "readme",
+	"dependents": ["$:/plugins/tiddlywiki/katex"]
+}
+
+

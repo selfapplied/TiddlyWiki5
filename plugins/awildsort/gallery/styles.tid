@@ -1,0 +1,29 @@
+title: $:/plugins/awildsort/gallery/styles
+tags: [[$:/tags/Stylesheet]]
+
+/* Gallery Widget Styles */
+
+.aws-gallery-item {
+	transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1),
+	            opacity 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.aws-gallery-item:hover {
+	transform: scale(1.02);
+	opacity: 0.9;
+}
+
+.aws-lightbox {
+	animation: fadeIn 400ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+

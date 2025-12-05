@@ -1,0 +1,23 @@
+title: $:/plugins/awildsort/products/styles
+tags: [[$:/tags/Stylesheet]]
+
+/* Product Widget Styles */
+
+.aws-card-title {
+	font-size: 1.5rem;
+	font-weight: 600;
+	margin-bottom: 0.5rem;
+	color: var(--aws-starlight);
+}
+
+.aws-card-category {
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	font-size: 0.75rem;
+}
+
+.aws-card-price {
+	color: var(--aws-starlight);
+}
+
+
