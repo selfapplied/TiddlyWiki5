@@ -21,22 +21,28 @@ var FRACTAL_BACKGROUND = "$:/themes/tiddlywiki/vanilla/settings/fractalbackgroun
 
 var scrollHandler = null;
 var isEnabled = false;
+var rafId = null;
+var ticking = false;
 
 function updateParallax() {
-	var bodyBefore = document.querySelector('body.tc-body::before');
-	if (!bodyBefore) {
-		// Create a style element to apply the transform
-		var scrollY = window.pageYOffset || document.documentElement.scrollTop;
-		var translateY = scrollY * 0.5; // Parallax factor
-		
-		// Update CSS custom property that can be used in stylesheets
-		document.documentElement.style.setProperty('--fractal-parallax-y', translateY + 'px');
+	var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+	var translateY = scrollY * 0.5; // Parallax factor
+	
+	// Update CSS custom property that can be used in stylesheets
+	document.documentElement.style.setProperty('--fractal-parallax-y', translateY + 'px');
+	ticking = false;
+}
+
+function requestParallaxUpdate() {
+	if (!ticking) {
+		rafId = window.requestAnimationFrame(updateParallax);
+		ticking = true;
 	}
 }
 
 function enableParallax() {
 	if (!isEnabled && typeof window !== "undefined") {
-		scrollHandler = $tw.utils.throttle(updateParallax, 16); // ~60fps
+		scrollHandler = requestParallaxUpdate;
 		window.addEventListener('scroll', scrollHandler, { passive: true });
 		isEnabled = true;
 		updateParallax();
@@ -48,6 +54,11 @@ function disableParallax() {
 		window.removeEventListener('scroll', scrollHandler);
 		scrollHandler = null;
 		isEnabled = false;
+		if (rafId) {
+			window.cancelAnimationFrame(rafId);
+			rafId = null;
+		}
+		ticking = false;
 		if (document.documentElement) {
 			document.documentElement.style.removeProperty('--fractal-parallax-y');
 		}
