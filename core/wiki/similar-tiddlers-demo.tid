@@ -1,0 +1,58 @@
+title: $:/SimilarTiddlersDemo
+caption: Similar Tiddlers Demo
+tags: $:/tags/MoreSideBar
+
+\rules only filteredtranscludeinline transcludeinline macrodef macrocallinline html
+
+! Similar Tiddlers
+
+The Similar Tiddlers widget uses witness fingerprint analysis to find tiddlers that are semantically similar to the current one.
+
+---
+
+!! Usage
+
+```
+<$similar-tiddlers tiddler={{!!title}} threshold="0.3" max="5"/>
+```
+
+---
+
+!! Parameters
+
+* ''tiddler'' - The target tiddler to find similarities for (defaults to current tiddler)
+* ''threshold'' - Similarity threshold 0-1, where lower values require more similarity (default: 0.3)
+* ''max'' - Maximum number of results to display (default: 10)
+
+---
+
+!! How It Works
+
+The witness fingerprint system analyzes several aspects of each tiddler:
+
+* ''Phase'' - Semantic direction based on content
+* ''Depth'' - Position in the tag hierarchy
+* ''Sector'' - Domain classification from tags
+* ''Monodromy'' - Cyclic reference patterns
+* ''Link Density'' - Ratio of links to content
+* ''Transclusion Complexity'' - Number of transclusions and macros
+* ''Field Complexity'' - Number of custom fields
+
+These dimensions are combined to create a unique fingerprint for each tiddler, allowing semantic similarity detection beyond simple keyword matching.
+
+---
+
+!! Example
+
+Try it on this tiddler:
+
+<$similar-tiddlers tiddler={{!!title}} threshold="0.4" max="5"/>
+
+---
+
+!! Technical Details
+
+Based on the CE Tower witness operator from antclock research:
+https://github.com/selfapplied/antclock/blob/main/arXiv/working.md
+
+The witness operator <>g extracts self-describing invariant signatures as multi-dimensional fingerprints, enabling compositional analysis and resonance detection.
