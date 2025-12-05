@@ -1,0 +1,11 @@
+{
+	"title": "$:/plugins/awildsort/github-projects",
+	"name": "GitHub Projects Browser",
+	"author": "A Wild Sort LLC",
+	"description": "Widget to fetch and display GitHub repositories",
+	"core-version": ">=5.0.0",
+	"plugin-type": "plugin",
+	"list": "readme"
+}
+
+

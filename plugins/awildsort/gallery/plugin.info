@@ -1,0 +1,11 @@
+{
+	"title": "$:/plugins/awildsort/gallery",
+	"name": "Art Gallery",
+	"author": "A Wild Sort LLC",
+	"description": "Art gallery with lightbox, masonry layout, and support for images, videos, and WebGL",
+	"core-version": ">=5.0.0",
+	"plugin-type": "plugin",
+	"list": "readme"
+}
+
+

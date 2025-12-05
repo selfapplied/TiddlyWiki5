@@ -1,0 +1,11 @@
+{
+	"title": "$:/plugins/awildsort/products",
+	"name": "Products Widget",
+	"author": "A Wild Sort LLC",
+	"description": "Product display widget with card grid layout",
+	"core-version": ">=5.0.0",
+	"plugin-type": "plugin",
+	"list": "readme"
+}
+
+
