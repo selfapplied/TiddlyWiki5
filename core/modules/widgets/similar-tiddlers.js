@@ -86,12 +86,14 @@ SimilarTiddlersWidget.prototype.render = function(parent,nextSibling) {
 		var linkNode = this.document.createElement("a");
 		linkNode.className = "tc-tiddlylink tc-tiddlylink-resolves";
 		linkNode.setAttribute("href", "#" + encodeURIComponent(result.title));
-		linkNode.onclick = function(event) {
-			// Use TiddlyWiki's navigation mechanism
-			event.preventDefault();
-			new $tw.Story().navigateTiddler(result.title);
-			return false;
-		};
+		linkNode.onclick = (function(resultTitle) {
+			return function(event) {
+				// Use TiddlyWiki's navigation mechanism
+				event.preventDefault();
+				new $tw.Story().navigateTiddler(resultTitle);
+				return false;
+			};
+		})(result.title);
 		linkNode.appendChild(this.document.createTextNode(result.title));
 		
 		// Add similarity score
