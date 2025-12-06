@@ -1,0 +1,10 @@
+{
+	"title": "$:/themes/awildsort/base",
+	"name": "awildsort/base",
+	"author": "A Wild Sort LLC",
+	"core-version": ">=5.0.0",
+	"plugin-type": "theme",
+	"description": "Glass-fog UI theme with stellar fractal ambiance for A Wild Sort LLC",
+	"dependents": ["$:/themes/tiddlywiki/vanilla"]
+}
+

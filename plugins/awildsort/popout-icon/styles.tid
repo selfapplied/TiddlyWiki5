@@ -1,0 +1,128 @@
+title: $:/plugins/awildsort/popout-icon/styles
+tags: [[$:/tags/Stylesheet]]
+
+/* Pop-out Icon Styles */
+
+.aws-popout-icon {
+	position: absolute;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--aws-glass-bg);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border: 2px solid var(--aws-glass-border);
+	border-radius: 50%;
+	font-weight: 600;
+	color: var(--aws-starlight);
+	box-shadow: 0 4px 12px var(--aws-shadow-soft);
+	z-index: 10;
+	transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+	pointer-events: auto;
+}
+
+/* Sizes */
+.aws-popout-icon-small {
+	width: 24px;
+	height: 24px;
+	font-size: 12px;
+}
+
+.aws-popout-icon-medium {
+	width: 32px;
+	height: 32px;
+	font-size: 16px;
+}
+
+.aws-popout-icon-large {
+	width: 40px;
+	height: 40px;
+	font-size: 20px;
+}
+
+/* Positions */
+.aws-popout-icon-top-right {
+	top: -8px;
+	right: -8px;
+}
+
+.aws-popout-icon-top-left {
+	top: -8px;
+	left: -8px;
+}
+
+.aws-popout-icon-bottom-right {
+	bottom: -8px;
+	right: -8px;
+}
+
+.aws-popout-icon-bottom-left {
+	bottom: -8px;
+	left: -8px;
+}
+
+/* Animations */
+.aws-popout-icon-pulse {
+	animation: aws-popout-pulse 2s ease-in-out infinite;
+}
+
+@keyframes aws-popout-pulse {
+	0%, 100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	50% {
+		transform: scale(1.1);
+		opacity: 0.9;
+	}
+}
+
+.aws-popout-icon-bounce {
+	animation: aws-popout-bounce 1.5s ease-in-out infinite;
+}
+
+@keyframes aws-popout-bounce {
+	0%, 100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-4px);
+	}
+}
+
+.aws-popout-icon-rotate {
+	animation: aws-popout-rotate 3s linear infinite;
+}
+
+@keyframes aws-popout-rotate {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* Hover effects */
+.aws-popout-icon:hover {
+	transform: scale(1.15);
+	box-shadow: 0 6px 16px var(--aws-shadow-medium);
+	border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Make tiddler frame relative for positioning */
+.tc-tiddler-frame {
+	position: relative;
+}
+
+/* Ensure icon appears above content */
+.tc-tiddler-view-frame {
+	position: relative;
+}
+
+/* Light mode adjustments */
+body.light-mode .aws-popout-icon {
+	color: var(--aws-starlight);
+	border-color: var(--aws-glass-border);
+}
+

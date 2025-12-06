@@ -1,0 +1,48 @@
+title: $:/themes/awildsort/readme
+tags: [[$:/tags/Plugin]]
+
+! A Wild Sort Theme
+
+A complete theme transformation for TiddlyWiki, designed for A Wild Sort LLC.
+
+!! Features
+
+* **Glass-fog UI** — Layered panes with frosted translucency and soft shadows
+* **Stellar fractal ambiance** — WebGL background animations (via fractal-background plugin)
+* **Dark/Light Mode** — Toggle between dark and light themes with smooth transitions
+* **Responsive design** — Mobile-friendly layouts
+* **Smooth animations** — Gentle transitions and micro-interactions
+* **Modern typography** — Inter, Crimson Pro, and JetBrains Mono
+
+!! Installation
+
+1. Enable the theme: `$:/themes/awildsort/base`
+2. Enable required plugins:
+   * `$:/plugins/awildsort/fractal-background`
+   * `$:/plugins/awildsort/products`
+   * `$:/plugins/awildsort/gallery`
+   * `$:/plugins/awildsort/github-projects`
+   * `$:/plugins/awildsort/research-library`
+   * `$:/plugins/tiddlywiki/katex` (for research library)
+
+!! Dark Mode
+
+The theme includes a dark mode toggle button that appears in the top right navigation bar. The toggle:
+
+* Remembers your preference in localStorage
+* Respects system preference on first visit
+* Smoothly transitions between modes
+* Works across all pages
+
+To manually add the toggle elsewhere, use:
+
+```
+<$dark-mode-toggle />
+```
+
+!! Customization
+
+The theme uses CSS variables for easy customization. Edit `$:/themes/awildsort/styles` to adjust colors, spacing, and effects.
+
+Dark mode is the default. Light mode colors are defined in the `body.light-mode` CSS rules.
+

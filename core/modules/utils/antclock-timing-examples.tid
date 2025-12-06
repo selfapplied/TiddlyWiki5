@@ -1,0 +1,107 @@
+title: $:/core/modules/utils/antclock-timing-examples
+tags: [[$:/tags/Documentation]]
+
+! Antclock Timing Usage Examples
+
+Examples of using antclock timing in widgets, plugins, story views, and themes.
+
+!! Widget Initialization
+
+```javascript
+var antclockTiming = require("$:/core/modules/utils/antclock-timing.js");
+
+MyWidget.prototype.render = function(parent, nextSibling) {
+	var self = this;
+	
+	// Wait for dependencies before rendering
+	antclockTiming.widgetInit(this, [
+		{type: "macro", name: "$my-helper-macro"},
+		{type: "tiddler", name: "$:/config/MySetting", field: "text", value: "enabled"},
+		{type: "element", name: "#container"}
+	], function() {
+		// All dependencies ready - now render
+		self.parentDomNode = parent;
+		self.computeAttributes();
+		self.execute();
+		// ... render widget ...
+	});
+};
+```
+
+!! Plugin Initialization
+
+```javascript
+var antclockTiming = require("$:/core/modules/utils/antclock-timing.js");
+
+exports.startup = function() {
+	// Wait for plugin dependencies
+	antclockTiming.waitForPluginDependencies(
+		"$:/plugins/my/plugin",
+		function() {
+			// All dependencies loaded
+			initializePlugin();
+		}
+	);
+};
+```
+
+!! Story View Initialization
+
+```javascript
+var antclockTiming = require("$:/core/modules/utils/antclock-timing.js");
+
+function MyStoryView(listWidget) {
+	var self = this;
+	this.listWidget = listWidget;
+	
+	// Wait for story view dependencies
+	antclockTiming.waitForStoryView("zoomin", function(ZoomInStoryView) {
+		// Story view available, initialize
+		self.baseStoryView = new ZoomInStoryView(listWidget);
+		self.initialize();
+	});
+}
+```
+
+!! Theme Initialization
+
+```javascript
+var antclockTiming = require("$:/core/modules/utils/antclock-timing.js");
+
+exports.startup = function() {
+	// Wait for theme to be active
+	antclockTiming.waitForTheme(
+		"$:/themes/my/theme",
+		function() {
+			// Theme is active, initialize theme features
+			initializeThemeFeatures();
+		}
+	);
+};
+```
+
+!! Combined Dependencies
+
+```javascript
+// Wait for multiple conditions
+antclockTiming.widgetInit(this, [
+	{type: "macro", name: "$helper"},
+	{type: "plugin", name: "$:/plugins/required/plugin"},
+	{type: "custom", check: function(callback) {
+		// Custom condition check
+		var ready = someCustomCheck();
+		if(ready) {
+			callback();
+		} else {
+			antclockTiming.waitForCondition(
+				function() { return someCustomCheck() ? "ready" : "pending"; },
+				callback
+			);
+		}
+	}}
+], function() {
+	// All ready
+});
+```
+
+

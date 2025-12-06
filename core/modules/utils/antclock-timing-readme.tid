@@ -1,0 +1,134 @@
+title: $:/core/modules/utils/antclock-timing-readme
+tags: [[$:/tags/Documentation]]
+
+! Antclock Self-Timing Utility
+
+A general-purpose utility for coordinating async initialization using experiential time (state changes) rather than positional time (clock ticks).
+
+Based on CE2 antclock concepts from the CE Tower architecture.
+
+!! Core Concept
+
+Antclock self-timing tracks **meaningful state changes** rather than elapsed time:
+- **Experiential time**: Changes when state actually transitions
+- **Self-visibility**: System checks its own readiness
+- **Reactive**: Responds immediately to state changes via events
+
+!! Usage Examples
+
+=== Wait for Macro/Widget ===
+
+```javascript
+var antclockTiming = require("$:/core/modules/utils/antclock-timing.js");
+
+antclockTiming.waitForMacro("$dark-mode-toggle", function() {
+	// Widget is now available
+	console.log("Widget ready!");
+});
+```
+
+=== Wait for Tiddler ===
+
+```javascript
+antclockTiming.waitForTiddler(
+	"$:/config/MySetting",
+	"text",
+	"enabled",
+	function() {
+		// Tiddler exists and has expected value
+	}
+);
+```
+
+=== Wait for DOM Element ===
+
+```javascript
+antclockTiming.waitForElement("#my-widget", function(element) {
+	// Element is now in DOM
+	element.style.display = "block";
+});
+```
+
+=== Reactive Wait (Self-Timing + Events) ===
+
+```javascript
+antclockTiming.reactiveWait(
+	function() {
+		// Check condition
+		return someCondition() ? "ready" : "pending";
+	},
+	function() {
+		// On ready
+		doSomething();
+	}
+);
+```
+
+!! Benefits
+
+* **No arbitrary timeouts** - Waits for actual readiness
+* **State-aware** - Tracks meaningful changes, not clock ticks
+* **Efficient** - Exponential backoff with jitter
+* **Reactive** - Responds to events immediately
+* **Reusable** - General pattern for any async dependency
+
+!! When to Use
+
+* **Widget initialization** - Wait for dependencies before rendering
+* **Plugin loading** - Coordinate plugin dependencies
+* **Story view setup** - Ensure story view is ready
+* **Theme initialization** - Wait for theme to be active
+* **DOM element availability** - Wait for elements before manipulation
+* **Tiddler field values** - Wait for config tiddlers
+* **Module dependency resolution** - Any async initialization
+
+!! Integration Points
+
+=== Widgets ===
+
+Use `widgetInit()` in widget `render()` or `execute()` methods:
+
+```javascript
+antclockTiming.widgetInit(this, dependencies, function() {
+	// Render widget
+});
+```
+
+=== Plugins ===
+
+Use `waitForPluginDependencies()` in plugin startup:
+
+```javascript
+antclockTiming.waitForPluginDependencies(pluginTitle, function() {
+	// Initialize plugin
+});
+```
+
+=== Story Views ===
+
+Use `waitForStoryView()` in story view constructor:
+
+```javascript
+antclockTiming.waitForStoryView("zoomin", function(StoryViewClass) {
+	// Initialize story view
+});
+```
+
+=== Themes ===
+
+Use `waitForTheme()` in theme startup:
+
+```javascript
+antclockTiming.waitForTheme("$:/themes/my/theme", function() {
+	// Initialize theme
+});
+```
+
+!! Technical Details
+
+* Exponential backoff: `baseDelay * 1.5^attempt + random(0-20)`
+* Max delay cap to prevent excessive waits
+* State transitions trigger callbacks
+* Event listeners for immediate reactivity
+* Cleanup functions for resource management
+

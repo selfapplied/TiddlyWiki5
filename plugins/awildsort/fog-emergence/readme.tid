@@ -1,0 +1,46 @@
+title: $:/plugins/awildsort/fog-emergence/readme
+tags: [[$:/tags/Plugin]]
+
+! Fog Emergence Plugin
+
+Tiddlers emerge from a foggy background with depth, parallax, and smooth animation effects.
+
+!! Features
+
+* **Fog Layer** - Animated fog particles at the bottom of the screen
+* **Emergence Animation** - Tiddlers animate upward from the fog when they appear
+* **Depth Effect** - Multiple tiddlers have layered depth with scale and opacity
+* **Parallax Scrolling** - Fog particles move with scroll for depth perception
+* **Glass Enhancement** - Emerging tiddlers have enhanced glass-fog effects
+* **Smooth Transitions** - All effects use smooth cubic-bezier animations
+
+!! How It Works
+
+1. **Fog Layer**: A fixed layer at the bottom of the screen with animated fog particles
+2. **Emergence**: When tiddlers are added to the DOM, they animate from below with blur and brightness effects
+3. **Depth Stacking**: Tiddlers are layered with decreasing scale and opacity for depth
+4. **Parallax**: Fog particles respond to scroll for a sense of movement
+
+!! Visual Effects
+
+* Tiddlers start blurred and dim, then sharpen and brighten as they emerge
+* Fog particles drift and move with scroll
+* Multiple tiddlers create a depth-of-field effect
+* Hover effects bring tiddlers to the foreground
+
+!! Customization
+
+The fog effect automatically adapts to:
+* Dark/light mode
+* Screen size (responsive)
+* Scroll position
+* Number of tiddlers
+
+!! Performance
+
+* Uses CSS animations for smooth performance
+* Fog particles are limited to 50 for optimal rendering
+* Effects pause when tab is not visible
+* Hardware-accelerated transforms
+
+

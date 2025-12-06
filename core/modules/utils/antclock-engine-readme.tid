@@ -1,0 +1,147 @@
+title: $:/core/modules/utils/antclock-engine-readme
+tags: [[$:/tags/Documentation]]
+
+! Antclock Engine
+
+Full implementation of CE2 antclock concepts for JavaScript/TiddlyWiki.
+
+!! Core Concepts
+
+=== Experiential Time ===
+
+Time measured by meaningful state changes, not clock ticks:
+
+```javascript
+var engine = require("$:/core/modules/utils/antclock-engine.js").default;
+engine.tickExperiential("ready"); // Increments experiential time
+console.log(engine.experientialTime); // Number of state transitions
+```
+
+=== Self-Timing ===
+
+Recursive self-checking with exponential backoff:
+
+```javascript
+engine.selfTime(
+	function() {
+		return someCondition() ? "ready" : "pending";
+	},
+	function(state, attempts, expTime) {
+		// Ready! attempts = number of checks, expTime = experiential time
+	}
+);
+```
+
+=== Self-Visibility ===
+
+Observe state changes:
+
+```javascript
+var unsubscribe = engine.observe(function(newState, oldState, expTime) {
+	console.log("State changed:", oldState, "->", newState, "at", expTime);
+});
+// Later: unsubscribe();
+```
+
+=== Grammar Adjusting ===
+
+Self-correcting error handling:
+
+```javascript
+// Automatically handles errors and recovers
+engine.selfTime(checkCondition, onReady);
+// Errors are logged and system adapts
+```
+
+=== Phase Resonance ===
+
+Synchronize timing with system phases:
+
+```javascript
+engine.setPhaseResonance(0.5); // 0-1 strength
+// Timing adjusts based on system phase
+```
+
+=== Guardian Boundaries ===
+
+Semantic boundaries that protect system integrity:
+
+```javascript
+engine.addGuardian("wiki-available", function() {
+	return $tw && $tw.wiki !== undefined;
+});
+
+var violations = engine.checkGuardians();
+if(violations.length > 0) {
+	console.log("Guardian violations:", violations);
+}
+```
+
+!! Usage Examples
+
+=== Wait for Macro ===
+
+```javascript
+var engine = require("$:/core/modules/utils/antclock-engine.js").default;
+
+engine.waitForMacro("$my-widget", function() {
+	console.log("Widget ready!");
+});
+```
+
+=== Reactive Wait ===
+
+```javascript
+engine.reactiveWait(
+	function() {
+		return condition() ? "ready" : "pending";
+	},
+	function() {
+		// Ready - combines self-timing + event listening
+	}
+);
+```
+
+=== Custom Engine Instance ===
+
+```javascript
+var AntclockEngine = require("$:/core/modules/utils/antclock-engine.js").AntclockEngine;
+var myEngine = new AntclockEngine({
+	name: "my-engine",
+	maxAttempts: 30,
+	baseDelay: 100
+});
+
+myEngine.selfTime(checkCondition, onReady);
+```
+
+=== Engine Statistics ===
+
+```javascript
+var stats = engine.getStats();
+console.log(stats);
+// {
+//   experientialTime: 15,
+//   currentState: "ready",
+//   grammarAdjustments: 2,
+//   activeTimers: 1,
+//   observers: 3,
+//   guardians: 2,
+//   phase: 1.2,
+//   phaseResonance: 0.5
+// }
+```
+
+!! Benefits Over Simple Utilities
+
+* **Experiential Time Tracking** - Know how many meaningful changes occurred
+* **Self-Visibility** - Observe your own state transitions
+* **Grammar Adjusting** - Automatic error recovery and adaptation
+* **Phase Resonance** - Synchronize with system rhythms
+* **Guardian Boundaries** - Protect system integrity
+* **Statistics** - Monitor engine health and performance
+
+!! Integration with TiddlyWiki
+
+The engine automatically integrates with TiddlyWiki's event system and provides grammar-adjusting error handling that works seamlessly with TiddlyWiki's architecture.
+

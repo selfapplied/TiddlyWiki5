@@ -1,0 +1,17 @@
+title: Example Research Paper
+tags: Research chaos renormalization
+authors: Jane Doe, John Smith
+abstract: This is an example research paper abstract. It demonstrates how research papers appear in the library with filtering capabilities.
+pdf: https://example.com/paper.pdf
+arxiv: https://arxiv.org/abs/example
+link: https://example.com/paper
+
+The full paper content would go here, with support for KaTeX math:
+
+Inline math: $E = mc^2$
+
+Block math:
+$$
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+$$
+

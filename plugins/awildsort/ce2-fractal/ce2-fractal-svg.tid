@@ -1,0 +1,83 @@
+title: $:/plugins/awildsort/ce2-fractal/ce2-fractal-svg
+type: text/vnd.tiddlywiki
+
+<div id="aws-ce2-fractal-background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; opacity: 0.3; pointer-events: none;">
+
+<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+	<defs>
+		<!-- Phase-based gradient representing CE2 dynamical flow -->
+		<radialGradient id="ce2-phase-gradient" cx="50%" cy="50%">
+			<stop offset="0%" stop-color="#1e3a5f" stop-opacity="0.8"/>
+			<stop offset="30%" stop-color="#4a2c5a" stop-opacity="0.6"/>
+			<stop offset="60%" stop-color="#2d5a3d" stop-opacity="0.4"/>
+			<stop offset="100%" stop-color="#0a0e27" stop-opacity="0.2"/>
+		</radialGradient>
+		
+		<!-- Guardian boundary pattern (CE2 guardian system) -->
+		<pattern id="ce2-guardian-pattern" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+			<circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+			<circle cx="100" cy="100" r="60" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.3"/>
+			<circle cx="100" cy="100" r="40" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.2"/>
+		</pattern>
+		
+		<!-- Phase resonance filter (ϕ guardian) -->
+		<filter id="ce2-phase-resonance">
+			<feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+			<feColorMatrix values="1 0 0 0 0
+			                         0 1 0 0 0
+			                         0 0 1 0 0
+			                         0 0 0 1 0"/>
+		</filter>
+		
+		<!-- Flow field pattern (dynamical flow) -->
+		<pattern id="ce2-flow-field" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+			<path d="M 0,50 Q 25,30 50,50 T 100,50" fill="none" stroke="rgba(125,179,255,0.15)" stroke-width="0.5"/>
+			<path d="M 0,50 Q 25,70 50,50 T 100,50" fill="none" stroke="rgba(125,179,255,0.15)" stroke-width="0.5"/>
+		</pattern>
+		
+		<!-- Antclock time spiral -->
+		<path id="ce2-antclock-spiral" d="M 50,50 
+			A 20,20 0 0,1 70,50
+			A 30,30 0 0,1 50,80
+			A 40,40 0 0,1 10,50
+			A 50,50 0 0,1 50,0" 
+			fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+	</defs>
+	
+	<!-- Background phase gradient -->
+	<rect width="100%" height="100%" fill="url(#ce2-phase-gradient)"/>
+	
+	<!-- Guardian boundary overlay -->
+	<rect width="100%" height="100%" fill="url(#ce2-guardian-pattern)" opacity="0.4"/>
+	
+	<!-- Flow field overlay -->
+	<rect width="100%" height="100%" fill="url(#ce2-flow-field)" opacity="0.3"/>
+	
+	<!-- Phase resonance circles (ϕ guardian visualization) -->
+	<circle cx="20%" cy="30%" r="150" fill="none" stroke="rgba(125,179,255,0.2)" stroke-width="1" filter="url(#ce2-phase-resonance)"/>
+	<circle cx="80%" cy="70%" r="200" fill="none" stroke="rgba(125,179,255,0.15)" stroke-width="1" filter="url(#ce2-phase-resonance)"/>
+	<circle cx="50%" cy="50%" r="250" fill="none" stroke="rgba(125,179,255,0.1)" stroke-width="1" filter="url(#ce2-phase-resonance)"/>
+	
+	<!-- Antclock spirals (experiential time) -->
+	<use href="#ce2-antclock-spiral" x="15%" y="20%" transform="scale(0.5) rotate(0)"/>
+	<use href="#ce2-antclock-spiral" x="75%" y="60%" transform="scale(0.7) rotate(180)"/>
+	<use href="#ce2-antclock-spiral" x="45%" y="75%" transform="scale(0.6) rotate(90)"/>
+	
+	<!-- Nash equilibrium attention points -->
+	<circle cx="30%" cy="40%" r="3" fill="rgba(255,255,255,0.4)"/>
+	<circle cx="70%" cy="60%" r="3" fill="rgba(255,255,255,0.4)"/>
+	<circle cx="50%" cy="30%" r="3" fill="rgba(255,255,255,0.4)"/>
+	
+	<!-- Dynamical flow vectors (simplified) -->
+	<g opacity="0.2">
+		<line x1="10%" y1="20%" x2="15%" y2="25%" stroke="rgba(125,179,255,0.3)" stroke-width="1"/>
+		<line x1="20%" y1="30%" x2="25%" y2="35%" stroke="rgba(125,179,255,0.3)" stroke-width="1"/>
+		<line x1="30%" y1="40%" x2="35%" y2="45%" stroke="rgba(125,179,255,0.3)" stroke-width="1"/>
+		<line x1="70%" y1="50%" x2="75%" y2="55%" stroke="rgba(125,179,255,0.3)" stroke-width="1"/>
+		<line x1="80%" y1="60%" x2="85%" y2="65%" stroke="rgba(125,179,255,0.3)" stroke-width="1"/>
+		<line x1="60%" y1="70%" x2="65%" y2="75%" stroke="rgba(125,179,255,0.3)" stroke-width="1"/>
+	</g>
+</svg>
+
+</div>
+

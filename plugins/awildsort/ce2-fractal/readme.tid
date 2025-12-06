@@ -1,0 +1,47 @@
+title: $:/plugins/awildsort/ce2-fractal/readme
+tags: [[$:/tags/Plugin]]
+
+! CE2 Fractal Background Plugin
+
+A declarative SVG fractal background representing the CE2 (Dynamical Flow Category) from the CE Tower architecture.
+
+!! CE2 Concepts Visualized
+
+The fractal represents key CE2 concepts:
+
+* **Phase Resonance Guardian (ϕ)** - Circular patterns representing semantic boundary detection
+* **Guardian Boundaries** - Layered circular patterns showing structural discontinuities
+* **Dynamical Flow Fields** - Curved paths representing phase coherence maintenance
+* **Antclock Spirals** - Spiral patterns representing experiential time vs positional time
+* **Nash Equilibrium Points** - Bright points showing attention modulation
+* **Flow Vectors** - Directional lines showing dynamical flow
+
+!! Design Philosophy
+
+* **Fully Declarative** - Entire fractal defined in SVG, no JavaScript rendering
+* **Pure SVG** - No canvas, no WebGL, just declarative markup
+* **Mathematically Inspired** - Based on CE2 dynamical flow category concepts
+* **Ambient Background** - Subtle, non-intrusive, supports content
+
+!! Technical Details
+
+The fractal uses:
+* SVG patterns for repeating elements
+* Radial gradients for phase-based coloring
+* Filters for resonance effects
+* Declarative transforms and opacity
+
+All defined in a single SVG element that can be edited declaratively.
+
+!! Customization
+
+Edit `$:/plugins/awildsort/ce2-fractal/ce2-fractal-svg` to modify:
+* Colors and gradients
+* Pattern scales and densities
+* Guardian boundary sizes
+* Flow field directions
+* Antclock spiral parameters
+
+Everything is declarative SVG - just edit the markup!
+
+

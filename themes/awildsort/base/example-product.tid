@@ -1,0 +1,10 @@
+title: Example Product
+tags: Product
+image: https://via.placeholder.com/400x300
+description: This is an example product description. It demonstrates how products appear in the grid.
+price: $99
+category: Tools
+link: https://example.com
+cta: Learn More
+fulldescription: This is the full product description that appears when you click "Read More". It can contain detailed information about the product, its features, and use cases.
+

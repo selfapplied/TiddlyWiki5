@@ -1,0 +1,110 @@
+title: $:/plugins/awildsort/fog-emergence/styles
+tags: [[$:/tags/Stylesheet]]
+
+/* Declarative Scroll-Based Fog Emergence */
+
+:root {
+	--aws-scroll-progress: 0;
+	--aws-fog-opacity: calc(0.8 - var(--aws-scroll-progress) * 0.6);
+	--aws-fog-height: calc(50vh - var(--aws-scroll-progress) * 30vh);
+}
+
+/* Fog Layer - Declarative SVG gradient */
+.tc-story-river::before {
+	content: '';
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: var(--aws-fog-height);
+	pointer-events: none;
+	z-index: 1;
+	opacity: var(--aws-fog-opacity);
+	background: linear-gradient(to top,
+		var(--aws-deepspace) 0%,
+		var(--aws-deepspace) 20%,
+		transparent 100%
+	);
+	transition: height 100ms ease-out, opacity 100ms ease-out;
+}
+
+body.light-mode .tc-story-river::before {
+	background: linear-gradient(to top,
+		var(--aws-starlight) 0%,
+		var(--aws-starlight) 20%,
+		transparent 100%
+	);
+}
+
+/* Tiddlers emerge based on scroll position - declarative transform */
+.tc-tiddler-frame {
+	position: relative;
+	z-index: 10;
+	--tiddler-emergence: calc(var(--aws-scroll-progress) * 100px);
+	transform: translateY(calc(60px - var(--tiddler-emergence)));
+	opacity: calc(0.3 + var(--aws-scroll-progress) * 0.7);
+	filter: blur(calc(20px - var(--aws-scroll-progress) * 20px)) 
+	        brightness(calc(0.7 + var(--aws-scroll-progress) * 0.3));
+	transition: transform 100ms ease-out,
+	            opacity 100ms ease-out,
+	            filter 100ms ease-out;
+}
+
+/* Dark gray boxes emerging from fog */
+.tc-tiddler-frame {
+	background: rgba(40, 40, 45, 0.95) !important;
+	border: 1px solid rgba(60, 60, 65, 0.8);
+}
+
+body.light-mode .tc-tiddler-frame {
+	background: rgba(220, 220, 225, 0.95) !important;
+	border: 1px solid rgba(200, 200, 205, 0.8);
+}
+
+/* Depth stacking - declarative nth-child */
+.tc-tiddler-frame:nth-child(1) {
+	z-index: 15;
+	--depth-offset: 0px;
+}
+
+.tc-tiddler-frame:nth-child(2) {
+	z-index: 14;
+	--depth-offset: 20px;
+	transform: translateY(calc(60px - var(--tiddler-emergence) + var(--depth-offset))) scale(0.98);
+	opacity: calc(0.25 + var(--aws-scroll-progress) * 0.65);
+}
+
+.tc-tiddler-frame:nth-child(3) {
+	z-index: 13;
+	--depth-offset: 40px;
+	transform: translateY(calc(60px - var(--tiddler-emergence) + var(--depth-offset))) scale(0.96);
+	opacity: calc(0.2 + var(--aws-scroll-progress) * 0.6);
+}
+
+.tc-tiddler-frame:nth-child(n+4) {
+	z-index: 12;
+	--depth-offset: 60px;
+	transform: translateY(calc(60px - var(--tiddler-emergence) + var(--depth-offset))) scale(0.94);
+	opacity: calc(0.15 + var(--aws-scroll-progress) * 0.55);
+}
+
+/* Hover brings to foreground */
+.tc-tiddler-frame:hover {
+	z-index: 20 !important;
+	transform: translateY(calc(60px - var(--tiddler-emergence))) scale(1.02) !important;
+	filter: blur(calc(20px - var(--aws-scroll-progress) * 20px)) 
+	        brightness(calc(0.8 + var(--aws-scroll-progress) * 0.2));
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	:root {
+		--aws-fog-height: calc(40vh - var(--aws-scroll-progress) * 25vh);
+	}
+	
+	.tc-tiddler-frame {
+		--tiddler-emergence: calc(var(--aws-scroll-progress) * 60px);
+		transform: translateY(calc(40px - var(--tiddler-emergence)));
+	}
+}
+

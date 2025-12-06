@@ -1,0 +1,70 @@
+title: $:/plugins/awildsort/popout-icon/readme
+tags: [[$:/tags/Plugin]]
+
+! Pop-out Icon Plugin
+
+Add customizable pop-out icon effects to tiddlers for notifications, badges, or interactive elements.
+
+!! Usage
+
+Add a pop-out icon to any tiddler by setting these fields:
+
+* `popout-icon` - The text/character to display (e.g., "!", "2", "★", "NEW")
+* `popout-icon-size` - Size: "small", "medium" (default), or "large"
+* `popout-icon-position` - Position: "top-right" (default), "top-left", "bottom-right", "bottom-left"
+* `popout-icon-color` - Custom color (CSS color value)
+* `popout-icon-animation` - Animation: "pulse" (default), "bounce", "rotate", or "none"
+* `popout-icon-tooltip` - Tooltip text on hover
+* `popout-icon-action` - Action type: "navigate", "popup", "message", or empty for none
+* `popout-icon-action-target` - Target for the action (tiddler title, popup state, or message name)
+
+!! Examples
+
+Basic notification badge:
+```
+popout-icon: "2"
+popout-icon-size: "small"
+popout-icon-position: "top-right"
+popout-icon-animation: "pulse"
+```
+
+Important tiddler indicator:
+```
+popout-icon: "!"
+popout-icon-size: "medium"
+popout-icon-color: "#ff6b6b"
+popout-icon-tooltip: "Important"
+```
+
+Clickable navigation icon:
+```
+popout-icon: "→"
+popout-icon-action: "navigate"
+popout-icon-action-target: "Related Tiddler"
+popout-icon-tooltip: "Go to related tiddler"
+```
+
+!! Widget Usage
+
+You can also use the widget directly:
+
+```
+<$popout-icon 
+	text="2"
+	size="small"
+	position="top-right"
+	animation="pulse"
+	tooltip="2 new items"
+/>
+```
+
+!! Features
+
+* Glass-fog styling matching A Wild Sort theme
+* Multiple animation options
+* Customizable size, position, and color
+* Click actions (navigate, popup, message)
+* Responsive and accessible
+* Works in both dark and light modes
+
+
