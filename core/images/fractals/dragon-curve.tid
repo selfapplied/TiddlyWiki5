@@ -1,0 +1,38 @@
+title: $:/core/images/fractals/dragon-curve
+tags: $:/tags/Image $:/tags/FractalBackground
+caption: Dragon Curve
+description: A pattern based on the iterative dragon curve fractal
+
+\parameters (width:"100%" height:"100%")
+<svg width=<<width>> height=<<height>> class="tc-fractal-background" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+<defs>
+<pattern id="dragon-curve-pattern" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+<g transform="translate(100, 100)">
+<!-- Simplified dragon curve approximation -->
+<path d="M 0,0 L 20,0 L 20,20 L 40,20 L 40,0 L 60,0 L 60,-20 L 40,-20" 
+      fill="none" stroke="<<colour primary>>" stroke-width="2" opacity="0.2"/>
+<path d="M 0,0 L -20,0 L -20,20 L -40,20 L -40,0 L -60,0 L -60,-20 L -40,-20" 
+      fill="none" stroke="<<colour primary>>" stroke-width="2" opacity="0.2"/>
+<path d="M 0,0 L 0,20 L -20,20 L -20,40 L 0,40 L 0,60 L 20,60 L 20,40" 
+      fill="none" stroke="<<colour primary>>" stroke-width="2" opacity="0.2"/>
+<path d="M 0,0 L 0,-20 L -20,-20 L -20,-40 L 0,-40 L 0,-60 L 20,-60 L 20,-40" 
+      fill="none" stroke="<<colour primary>>" stroke-width="2" opacity="0.2"/>
+<!-- Additional detail layers -->
+<path d="M 10,10 L 20,10 L 20,20 L 30,20" 
+      fill="none" stroke="<<colour primary>>" stroke-width="1.5" opacity="0.25"/>
+<path d="M -10,10 L -20,10 L -20,20 L -30,20" 
+      fill="none" stroke="<<colour primary>>" stroke-width="1.5" opacity="0.25"/>
+<path d="M 10,-10 L 20,-10 L 20,-20 L 30,-20" 
+      fill="none" stroke="<<colour primary>>" stroke-width="1.5" opacity="0.25"/>
+<path d="M -10,-10 L -20,-10 L -20,-20 L -30,-20" 
+      fill="none" stroke="<<colour primary>>" stroke-width="1.5" opacity="0.25"/>
+<!-- Corner accents -->
+<circle cx="40" cy="20" r="3" fill="<<colour primary>>" opacity="0.3"/>
+<circle cx="-40" cy="20" r="3" fill="<<colour primary>>" opacity="0.3"/>
+<circle cx="40" cy="-20" r="3" fill="<<colour primary>>" opacity="0.3"/>
+<circle cx="-40" cy="-20" r="3" fill="<<colour primary>>" opacity="0.3"/>
+</g>
+</pattern>
+</defs>
+<rect width="100%" height="100%" fill="url(#dragon-curve-pattern)"/>
+</svg>

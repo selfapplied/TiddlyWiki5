@@ -1,0 +1,48 @@
+title: $:/themes/tiddlywiki/vanilla/fractals
+tags: [[$:/tags/Stylesheet]]
+code-body: yes
+
+\define fractal-background-svg()
+<$set name="fractal" value={{$:/themes/tiddlywiki/vanilla/settings/fractalbackground}}>
+<$list filter="[<fractal>!is[blank]]">
+<$list filter="[<fractal>is[tiddler]]">
+`background-image: url("data:image/svg+xml,`<$text text={{{ [<fractal>get[text]encodeuri[]] }}}/>`");
+background-repeat: repeat;
+background-position: center center;
+background-attachment: `{{$:/themes/tiddlywiki/vanilla/settings/fractalbackgroundattachment}}`;`
+</$list>
+</$list>
+</$set>
+\end
+
+\define fractal-parallax-enabled()
+{{$:/themes/tiddlywiki/vanilla/options/fractalparallax}}
+\end
+
+/* Fractal background container */
+<$list filter="[{$:/themes/tiddlywiki/vanilla/settings/fractalbackground}!is[blank]]">
+
+body.tc-body::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	<<fractal-background-svg>>
+	pointer-events: none;
+}
+
+</$list>
+
+/* Parallax effect when enabled */
+<$reveal state="$:/themes/tiddlywiki/vanilla/options/fractalparallax" type="match" text="yes">
+
+body.tc-body::before {
+	will-change: transform;
+	transform: translateY(var(--fractal-parallax-y, 0px));
+	transition: transform 0.05s ease-out;
+}
+
+</$reveal>

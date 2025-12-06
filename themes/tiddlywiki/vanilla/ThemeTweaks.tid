@@ -45,6 +45,22 @@ caption: {{$:/language/ThemeTweaks/ThemeTweaks}}
 </$select>
 \end
 
+\define fractalbackground-dropdown()
+<$select tiddler="$:/themes/tiddlywiki/vanilla/settings/fractalbackground" default="">
+<option value="">None</option>
+<$list filter="[all[shadows+tiddlers]tag[$:/tags/FractalBackground]sort[title]]">
+<option value=<<currentTiddler>>><$view field="caption"><$view field="title"/></$view></option>
+</$list>
+</$select>
+\end
+
+\define fractalbackgroundattachment-dropdown()
+<$select tiddler="$:/themes/tiddlywiki/vanilla/settings/fractalbackgroundattachment" default="scroll">
+<option value="scroll">Scroll</option>
+<option value="fixed">Fixed</option>
+</$select>
+\end
+
 <<lingo ThemeTweaks/Hint>>
 
 ! <<lingo Options>>
@@ -61,6 +77,12 @@ caption: {{$:/language/ThemeTweaks/ThemeTweaks}}
 |<$link to="$:/themes/tiddlywiki/vanilla/settings/backgroundimage"><<lingo Settings/BackgroundImage>></$link> |<$edit-text tiddler="$:/themes/tiddlywiki/vanilla/settings/backgroundimage" default="" tag="input"/> |<<backgroundimage-dropdown>> |
 |<$link to="$:/themes/tiddlywiki/vanilla/settings/backgroundimageattachment"><<lingo Settings/BackgroundImageAttachment>></$link> |<<backgroundimageattachment-dropdown>> | |
 |<$link to="$:/themes/tiddlywiki/vanilla/settings/backgroundimagesize"><<lingo Settings/BackgroundImageSize>></$link> |<<backgroundimagesize-dropdown>> | |
+
+!! Fractal Backgrounds
+
+|<$link to="$:/themes/tiddlywiki/vanilla/settings/fractalbackground">Fractal Background Pattern</$link><br>//Select a decorative SVG fractal background// |<<fractalbackground-dropdown>> | |
+|<$link to="$:/themes/tiddlywiki/vanilla/settings/fractalbackgroundattachment">Fractal Background Attachment</$link> |<<fractalbackgroundattachment-dropdown>> | |
+|<$link to="$:/themes/tiddlywiki/vanilla/options/fractalparallax">Enable Parallax Effect</$link><br>//Animate background on scroll// |<$select tiddler="$:/themes/tiddlywiki/vanilla/options/fractalparallax"><option value="no">{{$:/language/No}}</option><option value="yes">{{$:/language/Yes}}</option></$select> | |
 
 ! <<lingo Metrics>>
 
