@@ -1,0 +1,25 @@
+title: $:/core/images/fractals/sierpinski-triangle
+tags: $:/tags/Image $:/tags/FractalBackground
+caption: Sierpinski Triangle
+description: A classic fractal pattern based on recursive triangles
+
+\parameters (width:"100%" height:"100%")
+<svg width=<<width>> height=<<height>> class="tc-fractal-background" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 866" preserveAspectRatio="xMidYMid slice">
+<defs>
+<pattern id="sierpinski-pattern" x="0" y="0" width="1000" height="866" patternUnits="userSpaceOnUse">
+<polygon points="500,0 0,866 1000,866" fill="none" stroke="<<colour primary>>" stroke-width="2" opacity="0.15"/>
+<polygon points="500,216.5 250,649.5 750,649.5" fill="none" stroke="<<colour primary>>" stroke-width="2" opacity="0.2"/>
+<polygon points="500,433 375,649.5 625,649.5" fill="none" stroke="<<colour primary>>" stroke-width="1.5" opacity="0.25"/>
+<polygon points="250,216.5 125,433 375,433" fill="none" stroke="<<colour primary>>" stroke-width="1.5" opacity="0.25"/>
+<polygon points="750,216.5 625,433 875,433" fill="none" stroke="<<colour primary>>" stroke-width="1.5" opacity="0.25"/>
+<polygon points="500,108.25 437.5,216.5 562.5,216.5" fill="none" stroke="<<colour primary>>" stroke-width="1" opacity="0.3"/>
+<polygon points="250,541.25 187.5,649.5 312.5,649.5" fill="none" stroke="<<colour primary>>" stroke-width="1" opacity="0.3"/>
+<polygon points="750,541.25 687.5,649.5 812.5,649.5" fill="none" stroke="<<colour primary>>" stroke-width="1" opacity="0.3"/>
+<polygon points="125,324.75 62.5,433 187.5,433" fill="none" stroke="<<colour primary>>" stroke-width="1" opacity="0.3"/>
+<polygon points="375,324.75 312.5,433 437.5,433" fill="none" stroke="<<colour primary>>" stroke-width="1" opacity="0.3"/>
+<polygon points="625,324.75 562.5,433 687.5,433" fill="none" stroke="<<colour primary>>" stroke-width="1" opacity="0.3"/>
+<polygon points="875,324.75 812.5,433 937.5,433" fill="none" stroke="<<colour primary>>" stroke-width="1" opacity="0.3"/>
+</pattern>
+</defs>
+<rect width="100%" height="100%" fill="url(#sierpinski-pattern)"/>
+</svg>
