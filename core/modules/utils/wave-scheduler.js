@@ -27,15 +27,17 @@ A wave scheduler evolves a state through an operator and samples it to
 produce event times.
 
 Parameters:
-  operator: Function (state -> state) that evolves the state
+  operator: Function (state, generation?) -> state that evolves the state
+            The generation parameter is optional and provides the current step number
   phase: Initial state vector
-  sample: Function (state -> time) that extracts event time from state
+  sample: Function (state, generation?) -> time that extracts event time from state
+          The generation parameter is optional and provides the current step number
 */
 function WaveScheduler(operator, phase, sample) {
 	if(typeof operator !== "function") {
 		throw new Error("WaveScheduler operator must be a function");
 	}
-	if(typeof sample !== "function") {
+	if(sample !== undefined && typeof sample !== "function") {
 		throw new Error("WaveScheduler sample function must be a function");
 	}
 	
@@ -286,6 +288,11 @@ Combines multiple schedulers into one
 
 modes: array of {scheduler, weight} objects
 combination: "sum" | "product" | "max" | "min"
+
+Note: This directly calls sub-scheduler operators without updating their
+state/generation/history. This is intentional - the composite manages its
+own unified state. Sub-schedulers act as operator templates, not independent
+schedulers.
 */
 WaveScheduler.createComposite = function(modes, combination) {
 	if(!Array.isArray(modes) || modes.length === 0) {
@@ -294,7 +301,8 @@ WaveScheduler.createComposite = function(modes, combination) {
 	combination = combination || "sum";
 	
 	var operator = function(compositeState) {
-		// Evolve each sub-scheduler
+		// Evolve each sub-scheduler operator directly
+		// (bypassing their state management for efficiency)
 		var newStates = compositeState.map(function(subState, i) {
 			var scheduler = modes[i].scheduler;
 			return scheduler.operator(subState);
@@ -340,6 +348,17 @@ Integrates with the CE Tower operator algebra
 state = {ce1: grammar_phase, ce2: guardian_phase, ce3: evolution_phase}
 */
 WaveScheduler.createCEScheduler = function(ce1Operator, ce2Operator, ce3Operator, initialState) {
+	// Validate operators if provided
+	if(ce1Operator !== undefined && typeof ce1Operator !== "function") {
+		throw new Error("CE1 operator must be a function");
+	}
+	if(ce2Operator !== undefined && typeof ce2Operator !== "function") {
+		throw new Error("CE2 operator must be a function");
+	}
+	if(ce3Operator !== undefined && typeof ce3Operator !== "function") {
+		throw new Error("CE3 operator must be a function");
+	}
+	
 	initialState = initialState || {
 		ce1: 1,
 		ce2: 0,

@@ -32,11 +32,16 @@ describe("WaveScheduler class tests", function() {
 		}).toThrow();
 	});
 
-	it("should require sample to be a function", function() {
+	it("should require sample to be a function if provided", function() {
 		var operator = function(s) { return s + 1; };
 		expect(function() {
 			new WaveScheduler(operator, 1, "not a function");
 		}).toThrow();
+		
+		// Should allow undefined sample
+		expect(function() {
+			new WaveScheduler(operator, 1);
+		}).not.toThrow();
 	});
 
 	it("should reset to initial phase", function() {
@@ -302,6 +307,27 @@ describe("WaveScheduler class tests", function() {
 			
 			var first = ce.next();
 			expect(typeof first).toBe("number");
+		});
+
+		it("should validate CE operator types", function() {
+			expect(function() {
+				WaveScheduler.createCEScheduler("not a function");
+			}).toThrow();
+
+			expect(function() {
+				WaveScheduler.createCEScheduler(
+					function(x) { return x; },
+					"not a function"
+				);
+			}).toThrow();
+
+			expect(function() {
+				WaveScheduler.createCEScheduler(
+					function(x) { return x; },
+					function(x) { return x; },
+					"not a function"
+				);
+			}).toThrow();
 		});
 
 		it("should evolve through CE levels", function() {
