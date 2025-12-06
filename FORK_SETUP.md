@@ -36,7 +36,7 @@ git fetch upstream
 
 ### Merge Upstream Changes into Your Branch
 
-To update your main branch with upstream changes:
+To update your default branch with upstream changes (replace `master` with `main` if that's your default branch):
 
 ```bash
 git checkout master
@@ -58,6 +58,8 @@ After syncing with upstream:
 git push origin master
 ```
 
+**Note:** TiddlyWiki5 uses `master` as the default branch. Some repositories use `main` instead.
+
 ## Common Workflows
 
 ### Create a Feature Branch from Upstream
@@ -74,6 +76,8 @@ git fetch upstream
 git checkout feature-name
 git rebase upstream/master
 ```
+
+**Note:** Replace `master` with the appropriate default branch name (`main` for some repositories).
 
 ## Resources
 
