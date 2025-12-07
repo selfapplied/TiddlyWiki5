@@ -4,6 +4,37 @@ This directory contains a comprehensive set of recommendations for enhancing Tid
 
 ## Files in This Package
 
+### 📐 ZP35_GOLDEN_OPERATOR.md
+**Mathematical foundations of the golden operator** (~14KB, ~480 lines)
+
+Rigorous mathematical documentation of the ZP35 framework:
+- Definition of the golden operator as an invariant-preserving morphism
+- Four key invariants: ordering, clustering, coherence curvature, self-similarity
+- Category-theoretic characterization of the morphism
+- Explanation of the dimensional bridge between ultrametric and fractal spaces
+- Formal theorems and proofs
+- Implementation considerations
+- Connection to CE Tower architecture
+
+**Best for:** Researchers, mathematicians, those seeking theoretical foundations
+
+### 🚀 ZP35_TIDDLYWIKI_ENHANCEMENTS.md
+**Practical enhancement recommendations using ZP35 principles** (~32KB, ~900 lines)
+
+Actionable recommendations for enhancing TiddlyWiki based on ZP35 mathematical foundations:
+- Coherence-aware transclusion using golden operator
+- Ultrametric clustering for semantic navigation
+- Plateau-aware content organization (automatic structure detection)
+- Self-similar macro system with fractal properties
+- Three-guardian architecture (ϕ, ∂, ℛ) for composition safety
+- 8-month implementation roadmap with phases
+- Complete code examples for each feature
+- Performance optimization strategies
+- User experience design principles
+- Success metrics and risk assessment
+
+**Best for:** Developers implementing features, product managers planning enhancements
+
 ### 📄 ANTCLOCK_RECOMMENDATIONS.md
 **The complete recommendations document** (~31KB, ~980 lines)
 
@@ -52,9 +83,11 @@ Fully commented JavaScript implementations demonstrating:
 
 ### For Developers
 1. Read **ANTCLOCK_SUMMARY.md** for context
-2. Review **ANTCLOCK_RECOMMENDATIONS.md** Section 4 (Implementation Roadmap)
-3. Study **ANTCLOCK_IMPLEMENTATION_EXAMPLE.js** for code patterns
-4. Start with Phase 1: Foundation (Compositional Fingerprinting, Guardian Framework)
+2. Read **ZP35_GOLDEN_OPERATOR.md** for mathematical foundations
+3. Review **ZP35_TIDDLYWIKI_ENHANCEMENTS.md** for practical implementation guide
+4. Study **ANTCLOCK_IMPLEMENTATION_EXAMPLE.js** for code patterns
+5. Review **ANTCLOCK_RECOMMENDATIONS.md** Section 4 (Implementation Roadmap)
+6. Start with Phase 1: Foundation (Golden Operator, Guardian Framework)
 
 ### For Project Managers
 1. Read **ANTCLOCK_SUMMARY.md** sections:
