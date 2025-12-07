@@ -92,7 +92,8 @@ Harmonic operator components
 				if(s === 1) return Infinity;
 				if(s < 0) {
 				// Use functional equation: ζ(s) = 2^s π^(s-1) sin(πs/2) Γ(1-s) ζ(1-s)
-				// Simplified approximation
+				// Note: Full functional equation implementation would require gamma function
+				// For now, return 0 as a simplified placeholder for negative values
 					return 0;
 				}
 				// Direct summation for s > 1
@@ -322,10 +323,12 @@ Uses Newton-Raphson iteration
 			iteration++;
 		}
 	
+		// Compute final residual
+		var finalHx = harmonicOperator(x);
 		return {
 			value: x,
 			iterations: iteration,
-			residual: Math.sqrt(harmonicOperator(x).re * harmonicOperator(x).re + harmonicOperator(x).im * harmonicOperator(x).im),
+			residual: Math.sqrt(finalHx.re * finalHx.re + finalHx.im * finalHx.im),
 			converged: false
 		};
 	}
