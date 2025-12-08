@@ -637,3 +637,25 @@ The REGEN-ZIP Virtual Machine transforms TiddlyWiki into a **generative operatin
 This is not just compression - it's **computation as content**, with mathematical guarantees of coherence and compatibility.
 
 The future of TiddlyWiki is regenerative.
+
+---
+
+## See Also
+
+**Unified Theory**: The REGEN-ZIP VM represents the **discrete/Cayley view** of the semantic manifold. To understand how this fits into the complete unified theory, see:
+
+- **UNIFIED_COMPUTATIONAL_THEORY.md** - Complete unified theory (Section 1: VMs as Cayley Skeleton)
+- **UNIFIED_THEORY_README.md** - Quick reference guide
+- **core/modules/utils/ce-tower.js** - CE Tower ensuring consistency across all views
+
+**Related Documentation**:
+
+- **ZP35_GOLDEN_OPERATOR.md** - Mathematical foundations of the golden operator
+- **COMPILER_PROGRAM_PATTERN.md** - How routing connects to ML/continuous view
+- **SHADOW_INDUCTION.md** - How spectral compression works
+
+**Implementation Files**:
+
+- `core/modules/utils/regen-zip-vm.js` - VM implementation
+- `core/modules/utils/zp35-operator.js` - ZP35 compatibility layer
+- `editions/test/tiddlers/tests/test-regen-zip-vm.js` - Test suite
