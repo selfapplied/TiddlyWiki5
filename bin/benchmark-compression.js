@@ -13,11 +13,11 @@ Benchmarks compression of the specified file using:
 
 \*/
 
-var path = require('path');
-var fs = require('fs');
+var path = require("path");
+var fs = require("fs");
 
 // Load benchmark utilities
-var CompressionBenchmark = require('../core/modules/utils/compression-benchmark.js').CompressionBenchmark;
+var CompressionBenchmark = require("../core/modules/utils/compression-benchmark.js").CompressionBenchmark;
 
 // Parse command line arguments
 var args = process.argv.slice(2);
@@ -52,7 +52,7 @@ benchmark.runBenchmark(filePath).then(function(results) {
 	// Write results to JSON file
 	var outputPath = path.join(
 		path.dirname(filePath),
-		path.basename(filePath, path.extname(filePath)) + '-benchmark.json'
+		path.basename(filePath, path.extname(filePath)) + "-benchmark.json"
 	);
 	
 	fs.writeFileSync(outputPath, JSON.stringify(results, null, 2));

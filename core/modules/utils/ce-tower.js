@@ -594,6 +594,37 @@ CETower.prototype.initializeStandardRules = function() {
 			reason: "Valid widget rendering"
 		};
 	});
+	
+	// Diatom growth rule (biological computation)
+	this.registerSyntaxRule("diatom_growth", function(source, target) {
+		var sourceDepth = self.getDepth(source);
+		
+		// Diatom growth is iterative computation toward fixed point
+		// Depth is determined by convergence steps, capped at κ threshold
+		var newDepth = sourceDepth;
+		
+		// Check if source has diatom properties
+		if(source.lattice && source.morphism) {
+			// Validate curvature is within bounds
+			var curvature = source.morphism.curvature || 0;
+			if(Math.abs(curvature - self.kappa) > 0.5) {
+				return {
+					valid: false,
+					depth: newDepth,
+					reason: "Diatom curvature " + curvature.toFixed(3) + " too far from κ = " + self.kappa
+				};
+			}
+			
+			// Depth increases with growth steps but converges
+			newDepth = Math.min(sourceDepth + 1, 8); // Max depth = 8 for convergence
+		}
+		
+		return {
+			valid: true,
+			depth: newDepth,
+			reason: "Valid diatom growth iteration"
+		};
+	});
 };
 
 /*

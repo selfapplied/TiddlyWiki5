@@ -81,8 +81,8 @@ ZetaStarCompression.prototype.computeZP35Coordinate = function(data) {
 	
 	// Convert to buffer if string, validate if not
 	var buffer;
-	if(typeof data === 'string') {
-		buffer = Buffer.from(data, 'utf8');
+	if(typeof data === "string") {
+		buffer = Buffer.from(data, "utf8");
 	} else if(Buffer.isBuffer(data)) {
 		buffer = data;
 	} else {
@@ -191,8 +191,8 @@ ZetaStarCompression.prototype.extractSpectralSignature = function(data) {
 	
 	// Convert to buffer if string, validate if not
 	var buffer;
-	if(typeof data === 'string') {
-		buffer = Buffer.from(data, 'utf8');
+	if(typeof data === "string") {
+		buffer = Buffer.from(data, "utf8");
 	} else if(Buffer.isBuffer(data)) {
 		buffer = data;
 	} else {
@@ -253,7 +253,7 @@ ZetaStarCompression.prototype.extractSpectralSignature = function(data) {
 		basis.push({
 			order: 1,
 			value: byteFreqs[k].byte,
-			type: 'byte'
+			type: "byte"
 		});
 		coefficients.push(byteFreqs[k].freq);
 	}
@@ -263,7 +263,7 @@ ZetaStarCompression.prototype.extractSpectralSignature = function(data) {
 		basis.push({
 			order: 2,
 			value: bigramFreqs[m].bigram,
-			type: 'bigram'
+			type: "bigram"
 		});
 		coefficients.push(bigramFreqs[m].freq);
 	}
@@ -300,8 +300,8 @@ ZetaStarCompression.prototype.compress = function(data) {
 	
 	// Convert to buffer if string, validate if not
 	var buffer;
-	if(typeof data === 'string') {
-		buffer = Buffer.from(data, 'utf8');
+	if(typeof data === "string") {
+		buffer = Buffer.from(data, "utf8");
 	} else if(Buffer.isBuffer(data)) {
 		buffer = data;
 	} else {
@@ -323,11 +323,11 @@ ZetaStarCompression.prototype.compress = function(data) {
 		coefficients: signature.coefficients,
 		// Store literal data for reconstruction (in real implementation,
 		// this would use arithmetic coding or other entropy coder)
-		literalData: buffer.toString('base64')
+		literalData: buffer.toString("base64")
 	};
 	
 	var compressedJson = JSON.stringify(compressed);
-	var compressedSize = Buffer.from(compressedJson, 'utf8').length;
+	var compressedSize = Buffer.from(compressedJson, "utf8").length;
 	
 	return {
 		signature: signature,
@@ -353,7 +353,7 @@ ZetaStarCompression.prototype.decompress = function(compressed) {
 	
 	// In this implementation, we store literal data
 	// A full implementation would use the spectral basis to regenerate
-	return Buffer.from(compressed.literalData, 'base64');
+	return Buffer.from(compressed.literalData, "base64");
 };
 
 /*

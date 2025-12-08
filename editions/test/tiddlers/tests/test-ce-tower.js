@@ -641,6 +641,103 @@ Tests for CE Tower implementation
 		
 		});
 	
+	/*
+	═══════════════════════════════════════════════════════════════════════
+	Diatom Growth Integration
+	═══════════════════════════════════════════════════════════════════════
+	*/
+
+		describe("Diatom Growth Integration", function() {
+
+		it("should have diatom_growth syntax rule", function() {
+			var tower = new CETower();
+			tower.initializeStandardRules();
+		
+			expect(tower.syntaxRules["diatom_growth"]).toBeDefined();
+		});
+
+		it("should validate diatom with proper curvature", function() {
+			var tower = new CETower();
+			tower.initializeStandardRules();
+		
+			var source = {
+				lattice: { symmetry: "radial", order: 6 },
+				morphism: { curvature: 0.35 }, // At κ threshold
+				depth: 1
+			};
+		
+			var result = tower.checkSyntax("diatom_growth", source, {});
+		
+			expect(result.valid).toBe(true);
+			expect(result.reason).toBe("Valid diatom growth iteration");
+		});
+
+		it("should reject diatom with excessive curvature", function() {
+			var tower = new CETower();
+			tower.initializeStandardRules();
+		
+			var source = {
+				lattice: { symmetry: "radial", order: 6 },
+				morphism: { curvature: 1.0 }, // Too far from κ = 0.35
+				depth: 1
+			};
+		
+			var result = tower.checkSyntax("diatom_growth", source, {});
+		
+			expect(result.valid).toBe(false);
+			expect(result.reason).toContain("too far from κ");
+		});
+
+		it("should cap diatom depth at convergence limit", function() {
+			var tower = new CETower();
+			tower.initializeStandardRules();
+		
+			var source = {
+				lattice: { symmetry: "radial", order: 6 },
+				morphism: { curvature: 0.35 },
+				depth: 10 // Very deep
+			};
+		
+			var result = tower.checkSyntax("diatom_growth", source, {});
+		
+			expect(result.valid).toBe(true);
+			expect(result.depth).toBeLessThanOrEqual(8); // Max depth
+		});
+
+		it("should handle diatom without morphism properties", function() {
+			var tower = new CETower();
+			tower.initializeStandardRules();
+		
+			var source = {
+				depth: 1
+				// No lattice or morphism
+			};
+		
+			var result = tower.checkSyntax("diatom_growth", source, {});
+		
+			expect(result.valid).toBe(true);
+			expect(result.depth).toBe(1); // Depth preserved
+		});
+
+		it("should integrate with CE Tower κ threshold", function() {
+			var tower = new CETower({ kappa: 0.35 });
+			tower.initializeStandardRules();
+		
+			var source = {
+				lattice: { symmetry: "radial", order: 6 },
+				morphism: { curvature: 0.34 }, // Close to κ
+				depth: 1
+			};
+		
+			var result = tower.checkSyntax("diatom_growth", source, {});
+		
+			expect(result.valid).toBe(true);
+			// Curvature should be within tolerance of κ
+			expect(Math.abs(source.morphism.curvature - tower.kappa)).toBeLessThan(0.5);
+		});
+
+		});
+
 	});
 
 })();
