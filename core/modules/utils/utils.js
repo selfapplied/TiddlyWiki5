@@ -71,7 +71,7 @@ exports.logTable = function(data) {
 			}
 		});
 	}
-}
+};
 
 /*
 Return the integer represented by the str (string).
@@ -80,7 +80,7 @@ Return the dflt (default) parameter if str is not a base-10 number.
 exports.getInt = function(str,deflt) {
 	var i = parseInt(str,10);
 	return isNaN(i) ? deflt : i;
-}
+};
 
 /*
 Repeatedly replaces a substring within a string. Like String.prototype.replace, but without any of the default special handling of $ sequences in the replace string
@@ -122,7 +122,7 @@ Thanks to Steven Levithan, http://blog.stevenlevithan.com/archives/faster-trim-j
 */
 exports.trim = function(str) {
 	if(typeof str === "string") {
-		return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+		return str.replace(/^\s\s*/, "").replace(/\s\s*$/, "");
 	} else {
 		return str;
 	}
@@ -131,12 +131,12 @@ exports.trim = function(str) {
 exports.trimPrefix = function(str,unwanted) {
 	if(typeof str === "string" && typeof unwanted === "string") {
 		if(unwanted === "") {
-			return str.replace(/^\s\s*/, '');
+			return str.replace(/^\s\s*/, "");
 		} else {
 			// Safely regexp-escape the unwanted text
-			unwanted = unwanted.replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');
-			var regex = new RegExp('^(' + unwanted + ')+');
-			return str.replace(regex, '');
+			unwanted = unwanted.replace(/[\\^$*+?.()|[\]{}]/g, "\\$&");
+			var regex = new RegExp("^(" + unwanted + ")+");
+			return str.replace(regex, "");
 		}
 	} else {
 		return str;
@@ -146,12 +146,12 @@ exports.trimPrefix = function(str,unwanted) {
 exports.trimSuffix = function(str,unwanted) {
 	if(typeof str === "string" && typeof unwanted === "string") {
 		if(unwanted === "") {
-			return str.replace(/\s\s*$/, '');
+			return str.replace(/\s\s*$/, "");
 		} else {
 			// Safely regexp-escape the unwanted text
-			unwanted = unwanted.replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');
-			var regex = new RegExp('(' + unwanted + ')+$');
-			return str.replace(regex, '');
+			unwanted = unwanted.replace(/[\\^$*+?.()|[\]{}]/g, "\\$&");
+			var regex = new RegExp("(" + unwanted + ")+$");
+			return str.replace(regex, "");
 		}
 	} else {
 		return str;
@@ -163,14 +163,14 @@ Convert a string to sentence case (ie capitalise first letter)
 */
 exports.toSentenceCase = function(str) {
 	return (str || "").replace(/^\S/, function(c) {return c.toUpperCase();});
-}
+};
 
 /*
 Convert a string to title case (ie capitalise each initial letter)
 */
 exports.toTitleCase = function(str) {
 	return (str || "").replace(/(^|\s)\S/g, function(c) {return c.toUpperCase();});
-}
+};
 
 /*
 Find the line break preceding a given position in a string
@@ -432,8 +432,8 @@ exports.formatDateString = function(date,template) {
 			}],
 			[/^TZD/, function() {
 				var tz = date.getTimezoneOffset(),
-				atz = Math.abs(tz);
-				return (tz < 0 ? '+' : '-') + $tw.utils.pad(Math.floor(atz / 60)) + ':' + $tw.utils.pad(atz % 60);
+					atz = Math.abs(tz);
+				return (tz < 0 ? "+" : "-") + $tw.utils.pad(Math.floor(atz / 60)) + ":" + $tw.utils.pad(atz % 60);
 			}],
 			[/^wYY/, function() {
 				return $tw.utils.pad($tw.utils.getYearForWeekNo(date) - 2000);
@@ -642,9 +642,9 @@ exports.unescapeLineBreaks = function(s) {
 exports.escape = function(ch) {
 	var charCode = ch.charCodeAt(0);
 	if(charCode <= 0xFF) {
-		return '\\x' + $tw.utils.pad(charCode.toString(16).toUpperCase());
+		return "\\x" + $tw.utils.pad(charCode.toString(16).toUpperCase());
 	} else {
-		return '\\u' + $tw.utils.pad(charCode.toString(16).toUpperCase(),4);
+		return "\\u" + $tw.utils.pad(charCode.toString(16).toUpperCase(),4);
 	}
 };
 
@@ -661,11 +661,11 @@ exports.stringify = function(s, rawUnicode) {
 	*/
 	var regex = rawUnicode ? /[\x00-\x1f]/g : /[\x00-\x1f\x80-\uFFFF]/g;
 	return (s || "")
-		.replace(/\\/g, '\\\\')            // backslash
+		.replace(/\\/g, "\\\\")            // backslash
 		.replace(/"/g, '\\"')              // double quote character
 		.replace(/'/g, "\\'")              // single quote character
-		.replace(/\r/g, '\\r')             // carriage return
-		.replace(/\n/g, '\\n')             // line feed
+		.replace(/\r/g, "\\r")             // carriage return
+		.replace(/\n/g, "\\n")             // line feed
 		.replace(regex, exports.escape);   // non-ASCII characters
 };
 
@@ -675,15 +675,15 @@ exports.jsonStringify = function(s, rawUnicode) {
 	// See http://www.json.org/
 	var regex = rawUnicode ? /[\x00-\x1f]/g : /[\x00-\x1f\x80-\uFFFF]/g;
 	return (s || "")
-		.replace(/\\/g, '\\\\')            // backslash
+		.replace(/\\/g, "\\\\")            // backslash
 		.replace(/"/g, '\\"')              // double quote character
-		.replace(/\r/g, '\\r')             // carriage return
-		.replace(/\n/g, '\\n')             // line feed
-		.replace(/\x08/g, '\\b')           // backspace
-		.replace(/\x0c/g, '\\f')           // formfeed
-		.replace(/\t/g, '\\t')             // tab
+		.replace(/\r/g, "\\r")             // carriage return
+		.replace(/\n/g, "\\n")             // line feed
+		.replace(/\x08/g, "\\b")           // backspace
+		.replace(/\x0c/g, "\\f")           // formfeed
+		.replace(/\t/g, "\\t")             // tab
 		.replace(regex,function(s) {
-			return '\\u' + $tw.utils.pad(s.charCodeAt(0).toString(16).toUpperCase(),4);
+			return "\\u" + $tw.utils.pad(s.charCodeAt(0).toString(16).toUpperCase(),4);
 		}); // non-ASCII characters
 };
 
@@ -691,7 +691,7 @@ exports.jsonStringify = function(s, rawUnicode) {
 Escape the RegExp special characters with a preceding backslash
 */
 exports.escapeRegExp = function(s) {
-    return s.replace(/[\-\/\\\^\$\*\+\?\.\(\)\|\[\]\{\}]/g, '\\$&');
+	return s.replace(/[\-\/\\\^\$\*\+\?\.\(\)\|\[\]\{\}]/g, "\\$&");
 };
 
 /*
@@ -774,7 +774,7 @@ exports.parseTextReference = function(textRef) {
 		}
 	} else {
 		// If we couldn't parse it
-		result.title = textRef
+		result.title = textRef;
 	}
 	return result;
 };
@@ -833,37 +833,37 @@ Cryptographic hash function as used by sha256 filter operator
 options.length .. number of characters returned defaults to 64
 */
 exports.sha256 = function(str, options) {
-	options = options || {}
+	options = options || {};
 	return $tw.sjcl.codec.hex.fromBits($tw.sjcl.hash.sha256.hash(str)).substr(0,options.length || 64);
-}
+};
 
 /*
 Base64 utility functions that work in either browser or Node.js
 */
-if(typeof window !== 'undefined') {
-	exports.btoa = function(binstr) { return window.btoa(binstr); }
-	exports.atob = function(b64) { return window.atob(b64); }
+if(typeof window !== "undefined") {
+	exports.btoa = function(binstr) { return window.btoa(binstr); };
+	exports.atob = function(b64) { return window.atob(b64); };
 } else {
 	exports.btoa = function(binstr) {
-		return Buffer.from(binstr, 'binary').toString('base64');
-	}
+		return Buffer.from(binstr, "binary").toString("base64");
+	};
 	exports.atob = function(b64) {
-		return Buffer.from(b64, 'base64').toString('binary');
-	}
+		return Buffer.from(b64, "base64").toString("binary");
+	};
 }
 
 exports.base64ToBytes = function(base64) {
 	const binString = exports.atob(base64);
-	return Uint8Array.from(binString, (m) => m.codePointAt(0));
+	return Uint8Array.from(binString, m => m.codePointAt(0));
 };
 
 exports.bytesToBase64 = function(bytes) {
-	const binString = Array.from(bytes, (byte) => String.fromCodePoint(byte)).join("");
+	const binString = Array.from(bytes, byte => String.fromCodePoint(byte)).join("");
 	return exports.btoa(binString);
 };
 
 exports.base64EncodeUtf8 = function(str) {
-	if ($tw.browser) {
+	if($tw.browser) {
 		return exports.bytesToBase64(new TextEncoder().encode(str));
 	} else {
 		const buff = Buffer.from(str, "utf-8");
@@ -872,7 +872,7 @@ exports.base64EncodeUtf8 = function(str) {
 };
 
 exports.base64DecodeUtf8 = function(str) {
-	if ($tw.browser) {
+	if($tw.browser) {
 		return new TextDecoder().decode(exports.base64ToBytes(str));
 	} else {
 		const buff = Buffer.from(str, "base64");
@@ -884,8 +884,8 @@ exports.base64DecodeUtf8 = function(str) {
 Decode a base64 string
 */
 exports.base64Decode = function(string64,binary,urlsafe) {
-	const encoded = urlsafe ? string64.replace(/_/g,'/').replace(/-/g,'+') : string64;
-	if(binary) return exports.atob(encoded)
+	const encoded = urlsafe ? string64.replace(/_/g,"/").replace(/-/g,"+") : string64;
+	if(binary) return exports.atob(encoded);
 	else return exports.base64DecodeUtf8(encoded);
 };
 
@@ -897,7 +897,7 @@ exports.base64Encode = function(string64,binary,urlsafe) {
 	if(binary) encoded = exports.btoa(string64);
 	else encoded = exports.base64EncodeUtf8(string64);
 	if(urlsafe) {
-		encoded = encoded.replace(/\+/g,'-').replace(/\//g,'_');
+		encoded = encoded.replace(/\+/g,"-").replace(/\//g,"_");
 	}
 	return encoded;
 };
@@ -981,7 +981,7 @@ exports.strEndsWith = function(str,ending,position) {
 	if(str.endsWith) {
 		return str.endsWith(ending,position);
 	} else {
-		if(typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > str.length) {
+		if(typeof position !== "number" || !isFinite(position) || Math.floor(position) !== position || position > str.length) {
 			position = str.length;
 		}
 		position -= ending.length;

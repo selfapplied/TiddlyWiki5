@@ -37,14 +37,14 @@ exports.trim = function(source,operator,options) {
 		operand = (operator.operand || ""),
 		fnCalc;
 	if(suffix === "prefix") {
-		fnCalc = function(a,b) {return [$tw.utils.trimPrefix(a,b)];}
+		fnCalc = function(a,b) {return [$tw.utils.trimPrefix(a,b)];};
 	} else if(suffix === "suffix") {
-		fnCalc = function(a,b) {return [$tw.utils.trimSuffix(a,b)];}
+		fnCalc = function(a,b) {return [$tw.utils.trimSuffix(a,b)];};
 	} else {
 		if(operand === "") {
-			fnCalc = function(a) {return [$tw.utils.trim(a)];}
+			fnCalc = function(a) {return [$tw.utils.trim(a)];};
 		} else {
-			fnCalc = function(a,b) {return [$tw.utils.trimSuffix($tw.utils.trimPrefix(a,b),b)];}
+			fnCalc = function(a,b) {return [$tw.utils.trimSuffix($tw.utils.trimPrefix(a,b),b)];};
 		}
 	}
 	source(function(tiddler,title) {
@@ -96,51 +96,51 @@ function diffLineWordMode(text1,text2,mode) {
 function diffPartsToChars(text1,text2,mode) {
 	var lineArray = [];
 	var lineHash = {};
-	lineArray[0] = '';
+	lineArray[0] = "";
 
-    function diff_linesToPartsMunge_(text,mode) {
-        var chars = '';
-        var lineStart = 0;
-        var lineEnd = -1;
-        var lineArrayLength = lineArray.length,
-            regexpResult;
-        var searchRegexp = /\W+/g;
-        while(lineEnd < text.length - 1) {
-	        if(mode === "words") {
-                regexpResult = searchRegexp.exec(text);
-                lineEnd = searchRegexp.lastIndex;
-                if(regexpResult === null) {
-                lineEnd = text.length;
-                }
-                lineEnd = --lineEnd;
-            } else {
-                lineEnd = text.indexOf('\n', lineStart);
-                if(lineEnd == -1) {
-                    lineEnd = text.length - 1;
-                }
-            }
-            var line = text.substring(lineStart, lineEnd + 1);
+	function diff_linesToPartsMunge_(text,mode) {
+		var chars = "";
+		var lineStart = 0;
+		var lineEnd = -1;
+		var lineArrayLength = lineArray.length,
+			regexpResult;
+		var searchRegexp = /\W+/g;
+		while(lineEnd < text.length - 1) {
+			if(mode === "words") {
+				regexpResult = searchRegexp.exec(text);
+				lineEnd = searchRegexp.lastIndex;
+				if(regexpResult === null) {
+					lineEnd = text.length;
+				}
+				lineEnd = --lineEnd;
+			} else {
+				lineEnd = text.indexOf("\n", lineStart);
+				if(lineEnd == -1) {
+					lineEnd = text.length - 1;
+				}
+			}
+			var line = text.substring(lineStart, lineEnd + 1);
 
-            if(lineHash.hasOwnProperty ? lineHash.hasOwnProperty(line) : (lineHash[line] !== undefined)) {
+			if(lineHash.hasOwnProperty ? lineHash.hasOwnProperty(line) : (lineHash[line] !== undefined)) {
 				chars += String.fromCharCode(lineHash[line]);
-            } else {
-                if(lineArrayLength == maxLines) {
-                  line = text.substring(lineStart);
-                  lineEnd = text.length;
-                }
-                chars += String.fromCharCode(lineArrayLength);
-                lineHash[line] = lineArrayLength;
-                lineArray[lineArrayLength++] = line;
-            }
-            lineStart = lineEnd + 1;
-        }
-        return chars;
-    }
-    var maxLines = 40000;
-    var chars1 = diff_linesToPartsMunge_(text1,mode);
-    maxLines = 65535;
-    var chars2 = diff_linesToPartsMunge_(text2,mode);
-    return {chars1: chars1, chars2: chars2, lineArray: lineArray};
+			} else {
+				if(lineArrayLength == maxLines) {
+					line = text.substring(lineStart);
+					lineEnd = text.length;
+				}
+				chars += String.fromCharCode(lineArrayLength);
+				lineHash[line] = lineArrayLength;
+				lineArray[lineArrayLength++] = line;
+			}
+			lineStart = lineEnd + 1;
+		}
+		return chars;
+	}
+	var maxLines = 40000;
+	var chars1 = diff_linesToPartsMunge_(text1,mode);
+	maxLines = 65535;
+	var chars2 = diff_linesToPartsMunge_(text2,mode);
+	return {chars1: chars1, chars2: chars2, lineArray: lineArray};
 };
 
 exports.makepatches = function(source,operator,options) {
@@ -148,16 +148,16 @@ exports.makepatches = function(source,operator,options) {
 		suffix = operator.suffix || "",
 		result = [];
 		
-		source(function(tiddler,title) {
-			var diffs, patches;
-			if(suffix === "lines" || suffix === "words") {
-				diffs = diffLineWordMode(title,operator.operand,suffix);
-				patches = dmpObject.patch_make(title,diffs);
-			} else {
-				patches = dmpObject.patch_make(title,operator.operand);
-			}
-			Array.prototype.push.apply(result,[dmpObject.patch_toText(patches)]);
-		});
+	source(function(tiddler,title) {
+		var diffs, patches;
+		if(suffix === "lines" || suffix === "words") {
+			diffs = diffLineWordMode(title,operator.operand,suffix);
+			patches = dmpObject.patch_make(title,diffs);
+		} else {
+			patches = dmpObject.patch_make(title,operator.operand);
+		}
+		Array.prototype.push.apply(result,[dmpObject.patch_toText(patches)]);
+	});
 
 	return result;
 };
@@ -279,7 +279,7 @@ exports.pad = function(source,operator,options) {
 		}
 	});
 	return results;
-}
+};
 
 exports.charcode = function(source,operator,options) {
 	var chars = [];

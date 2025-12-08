@@ -32,7 +32,7 @@ LogWidget.prototype.execute = function(){
 	this.message = this.getAttribute("$$message","debug");
 	this.logAll = this.getAttribute("$$all","no") === "yes" ? true : false;
 	this.filter = this.getAttribute("$$filter");
-}
+};
 
 /*
 Refresh the widget by ensuring our attributes are up to date
@@ -94,6 +94,6 @@ LogWidget.prototype.log = function() {
 		console.groupEnd();
 	}
 	console.groupEnd();
-}
+};
 
 exports["action-log"] = LogWidget;
