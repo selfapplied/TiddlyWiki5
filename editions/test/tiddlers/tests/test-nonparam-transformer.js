@@ -68,7 +68,7 @@ if($tw.node) {
 				var result = transformer.registerTransformer(transformerTiddler);
 				
 				expect(result.success).toBe(false);
-				expect(result.error).toContain("cannot have a params field");
+				expect(result.error).toContain("parameter-like fields");
 			});
 			
 			it("should reject transformer without required fields", function() {
@@ -261,10 +261,6 @@ if($tw.node) {
 				};
 				
 				var result = transformer.applyTransformer("NormalizeTransformer", program);
-				
-				if(!result.success) {
-					console.log("Normalization failed:", result.error);
-				}
 				
 				expect(result.success).toBe(true);
 				if(result.transformedProgram && result.transformedProgram.fields) {

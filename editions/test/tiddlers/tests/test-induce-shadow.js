@@ -98,7 +98,7 @@ if($tw.node) {
 				var analysis = inducer.analyzeFieldCoherence(tiddler);
 				
 				expect(analysis.totalFields).toBe(0);
-				expect(analysis.curvature).toBe(0);
+				expect(analysis.curvature).toBe(0.5); // Neutral curvature for empty
 			});
 			
 			it("should separate intermediate fields", function() {

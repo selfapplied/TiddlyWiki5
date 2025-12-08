@@ -156,7 +156,7 @@ ShadowInducer.prototype.analyzeFieldCoherence = function(tiddler) {
 	// High curvature means more chaos (fewer crisp fields)
 	// Low curvature means more structure (more crisp fields)
 	var totalFields = fieldNames.length;
-	var curvature = totalFields > 0 ? (1.0 - (crispFields.length / totalFields)) : 0;
+	var curvature = totalFields > 0 ? (1.0 - (crispFields.length / totalFields)) : 0.5; // 0.5 for empty (neutral)
 	
 	return {
 		crispFields: crispFields,

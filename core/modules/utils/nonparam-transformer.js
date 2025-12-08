@@ -118,11 +118,15 @@ NonParametricTransformer.prototype.registerTransformer = function(transformerTid
 	}
 	
 	// Critical: NO PARAMS ALLOWED in non-parametric transformers
-	if(fields.params) {
-		return {
-			success: false,
-			error: "Non-parametric transformers cannot have a params field"
-		};
+	// Also check for parameter-like fields that could introduce runtime config
+	var paramLikeFields = ["params", "config", "options", "settings", "args", "arguments"];
+	for(var i = 0; i < paramLikeFields.length; i++) {
+		if(fields[paramLikeFields[i]]) {
+			return {
+				success: false,
+				error: "Non-parametric transformers cannot have parameter-like fields: " + paramLikeFields[i]
+			};
+		}
 	}
 	
 	// Validate required fields
@@ -525,13 +529,16 @@ NonParametricTransformer.prototype.applySeedPolicy = function(policy, originalSe
 
 /*
 Hash seed with transformer ID for deterministic transformation
+Uses simple deterministic hash - predictable by design for reproducibility
 
 @param {string} seed - Original seed
 @param {string} transformerId - Transformer ID
 @returns {string} - Hashed seed
 */
 NonParametricTransformer.prototype.hashSeed = function(seed, transformerId) {
-	// Simple deterministic hash for seed transformation
+	// Deterministic hash for seed transformation
+	// NOTE: Intentionally simple and predictable for reproducibility
+	// Not cryptographically secure - seeds are not secrets
 	var combined = seed + "::" + transformerId;
 	var hash = 0;
 	
