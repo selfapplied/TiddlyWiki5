@@ -14,7 +14,7 @@ This example demonstrates the diatom computing model, showing how:
 \*/
 
 // Load the diatom computing module
-var DiatomModule = require('./core/modules/utils/diatom-computing.js');
+var DiatomModule = require("./core/modules/utils/diatom-computing.js");
 var Diatom = DiatomModule.Diatom;
 var DiatomColony = DiatomModule.DiatomColony;
 
@@ -67,7 +67,7 @@ console.log("");
 console.log("Computational Mapping:");
 encoded.poreVariables.forEach(function(pore, i) {
 	console.log("  Pore", i + ":", "diameter =", pore.diameter.toFixed(3), 
-	           "→ variable value =", pore.value.toFixed(3));
+		"→ variable value =", pore.value.toFixed(3));
 });
 console.log("");
 
@@ -99,14 +99,14 @@ console.log("  Converged:", growthResult.converged ? "Yes" : "No");
 console.log("  Final curvature:", growthResult.finalCurvature.toFixed(6));
 console.log("  Fixed point:", growthResult.fixedPoint);
 console.log("  Distance from fixed point:", 
-           Math.abs(growthResult.finalCurvature - growthResult.fixedPoint).toFixed(6));
+	Math.abs(growthResult.finalCurvature - growthResult.fixedPoint).toFixed(6));
 console.log("");
 
 // Show convergence history
 console.log("Convergence History (first 10 steps):");
 for(var i = 0; i < Math.min(10, growthResult.history.length); i++) {
 	console.log("  Step", (i + 1) + ":", 
-	           "error =", growthResult.history[i].toFixed(6));
+		"error =", growthResult.history[i].toFixed(6));
 }
 console.log("");
 
@@ -226,9 +226,9 @@ console.log("");
 console.log("  Individual diatom states:");
 colonyState.diatomStates.forEach(function(state, i) {
 	console.log("    Diatom", i + ":", 
-	           "growth =", state.growthStep,
-	           "deposits =", state.deposits,
-	           "converged =", state.converged);
+		"growth =", state.growthStep,
+		"deposits =", state.deposits,
+		"converged =", state.converged);
 });
 console.log("");
 
@@ -278,9 +278,9 @@ if(opticalNetwork.waveguides.length > 0) {
 	console.log("Waveguide Properties:");
 	opticalNetwork.waveguides.forEach(function(wg, i) {
 		console.log("  WG", i + ":", 
-		           "mode =", wg.mode,
-		           "λ =", wg.wavelength, "nm",
-		           "n =", wg.refractiveIndex);
+			"mode =", wg.mode,
+			"λ =", wg.wavelength, "nm",
+			"n =", wg.refractiveIndex);
 	});
 	console.log("");
 }
@@ -290,9 +290,9 @@ if(opticalNetwork.filters.length > 0) {
 	console.log("Wavelength Filters (Bragg Reflectors):");
 	opticalNetwork.filters.forEach(function(filter, i) {
 		console.log("  Filter", i + ":", 
-		           "λ_center =", filter.centerWavelength.toFixed(1), "nm",
-		           "bandwidth =", filter.bandwidth.toFixed(1), "nm",
-		           "T =", (filter.transmission * 100).toFixed(1) + "%");
+			"λ_center =", filter.centerWavelength.toFixed(1), "nm",
+			"bandwidth =", filter.bandwidth.toFixed(1), "nm",
+			"T =", (filter.transmission * 100).toFixed(1) + "%");
 	});
 	console.log("");
 }

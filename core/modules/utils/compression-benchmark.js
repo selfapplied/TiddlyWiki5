@@ -14,9 +14,9 @@ Compares different compression methods including:
 
 "use strict";
 
-var zlib = require('zlib');
-var fs = require('fs');
-var path = require('path');
+var zlib = require("zlib");
+var fs = require("fs");
+var path = require("path");
 
 /*
 Compression Benchmark Constructor
@@ -59,7 +59,7 @@ CompressionBenchmark.prototype.benchmarkGzip = function(data) {
 				var correct = Buffer.compare(data, decompressed) === 0;
 				
 				resolve({
-					method: 'gzip',
+					method: "gzip",
 					originalSize: data.length,
 					compressedSize: compressed.length,
 					ratio: compressed.length / data.length,
@@ -94,7 +94,7 @@ CompressionBenchmark.prototype.benchmarkZetaStar = function(data, zetaStar) {
 	var correct = Buffer.compare(data, decompressed) === 0;
 	
 	return {
-		method: 'zeta-star',
+		method: "zeta-star",
 		originalSize: data.length,
 		compressedSize: analysis.compression.compressedSize,
 		ratio: analysis.compression.ratio,
@@ -123,7 +123,7 @@ CompressionBenchmark.prototype.runBenchmark = function(filePath, options) {
 	return new Promise(function(resolve, reject) {
 		// Load data
 		var data;
-		if(typeof filePath === 'string') {
+		if(typeof filePath === "string") {
 			try {
 				data = fs.readFileSync(filePath);
 			} catch(e) {
@@ -138,7 +138,7 @@ CompressionBenchmark.prototype.runBenchmark = function(filePath, options) {
 		}
 		
 		// Initialize zeta-star compression
-		var ZetaStarCompression = require('./zeta-star-compression.js').ZetaStarCompression;
+		var ZetaStarCompression = require("./zeta-star-compression.js").ZetaStarCompression;
 		var zetaStar = new ZetaStarCompression({
 			kappa: options.kappa || 0.35,
 			spectralResolution: options.spectralResolution || 128
@@ -146,7 +146,7 @@ CompressionBenchmark.prototype.runBenchmark = function(filePath, options) {
 		
 		// Run benchmarks
 		var results = {
-			filename: typeof filePath === 'string' ? path.basename(filePath) : 'buffer',
+			filename: typeof filePath === "string" ? path.basename(filePath) : "buffer",
 			fileSize: data.length,
 			methods: {}
 		};
@@ -167,7 +167,7 @@ CompressionBenchmark.prototype.runBenchmark = function(filePath, options) {
 					timeRatio: zetaStarResult.totalTime / gzipResult.totalTime,
 					sizeRatio: zetaStarResult.compressedSize / gzipResult.compressedSize
 				},
-				winner: gzipResult.compressedSize < zetaStarResult.compressedSize ? 'gzip' : 'zeta-star'
+				winner: gzipResult.compressedSize < zetaStarResult.compressedSize ? "gzip" : "zeta-star"
 			};
 			
 			resolve(results);
@@ -257,7 +257,7 @@ CompressionBenchmark.prototype.formatReport = function(results) {
 	lines.push("│                                                                          │");
 	lines.push("└────────────────────────────────────────────────────────────────────────┘");
 	
-	return lines.join('\n');
+	return lines.join("\n");
 };
 
 /*
@@ -269,7 +269,7 @@ Pad string to fixed width
 CompressionBenchmark.prototype.pad = function(str, width) {
 	str = String(str);
 	while(str.length < width) {
-		str += ' ';
+		str += " ";
 	}
 	return str;
 };

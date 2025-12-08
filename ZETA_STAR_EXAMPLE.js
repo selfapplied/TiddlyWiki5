@@ -10,8 +10,8 @@ to analyze data, compute ZP35 coordinates, and compare compression methods.
 \*/
 
 // Load required modules
-var ZetaStarCompression = require('./core/modules/utils/zeta-star-compression.js').ZetaStarCompression;
-var CompressionBenchmark = require('./core/modules/utils/compression-benchmark.js').CompressionBenchmark;
+var ZetaStarCompression = require("./core/modules/utils/zeta-star-compression.js").ZetaStarCompression;
+var CompressionBenchmark = require("./core/modules/utils/compression-benchmark.js").CompressionBenchmark;
 
 // ============================================================================
 // Example 1: Basic ZP35 Coordinate Calculation
@@ -106,7 +106,7 @@ console.log("");
 
 // Decompress
 var decompressed = zetaStar.decompress(compressionResult.compressed);
-var decompressedText = decompressed.toString('utf8');
+var decompressedText = decompressed.toString("utf8");
 console.log("Decompressed text: '" + decompressedText + "'");
 console.log("Verification: " + (decompressedText === originalText ? "✓ Success" : "✗ Failed"));
 

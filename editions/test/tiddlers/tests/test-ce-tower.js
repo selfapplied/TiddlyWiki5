@@ -649,7 +649,7 @@ Tests for CE Tower implementation
 	═══════════════════════════════════════════════════════════════════════
 	*/
 
-	describe("Diatom Growth Integration", function() {
+		describe("Diatom Growth Integration", function() {
 
 		it("should have diatom_growth syntax rule", function() {
 			var tower = new CETower();

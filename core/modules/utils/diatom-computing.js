@@ -196,7 +196,7 @@ Diatom.prototype.computeFlowPaths = function(pores, ridges) {
 /*
 Check if path intersects a ridge
 */
-Diatom.prototype.pathIntersectsRidge = function(p1, p2, ridge) {
+Diatom.prototype.pathIntersectsRidge = function(/*p1, p2, ridge*/) {
 	// Simplified geometric check
 	// In reality, would use proper line-segment intersection
 	return false;
@@ -257,7 +257,7 @@ The diatom doesn't represent a computation - its growth IS the computation.
 Perform one growth step (silica deposition)
 @returns {object} - Growth step result
 */
-Diatom.prototype.growthStep = function() {
+Diatom.prototype.performGrowthStep = function() {
 	this.growthStep++;
 	
 	// 1. Boundary set → collapse
@@ -387,8 +387,8 @@ Diatom.prototype.grow = function(maxSteps) {
 	var step = 0;
 	
 	while(!converged && step < maxSteps) {
-		var result = this.growthStep();
-		converged = result.symmetry.converged;
+		var result = this.performGrowthStep();
+		converged = result.converged;
 		step++;
 	}
 	
@@ -565,7 +565,7 @@ Diatom.prototype.createOpticalNetwork = function(encoded) {
 /*
 Find resonant cavities in structure
 */
-Diatom.prototype.findResonantCavities = function(encoded) {
+Diatom.prototype.findResonantCavities = function(/*encoded*/) {
 	// Simplified: look for high-curvature enclosed regions
 	return [];
 };

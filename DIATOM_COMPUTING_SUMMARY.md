@@ -163,7 +163,7 @@ new Diatom(options)
 #### Methods
 
 **Growth:**
-- `growthStep()` - Perform one silica deposition step
+- `performGrowthStep()` - Perform one silica deposition step
 - `grow(maxSteps)` - Iterate until convergence
 
 **Encoding:**
