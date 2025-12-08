@@ -60,7 +60,7 @@ RenormalizationFlow.prototype.renormalize = function(tiddler, options) {
 	var maxIterations = options.maxIterations || this.MAX_ITERATIONS;
 	var verbose = options.verbose || false;
 	
-	if(!tiddler) {
+	if(!tiddler || !tiddler.fields) {
 		return {
 			success: false,
 			message: "Invalid tiddler for renormalization"
@@ -98,10 +98,13 @@ RenormalizationFlow.prototype.renormalize = function(tiddler, options) {
 			};
 		}
 		
+		// Always update to reconstructed version (it has proper metadata)
+		currentTiddler = reconstructed.tiddler;
+		
 		// Step 3: Measure complexity
 		var currentComplexity = this.calculateBracketComplexity(reconstructed.tiddler);
 		var complexityDelta = previousComplexity - currentComplexity;
-		var improvement = complexityDelta / previousComplexity;
+		var improvement = Math.abs(complexityDelta) / Math.max(previousComplexity, 0.001);
 		
 		// Record iteration
 		iterations.push({
@@ -120,26 +123,19 @@ RenormalizationFlow.prototype.renormalize = function(tiddler, options) {
 		
 		// Check convergence conditions
 		if(Math.abs(complexityDelta) < this.CONVERGENCE_THRESHOLD) {
+			// Converged - complexity stabilized
 			converged = true;
 			if(verbose) {
 				console.log("Converged: complexity delta below threshold");
 			}
-		} else if(improvement < this.MIN_IMPROVEMENT && complexityDelta > 0) {
+		} else if(improvement < this.MIN_IMPROVEMENT) {
+			// Converged - minimal improvement
 			converged = true;
 			if(verbose) {
 				console.log("Converged: improvement too small");
 			}
-		} else if(complexityDelta < 0) {
-			// Complexity increased - this shouldn't happen, but handle it
-			if(verbose) {
-				console.log("Warning: complexity increased at iteration " + i);
-			}
-			// Revert to previous iteration
-			currentTiddler = iterations[i - 1].tiddler;
-			converged = true;
 		} else {
 			// Continue iteration
-			currentTiddler = reconstructed.tiddler;
 			previousComplexity = currentComplexity;
 		}
 	}
@@ -435,19 +431,22 @@ A tiddler is canonical if further renormalization produces no improvement
 @returns {boolean} - True if canonical
 */
 RenormalizationFlow.prototype.isCanonical = function(tiddler) {
-	if(!tiddler) {
+	if(!tiddler || !tiddler.fields) {
 		return false;
 	}
 	
 	// Quick check: already marked as renormalized?
-	if(tiddler.fields && tiddler.fields.renormalized === "true") {
+	if(tiddler.fields.renormalized === "true") {
 		return true;
 	}
 	
-	// Test renormalization: does it converge in 1 iteration?
+	// Test renormalization: does it converge in 1 iteration with minimal change?
 	var result = this.renormalize(tiddler, { maxIterations: 2, verbose: false });
 	
-	return result.success && result.iterations <= 1;
+	// Canonical if: converges quickly AND complexity reduction is minimal
+	return result.success && 
+	       result.iterations <= 1 && 
+	       result.complexityReduction < this.CONVERGENCE_THRESHOLD;
 };
 
 /*
