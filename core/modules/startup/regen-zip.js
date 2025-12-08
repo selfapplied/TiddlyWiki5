@@ -24,6 +24,21 @@ exports.startup = function() {
 			$tw.zp35Operator = new $tw.utils.ZP35Operator();
 		}
 		
+		// Initialize Shadow Inducer for shadow induction
+		if($tw.utils.ShadowInducer && $tw.zp35Operator) {
+			$tw.shadowInducer = new $tw.utils.ShadowInducer($tw.wiki, $tw.zp35Operator);
+		}
+		
+		// Initialize Renormalization Flow for kernel optimization
+		if($tw.utils.RenormalizationFlow && $tw.zp35Operator && $tw.shadowInducer) {
+			$tw.renormalizationFlow = new $tw.utils.RenormalizationFlow(
+				$tw.wiki, 
+				$tw.zp35Operator, 
+				$tw.shadowInducer
+			);
+			console.log("Renormalization Flow initialized for kernel optimization");
+		}
+		
 		// Register core integration hooks
 		setupCoreIntegration();
 		
@@ -137,6 +152,65 @@ function setupCoreIntegration() {
 		}
 		
 		return $tw.zp35Operator.calculateSignature(tiddler);
+	};
+	
+	// Add method to renormalize a tiddler to canonical form
+	$tw.wiki.renormalizeTiddler = function(title, options) {
+		if(!$tw.renormalizationFlow) {
+			return {
+				success: false,
+				message: "Renormalization flow not available"
+			};
+		}
+		
+		var tiddler = typeof title === "string" ?
+			this.getTiddler(title) : title;
+		
+		if(!tiddler) {
+			return {
+				success: false,
+				message: "Tiddler not found"
+			};
+		}
+		
+		return $tw.renormalizationFlow.renormalize(tiddler, options);
+	};
+	
+	// Add method to check if tiddler is in canonical form
+	$tw.wiki.isCanonicalForm = function(title) {
+		if(!$tw.renormalizationFlow) {
+			return false;
+		}
+		
+		var tiddler = typeof title === "string" ?
+			this.getTiddler(title) : title;
+		
+		if(!tiddler) {
+			return false;
+		}
+		
+		return $tw.renormalizationFlow.isCanonical(tiddler);
+	};
+	
+	// Add method to optimize kernel (renormalize all shadow tiddlers)
+	$tw.wiki.optimizeKernel = function(options) {
+		if(!$tw.renormalizationFlow) {
+			return {
+				success: false,
+				message: "Renormalization flow not available"
+			};
+		}
+		
+		// Find all shadow tiddlers
+		var shadowTiddlers = [];
+		this.each(function(tiddler, title) {
+			if(title.indexOf("$:/") === 0 || tiddler.fields["shadow-type"]) {
+				shadowTiddlers.push(tiddler);
+			}
+		});
+		
+		// Batch renormalize
+		return $tw.renormalizationFlow.renormalizeBatch(shadowTiddlers, options);
 	};
 }
 
