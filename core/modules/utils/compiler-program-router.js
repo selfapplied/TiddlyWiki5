@@ -63,11 +63,13 @@ Compiler-Program Router Constructor
 @param {object} wiki - TiddlyWiki instance
 @param {object} zp35Operator - ZP35 operator instance
 @param {object} regenZipVM - REGEN-ZIP VM instance
+@param {object} shadowInducer - Optional shadow inducer instance
 */
-function CompilerProgramRouter(wiki, zp35Operator, regenZipVM) {
+function CompilerProgramRouter(wiki, zp35Operator, regenZipVM, shadowInducer) {
 	this.wiki = wiki;
 	this.zp35 = zp35Operator;
 	this.vm = regenZipVM;
+	this.shadowInducer = shadowInducer || null;
 	
 	// Registry of compiler tiddlers
 	this.compilers = {};
@@ -297,9 +299,12 @@ Route a program tiddler to the most appropriate compiler tiddler
 Uses ZP35 distance to find the closest compiler in semantic space
 
 @param {object} programTiddler - Program tiddler to route
+@param {object} options - Routing options (allowShadowInduction: boolean)
 @returns {object} - Routing result
 */
-CompilerProgramRouter.prototype.route = function(programTiddler) {
+CompilerProgramRouter.prototype.route = function(programTiddler, options) {
+	options = options || {};
+	
 	if(!programTiddler) {
 		return {
 			success: false,
@@ -318,10 +323,15 @@ CompilerProgramRouter.prototype.route = function(programTiddler) {
 	var compilerTitles = Object.keys(this.compilers);
 	
 	if(compilerTitles.length === 0) {
+		// No compilers exist - try shadow induction if enabled
+		if(options.allowShadowInduction && this.shadowInducer) {
+			return this.handleShadowInduction(programTiddler, "no_compilers");
+		}
+		
 		return {
 			success: false,
 			message: "No compilers registered",
-			suggestion: "Register at least one compiler tiddler"
+			suggestion: "Register at least one compiler tiddler or enable shadow induction"
 		};
 	}
 	
@@ -377,6 +387,11 @@ CompilerProgramRouter.prototype.route = function(programTiddler) {
 		mode = "ood";
 		confidence = 0.1;
 		message = "Program is out-of-distribution - may need new compiler or sandbox";
+		
+		// Program is OOD - try shadow induction if enabled
+		if(options.allowShadowInduction && this.shadowInducer) {
+			return this.handleShadowInduction(programTiddler, "ood");
+		}
 	}
 	
 	var result = {
@@ -588,6 +603,105 @@ Useful when tiddlers have been modified
 */
 CompilerProgramRouter.prototype.clearCache = function() {
 	this.routingCache = {};
+};
+
+/*
+Handle shadow induction for a program tiddler
+Induces a shadow compiler from the program and routes through it
+
+@param {object} programTiddler - Program tiddler needing a compiler
+@param {string} reason - Reason for induction ("no_compilers" or "ood")
+@returns {object} - Routing result with induced compiler
+*/
+CompilerProgramRouter.prototype.handleShadowInduction = function(programTiddler, reason) {
+	if(!this.shadowInducer) {
+		return {
+			success: false,
+			message: "Shadow induction not available (no inducer configured)"
+		};
+	}
+	
+	// Check if we already have a shadow compiler for this tiddler
+	var existingShadow = this.shadowInducer.getShadowCompiler(programTiddler);
+	if(existingShadow) {
+		// Use existing shadow compiler
+		var shadowCompiler = existingShadow.compiler;
+		
+		// Register if not already registered
+		var shadowTitle = shadowCompiler.fields.title;
+		if(!this.compilers[shadowTitle]) {
+			this.registerCompiler(shadowCompiler);
+		}
+		
+		// Route to the shadow compiler
+		var shadowCoord = this.zp35.applyGoldenOperator(shadowCompiler);
+		var programCoord = this.zp35.applyGoldenOperator(programTiddler);
+		var distance = Math.abs(programCoord - shadowCoord);
+		
+		return {
+			success: true,
+			compiler: this.compilers[shadowTitle],
+			compilerTitle: shadowTitle,
+			distance: distance,
+			mode: "shadow",
+			confidence: 0.8,
+			message: "Routed to existing shadow compiler (reason: " + reason + ")",
+			programCoord: programCoord,
+			compilerCoord: shadowCoord,
+			shadowInduced: true,
+			inductionReason: reason
+		};
+	}
+	
+	// Induce new shadow compiler
+	var inductionResult = this.shadowInducer.induceShadowCompiler(programTiddler);
+	
+	if(!inductionResult.success) {
+		return {
+			success: false,
+			message: "Shadow induction failed: " + inductionResult.error,
+			inductionAttempted: true
+		};
+	}
+	
+	// Register the induced compiler
+	var shadowCompiler = inductionResult.compiler;
+	var registered = this.registerCompiler(shadowCompiler);
+	
+	if(!registered) {
+		return {
+			success: false,
+			message: "Failed to register induced shadow compiler",
+			inductionAttempted: true
+		};
+	}
+	
+	// Route to the new shadow compiler
+	var shadowTitle = shadowCompiler.fields.title;
+	var shadowCoord = this.zp35.applyGoldenOperator(shadowCompiler);
+	var programCoord = this.zp35.applyGoldenOperator(programTiddler);
+	var distance = Math.abs(programCoord - shadowCoord);
+	
+	var result = {
+		success: true,
+		compiler: this.compilers[shadowTitle],
+		compilerTitle: shadowTitle,
+		distance: distance,
+		mode: "shadow",
+		confidence: 0.7,
+		message: "Induced and routed to new shadow compiler (reason: " + reason + ")",
+		programCoord: programCoord,
+		compilerCoord: shadowCoord,
+		shadowInduced: true,
+		inductionReason: reason,
+		analysis: inductionResult.analysis,
+		kernel: inductionResult.kernel
+	};
+	
+	// Cache result
+	this.routingCache[programTiddler.fields.title] = result;
+	
+	return result;
 };
 
 /*
