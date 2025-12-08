@@ -641,6 +641,90 @@ Tests for CE Tower implementation
 		
 		});
 	
+		/*
+	═══════════════════════════════════════════════════════════════════════
+	CE1 Learning Law Integration
+	═══════════════════════════════════════════════════════════════════════
+	*/
+
+		describe("CE1 Learning Law Integration", function() {
+	
+		it("should provide learning law instance", function() {
+			var tower = new CETower();
+			var law = tower.getLearningLaw();
+		
+			expect(law).toBeDefined();
+			expect(law.gamma).toBeCloseTo(0.5772, 4);
+			expect(law.getLearningConstant).toBeDefined();
+		});
+	
+		it("should estimate learning samples based on depth", function() {
+			var tower = new CETower();
+		
+			var simple = tower.estimateLearningSamples(1, { includeVariance: false });
+			var complex = tower.estimateLearningSamples(4, { includeVariance: false });
+		
+			// Depth 4 requires sqrt(4) = 2x more examples than depth 1
+			expect(complex.expected).toBeGreaterThan(simple.expected);
+			expect(complex.expected / simple.expected).toBeCloseTo(2.0, 0);
+		});
+	
+		it("should assess pattern readiness", function() {
+			var tower = new CETower();
+		
+			var insufficient = tower.assessPatternReadiness(100, 1);
+			var sufficient = tower.assessPatternReadiness(500, 1);
+		
+			expect(insufficient.status).toBe("insufficient");
+			expect(sufficient.status).not.toBe("insufficient");
+			expect(sufficient.confidence).toBeGreaterThan(insufficient.confidence);
+		});
+	
+		it("should scale complexity with compositional depth", function() {
+			var tower = new CETower();
+		
+			// Depth 1, 4, 9, 16 should scale as sqrt: 1, 2, 3, 4
+			var depth1 = tower.estimateLearningSamples(1, { includeVariance: false });
+			var depth4 = tower.estimateLearningSamples(4, { includeVariance: false });
+			var depth9 = tower.estimateLearningSamples(9, { includeVariance: false });
+		
+			var ratio_4_1 = depth4.expected / depth1.expected;
+			var ratio_9_1 = depth9.expected / depth1.expected;
+		
+			expect(ratio_4_1).toBeCloseTo(2.0, 0);
+			expect(ratio_9_1).toBeCloseTo(3.0, 0);
+		});
+	
+		it("should derive ZP from kappa", function() {
+			var tower = new CETower({ kappa: 0.35 });
+			var law = tower.getLearningLaw();
+		
+			// ZP should be derived from kappa
+			// kappa / 250 = 0.35 / 250 = 0.0014
+			expect(law.zp).toBeCloseTo(0.0014, 4);
+		});
+	
+		it("should handle depth 0 gracefully", function() {
+			var tower = new CETower();
+		
+			// Depth 0 should default to depth 1
+			var estimate = tower.estimateLearningSamples(0);
+		
+			expect(estimate.expected).toBeGreaterThan(0);
+		});
+	
+		it("should return consistent estimates", function() {
+			var tower = new CETower();
+		
+			var estimate1 = tower.estimateLearningSamples(2);
+			var estimate2 = tower.estimateLearningSamples(2);
+		
+			// Same depth should give same base estimate
+			expect(estimate1.expected).toBe(estimate2.expected);
+		});
+	
+		});
+	
 	});
 
 })();

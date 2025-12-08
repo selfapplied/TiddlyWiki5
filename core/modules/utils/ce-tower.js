@@ -597,6 +597,60 @@ CETower.prototype.initializeStandardRules = function() {
 };
 
 /*
+═══════════════════════════════════════════════════════════════════════════
+Integration with CE1 Learning Law
+═══════════════════════════════════════════════════════════════════════════
+
+The CE1 Learning Law (γ/ZP ≈ 411) provides theoretical foundation for
+understanding how many examples are needed to learn compositional patterns
+at the CE1 layer.
+*/
+
+/*
+Get CE1 Learning Law instance
+@returns {object} - CE1LearningLaw instance
+*/
+CETower.prototype.getLearningLaw = function() {
+	if(!this.learningLaw) {
+		// Lazy load CE1 Learning Law module
+		var CE1LearningLaw = require("$:/core/modules/utils/ce1-learning-law.js").CE1LearningLaw;
+		this.learningLaw = new CE1LearningLaw({
+			zp: this.kappa / 250 // Derive ZP from kappa (κ = 0.35 → ZP ≈ 0.0014)
+		});
+	}
+	return this.learningLaw;
+};
+
+/*
+Estimate examples needed to learn a compositional pattern
+@param {number} depth - Compositional depth of pattern
+@param {object} options - Options for estimation
+@returns {object} - Example estimate with confidence bounds
+*/
+CETower.prototype.estimateLearningSamples = function(depth, options) {
+	var law = this.getLearningLaw();
+	
+	// Depth increases complexity roughly as sqrt(depth)
+	// This accounts for compositional growth
+	var complexityFactor = Math.sqrt(depth || 1);
+	
+	return law.estimateExamplesNeeded(complexityFactor, options);
+};
+
+/*
+Assess whether sufficient examples have been seen for a pattern
+@param {number} examplesSeen - Number of examples observed
+@param {number} depth - Compositional depth
+@returns {object} - Readiness assessment
+*/
+CETower.prototype.assessPatternReadiness = function(examplesSeen, depth) {
+	var law = this.getLearningLaw();
+	var complexityFactor = Math.sqrt(depth || 1);
+	
+	return law.assessLearningReadiness(examplesSeen, complexityFactor);
+};
+
+/*
 Export the module
 */
 exports.CETower = CETower;

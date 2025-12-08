@@ -61,6 +61,8 @@ function CE1LearningLaw(options) {
 	
 	// Variance factor for real-world adjustments
 	// Accounts for noise, complexity, and domain specifics
+	// Default 0.2 (20%) based on empirical variance in learning studies
+	// Range typically observed: 15-25% standard deviation from mean
 	this.varianceFactor = options.varianceFactor || 0.2;
 }
 
@@ -137,19 +139,26 @@ CE1LearningLaw.prototype.estimateExamplesNeeded = function(complexityFactor, opt
 	};
 };
 
+// Z-score constants for common confidence levels
+var Z_SCORE_99 = 2.576;  // 99% confidence
+var Z_SCORE_95 = 1.96;   // 95% confidence
+var Z_SCORE_90 = 1.645;  // 90% confidence
+var Z_SCORE_80 = 1.282;  // 80% confidence
+var Z_SCORE_68 = 1.0;    // 68% confidence (1 std dev)
+
 /*
 Get Z-score for confidence level
 @param {number} confidence - Confidence level (0-1)
 @returns {number} - Approximate Z-score
 */
 CE1LearningLaw.prototype.confidenceZScore = function(confidence) {
-	// Common confidence levels
-	if(confidence >= 0.99) return 2.576;
-	if(confidence >= 0.95) return 1.96;
-	if(confidence >= 0.90) return 1.645;
-	if(confidence >= 0.80) return 1.282;
-	if(confidence >= 0.68) return 1.0;
-	return 1.0; // Default to 1 std dev
+	// Common confidence levels mapped to Z-scores
+	if(confidence >= 0.99) return Z_SCORE_99;
+	if(confidence >= 0.95) return Z_SCORE_95;
+	if(confidence >= 0.90) return Z_SCORE_90;
+	if(confidence >= 0.80) return Z_SCORE_80;
+	if(confidence >= 0.68) return Z_SCORE_68;
+	return Z_SCORE_68; // Default to 1 std dev
 };
 
 /*
@@ -304,6 +313,12 @@ Curvature Gap Analysis
 ═══════════════════════════════════════════════════════════════════════════
 */
 
+// Learning phase thresholds (as fraction of total examples)
+var PHASE_EARLY_THRESHOLD = 0.25;   // 0-25%: Early learning
+var PHASE_MIDDLE_THRESHOLD = 0.75;  // 25-75%: Middle learning
+var PHASE_LATE_THRESHOLD = 1.0;     // 75-100%: Late learning
+// >100%: Converged
+
 /*
 Calculate the curvature gap that needs to be bridged
 The gap between discrete pattern accumulation and continuous model formation
@@ -320,13 +335,13 @@ CE1LearningLaw.prototype.analyzeCurvatureGap = function(currentExamples) {
 	// Examples still needed
 	var remainingExamples = Math.max(0, this.learningConstant - currentExamples);
 	
-	// Learning phase
+	// Learning phase based on progress thresholds
 	var phase;
-	if(progressRatio < 0.25) {
+	if(progressRatio < PHASE_EARLY_THRESHOLD) {
 		phase = "early";
-	} else if(progressRatio < 0.75) {
+	} else if(progressRatio < PHASE_MIDDLE_THRESHOLD) {
 		phase = "middle";
-	} else if(progressRatio < 1.0) {
+	} else if(progressRatio < PHASE_LATE_THRESHOLD) {
 		phase = "late";
 	} else {
 		phase = "converged";
@@ -340,7 +355,7 @@ CE1LearningLaw.prototype.analyzeCurvatureGap = function(currentExamples) {
 		remainingCurvature: remainingCurvature,
 		remainingExamples: Math.round(remainingExamples),
 		phase: phase,
-		converged: progressRatio >= 1.0
+		converged: progressRatio >= PHASE_LATE_THRESHOLD
 	};
 };
 

@@ -26,14 +26,18 @@ Tests for CE1 Learning Law implementation
 	═══════════════════════════════════════════════════════════════════════
 	*/
 	
-		describe("Construction and Constants", function() {
+		// Test precision constants
+	var GAMMA_PRECISION = 9;  // 9 decimal places for Euler-Mascheroni constant
+	var ZP_PRECISION = 4;     // 4 decimal places for ZP coordinate
+
+	describe("Construction and Constants", function() {
 		
 			it("should create CE1 Learning Law with default parameters", function() {
 				var law = new CE1LearningLaw();
 			
 				expect(law).toBeDefined();
-				expect(law.gamma).toBeCloseTo(0.5772156649, 9);
-				expect(law.zp).toBeCloseTo(0.0014, 4);
+				expect(law.gamma).toBeCloseTo(0.5772156649, GAMMA_PRECISION);
+				expect(law.zp).toBeCloseTo(0.0014, ZP_PRECISION);
 			});
 		
 			it("should calculate learning constant from γ/ZP", function() {
@@ -60,7 +64,7 @@ Tests for CE1 Learning Law implementation
 			it("should export Euler-Mascheroni constant", function() {
 				var gamma = require("$:/core/modules/utils/ce1-learning-law.js").EULER_MASCHERONI_GAMMA;
 			
-				expect(gamma).toBeCloseTo(0.5772156649, 9);
+				expect(gamma).toBeCloseTo(0.5772156649, GAMMA_PRECISION);
 			});
 		
 			it("should export CE1 ZP coordinate", function() {
@@ -97,7 +101,7 @@ Tests for CE1 Learning Law implementation
 				var law = new CE1LearningLaw();
 				var gamma = law.getGamma();
 			
-				expect(gamma).toBeCloseTo(0.5772156649, 9);
+				expect(gamma).toBeCloseTo(0.5772156649, GAMMA_PRECISION);
 			});
 		
 			it("should return ZP coordinate", function() {
@@ -302,7 +306,7 @@ Tests for CE1 Learning Law implementation
 			
 				expect(gap.currentExamples).toBe(0);
 				expect(gap.progressRatio).toBe(0);
-				expect(gap.remainingCurvature).toBeCloseTo(law.gamma, 9);
+				expect(gap.remainingCurvature).toBeCloseTo(law.gamma, GAMMA_PRECISION);
 				expect(gap.phase).toBe("early");
 				expect(gap.converged).toBe(false);
 			});
@@ -549,7 +553,7 @@ Tests for CE1 Learning Law implementation
 				var law = new CE1LearningLaw();
 				var summary = law.getSummary();
 			
-				expect(summary.constants.gamma).toBeCloseTo(0.5772, 4);
+				expect(summary.constants.gamma).toBeCloseTo(0.5772, ZP_PRECISION);
 				expect(summary.constants.zp).toBe(0.0014);
 				expect(summary.constants.learningConstant).toBeGreaterThan(400);
 			});
