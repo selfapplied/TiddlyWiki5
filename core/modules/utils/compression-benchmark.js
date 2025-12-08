@@ -29,7 +29,7 @@ function CompressionBenchmark(options) {
 /*
 Benchmark gzip compression
 @param {Buffer} data - Input data
-@returns {Promise<object>} - Compression results
+@returns {Promise<object>} - Promise that resolves with compression results including size, ratio, timing, and verification status
 */
 CompressionBenchmark.prototype.benchmarkGzip = function(data) {
 	return new Promise(function(resolve, reject) {

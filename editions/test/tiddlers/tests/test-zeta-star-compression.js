@@ -151,7 +151,7 @@ describe("Zeta-Star Compression", function() {
 	it("should compute self-similarity", function() {
 		// Skip in browser environment where Buffer is not available
 		if(typeof Buffer === 'undefined') {
-			pending("Buffer not available in browser environment");
+			pending();
 			return;
 		}
 		
@@ -195,7 +195,7 @@ describe("Zeta-Star Compression", function() {
 	it("should handle Buffer input", function() {
 		// Skip in browser environment where Buffer is not available
 		if(typeof Buffer === 'undefined') {
-			pending("Buffer not available in browser environment");
+			pending();
 			return;
 		}
 		

@@ -79,8 +79,15 @@ ZetaStarCompression.prototype.computeZP35Coordinate = function(data) {
 		return 0;
 	}
 	
-	// Convert to buffer if string
-	var buffer = typeof data === 'string' ? Buffer.from(data, 'utf8') : data;
+	// Convert to buffer if string, validate if not
+	var buffer;
+	if(typeof data === 'string') {
+		buffer = Buffer.from(data, 'utf8');
+	} else if(Buffer.isBuffer(data)) {
+		buffer = data;
+	} else {
+		throw new Error("Data must be a string or Buffer");
+	}
 	
 	// Compute spectral signature using byte frequency analysis
 	var freq = new Array(256).fill(0);
@@ -182,7 +189,15 @@ ZetaStarCompression.prototype.extractSpectralSignature = function(data) {
 		};
 	}
 	
-	var buffer = typeof data === 'string' ? Buffer.from(data, 'utf8') : data;
+	// Convert to buffer if string, validate if not
+	var buffer;
+	if(typeof data === 'string') {
+		buffer = Buffer.from(data, 'utf8');
+	} else if(Buffer.isBuffer(data)) {
+		buffer = data;
+	} else {
+		throw new Error("Data must be a string or Buffer");
+	}
 	var n = buffer.length;
 	
 	// Compute ZP35 coordinate
@@ -283,7 +298,15 @@ ZetaStarCompression.prototype.compress = function(data) {
 		};
 	}
 	
-	var buffer = typeof data === 'string' ? Buffer.from(data, 'utf8') : data;
+	// Convert to buffer if string, validate if not
+	var buffer;
+	if(typeof data === 'string') {
+		buffer = Buffer.from(data, 'utf8');
+	} else if(Buffer.isBuffer(data)) {
+		buffer = data;
+	} else {
+		throw new Error("Data must be a string or Buffer");
+	}
 	var originalSize = buffer.length;
 	
 	// Extract spectral signature
