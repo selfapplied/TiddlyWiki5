@@ -44,6 +44,21 @@ var THRESHOLDS = {
 };
 
 /*
+Constants for coherence analysis
+*/
+var COHERENCE_CONSTANTS = {
+	// Scaling factor for semantic distance from plateau center
+	SEMANTIC_DISTANCE_SCALE: 10,
+	
+	// Score bounds
+	SCORE_MIN: 0,
+	SCORE_MAX: 1,
+	
+	// Maximum number of candidate compilers to return
+	MAX_CANDIDATES: 3
+};
+
+/*
 Compiler-Program Router Constructor
 @param {object} wiki - TiddlyWiki instance
 @param {object} zp35Operator - ZP35 operator instance
@@ -171,9 +186,9 @@ CompilerProgramRouter.prototype.analyzeCoherence = function(tiddler, coord, heig
 	
 	// Semantic coherence: coordinate stability in fractal space
 	// Coordinates near plateau centers indicate stable semantic positions
-	var plateauCenter = Math.round(coord * 10) / 10;
+	var plateauCenter = Math.round(coord * COHERENCE_CONSTANTS.SEMANTIC_DISTANCE_SCALE) / COHERENCE_CONSTANTS.SEMANTIC_DISTANCE_SCALE;
 	var distanceFromCenter = Math.abs(coord - plateauCenter);
-	factors.semantic = Math.max(0, 1.0 - (distanceFromCenter * 10)); // Scale to [0, 1], clamp at 0
+	factors.semantic = Math.max(0, 1.0 - (distanceFromCenter * COHERENCE_CONSTANTS.SEMANTIC_DISTANCE_SCALE)); // Scale to [0, 1], clamp at 0
 	
 	// Temporal coherence: version fields, modification patterns
 	if(tiddler.fields.version) {
@@ -195,8 +210,8 @@ CompilerProgramRouter.prototype.analyzeCoherence = function(tiddler, coord, heig
 		factors.temporal * temporalWeight
 	);
 	
-	// Normalize to [0, 1]
-	score = Math.max(0, Math.min(1, score));
+	// Normalize to [SCORE_MIN, SCORE_MAX]
+	score = Math.max(COHERENCE_CONSTANTS.SCORE_MIN, Math.min(COHERENCE_CONSTANTS.SCORE_MAX, score));
 	
 	return {
 		score: score,
@@ -374,7 +389,7 @@ CompilerProgramRouter.prototype.route = function(programTiddler) {
 		message: message,
 		programCoord: programCoord,
 		compilerCoord: this.zp35.applyGoldenOperator(bestCompiler.tiddler),
-		candidates: candidates.slice(0, 3) // Top 3 candidates
+		candidates: candidates.slice(0, COHERENCE_CONSTANTS.MAX_CANDIDATES) // Top candidates
 	};
 	
 	// Cache result
