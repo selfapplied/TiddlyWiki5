@@ -281,7 +281,7 @@ InnerWikiWidget.prototype.refresh = function(changedTiddlers) {
 			this.deleteAnchors();
 			this.createAnchors();
 		}
-		return childrenRefreshed
+		return childrenRefreshed;
 	}
 };
 

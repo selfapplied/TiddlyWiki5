@@ -308,5 +308,19 @@ js.configs.recommended,
 
 },
     es2017rules,
-    es2023rules
+    es2023rules,
+// Allow hashbang in tiddlywiki.js entry point
+{
+    files: ["tiddlywiki.js"],
+    rules: {
+        "es-x/no-hashbang": "off"
+    }
+},
+// Relax class-methods-use-this for example files
+{
+    files: ["*_EXAMPLE.js"],
+    rules: {
+        "class-methods-use-this": "off"
+    }
+}
 ]);
