@@ -339,7 +339,7 @@ describe("Compiler-Program Router", function() {
 			expect(routing.distance).toBeDefined();
 		});
 		
-		it("should return error when no compilers registered", function() {
+		it("should return error when no compilers registered and shadow induction disabled", function() {
 			var program = {
 				fields: {
 					title: "OrphanProgram",
@@ -347,7 +347,7 @@ describe("Compiler-Program Router", function() {
 				}
 			};
 			
-			var routing = router.route(program);
+			var routing = router.route(program, { allowShadowInduction: false });
 			
 			expect(routing.success).toBe(false);
 			expect(routing.message).toContain("No compilers");
@@ -734,6 +734,137 @@ describe("Compiler-Program Router", function() {
 			// Clear cache
 			router.clearCache();
 			expect(Object.keys(router.routingCache).length).toBe(0);
+		});
+		
+	});
+	
+	describe("Shadow Induction Integration", function() {
+		
+		var router;
+		
+		beforeEach(function() {
+			var zp35 = new ZP35Operator();
+			var vm = new RegenZipVM(wiki);
+			router = new CompilerProgramRouter(wiki, zp35, vm);
+		});
+		
+		it("should induce shadow when no compilers exist", function() {
+			var program = {
+				fields: {
+					title: "OrphanProgram",
+					text: "Content with **markdown**",
+					tags: ["test"]
+				}
+			};
+			
+			var routing = router.route(program, { allowShadowInduction: true });
+			
+			expect(routing.success).toBe(true);
+			expect(routing.mode).toBe("induced");
+			expect(routing.shadowInduction).toBe(true);
+			expect(routing.compilerTitle).toBe("OrphanProgram-shadow");
+			expect(routing.induction).toBeDefined();
+		});
+		
+		it("should induce shadow when all compilers are OOD", function() {
+			// Register a very specific compiler
+			var compiler = {
+				fields: {
+					title: "VerySpecificCompiler",
+					generator: "specific",
+					type: "application/x-specific",
+					tags: ["specific", "narrow", "focused", "specialized"]
+				}
+			};
+			
+			router.registerCompiler(compiler);
+			
+			// Create a very different program
+			var program = {
+				fields: {
+					title: "VeryDifferentProgram",
+					text: "Completely different content"
+				}
+			};
+			
+			var routing = router.route(program, { allowShadowInduction: true });
+			
+			// Should route to induced shadow, not the OOD compiler
+			expect(routing.success).toBe(true);
+			if(routing.mode === "induced") {
+				expect(routing.shadowInduction).toBe(true);
+				expect(routing.compilerTitle).toBe("VeryDifferentProgram-shadow");
+			}
+		});
+		
+		it("should not induce shadow when allowShadowInduction is false", function() {
+			var program = {
+				fields: {
+					title: "NoInductionProgram",
+					text: "Content"
+				}
+			};
+			
+			var routing = router.route(program, { allowShadowInduction: false });
+			
+			expect(routing.success).toBe(false);
+			expect(routing.shadowInduction).toBeUndefined();
+		});
+		
+		it("should provide induceShadow API method", function() {
+			var tiddler = {
+				fields: {
+					title: "DirectInductionTest",
+					text: "Content",
+					tags: ["test"]
+				}
+			};
+			
+			var result = router.induceShadow(tiddler);
+			
+			expect(result).toBeDefined();
+			expect(result.success).toBe(true);
+			expect(result.shadowCompiler).toBeDefined();
+			expect(result.shadowCompiler.fields.title).toBe("DirectInductionTest-shadow");
+		});
+		
+		it("should cache induced shadow routing", function() {
+			var program = {
+				fields: {
+					title: "CachedInductionProgram",
+					text: "Content",
+					tags: ["test"]
+				}
+			};
+			
+			// First routing - should induce shadow
+			var routing1 = router.route(program, { allowShadowInduction: true });
+			expect(routing1.success).toBe(true);
+			
+			// Clear the shadow inducer to ensure cache is used
+			router.shadowInducer = null;
+			
+			// Second routing - should use cache
+			var routing2 = router.route(program, { allowShadowInduction: true });
+			expect(routing2.success).toBe(true);
+			expect(routing2.compilerTitle).toBe(routing1.compilerTitle);
+		});
+		
+		it("should register induced shadow as compiler", function() {
+			var program = {
+				fields: {
+					title: "RegisteredShadowProgram",
+					text: "Content",
+					tags: ["test"]
+				}
+			};
+			
+			router.route(program, { allowShadowInduction: true });
+			
+			// Check that shadow was registered as a compiler
+			var shadowTitle = "RegisteredShadowProgram-shadow";
+			expect(router.compilers[shadowTitle]).toBeDefined();
+			expect(router.compilers[shadowTitle].tiddler.fields.title).toBe(shadowTitle);
 		});
 		
 	});
