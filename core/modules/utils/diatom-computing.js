@@ -365,7 +365,7 @@ Check symmetry and convergence (witness)
 Diatom.prototype.checkSymmetry = function(morphismState) {
 	// Check if curvature has stabilized
 	var error = Math.abs(morphismState.curvature - this.fixedPoint);
-	var converged = error < 0.01;
+	var converged = error <= 0.01;
 	
 	return {
 		symmetry: this.lattice.symmetry,

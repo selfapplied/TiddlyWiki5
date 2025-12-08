@@ -641,8 +641,6 @@ Tests for CE Tower implementation
 		
 		});
 	
-	});
-
 	/*
 	═══════════════════════════════════════════════════════════════════════
 	Diatom Growth Integration
@@ -736,6 +734,8 @@ Tests for CE Tower implementation
 			expect(result.valid).toBe(true);
 			// Curvature should be within tolerance of κ
 			expect(Math.abs(source.morphism.curvature - tower.kappa)).toBeLessThan(0.5);
+		});
+
 		});
 
 	});
