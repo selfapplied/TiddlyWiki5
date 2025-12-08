@@ -609,6 +609,18 @@ CompilerProgramRouter.prototype.clearCache = function() {
 };
 
 /*
+Get or create shadow inducer (lazy loading helper)
+@returns {object} - Shadow inducer instance
+*/
+CompilerProgramRouter.prototype.getShadowInducer = function() {
+	if(!this.shadowInducer) {
+		var ShadowInducer = require("$:/core/modules/utils/induce-shadow.js").ShadowInducer;
+		this.shadowInducer = new ShadowInducer(this.wiki, this.zp35);
+	}
+	return this.shadowInducer;
+};
+
+/*
 Route a program with shadow induction
 Creates a shadow compiler on-the-fly for programs with no suitable compiler
 
@@ -616,14 +628,11 @@ Creates a shadow compiler on-the-fly for programs with no suitable compiler
 @returns {object} - Routing result with induced shadow
 */
 CompilerProgramRouter.prototype.routeWithShadowInduction = function(programTiddler) {
-	// Lazy load shadow inducer
-	if(!this.shadowInducer) {
-		var ShadowInducer = require("$:/core/modules/utils/induce-shadow.js").ShadowInducer;
-		this.shadowInducer = new ShadowInducer(this.wiki, this.zp35);
-	}
+	// Get shadow inducer (lazy loaded)
+	var inducer = this.getShadowInducer();
 	
 	// Check if tiddler needs shadow induction
-	if(!this.shadowInducer.needsShadowInduction(programTiddler)) {
+	if(!inducer.needsShadowInduction(programTiddler)) {
 		return {
 			success: false,
 			message: "Tiddler does not need or cannot support shadow induction",
@@ -632,7 +641,7 @@ CompilerProgramRouter.prototype.routeWithShadowInduction = function(programTiddl
 	}
 	
 	// Induce shadow compiler
-	var inductionResult = this.shadowInducer.induceShadow(programTiddler);
+	var inductionResult = inducer.induceShadow(programTiddler);
 	
 	if(!inductionResult.success) {
 		return {
@@ -685,13 +694,9 @@ Public API for shadow induction
 @returns {object} - Shadow induction result
 */
 CompilerProgramRouter.prototype.induceShadow = function(tiddler) {
-	// Lazy load shadow inducer
-	if(!this.shadowInducer) {
-		var ShadowInducer = require("$:/core/modules/utils/induce-shadow.js").ShadowInducer;
-		this.shadowInducer = new ShadowInducer(this.wiki, this.zp35);
-	}
-	
-	return this.shadowInducer.induceShadow(tiddler);
+	// Get shadow inducer (lazy loaded)
+	var inducer = this.getShadowInducer();
+	return inducer.induceShadow(tiddler);
 };
 
 /*

@@ -38,6 +38,9 @@ function ShadowInducer(wiki, zp35Operator) {
 	this.zp35 = zp35Operator;
 	
 	// Guardian threshold - inherited from ZP35
+	// κ = 0.35 is the coherence curvature for composition safety
+	// Derived from empirical learnability limits (~400 examples/transition)
+	// See ZP35_GOLDEN_OPERATOR.md for mathematical foundations
 	this.kappa = 0.35;
 	
 	// Coherence thresholds for crisp/chaotic separation
@@ -457,6 +460,8 @@ Mark original tiddler as self-hosted program
 @returns {object} - Modified tiddler fields
 */
 ShadowInducer.prototype.markAsSelfHosted = function(tiddler, shadowCompiler) {
+	// Shallow copy of fields - nested objects would be shared references
+	// This is acceptable since we only modify top-level field values
 	var modifiedFields = Object.assign({}, tiddler.fields);
 	
 	// Add compiler reference
@@ -492,7 +497,7 @@ ShadowInducer.prototype.generateSeed = function(title) {
 	for(var i = 0; i < title.length; i++) {
 		var char = title.charCodeAt(i);
 		hash = ((hash << 5) - hash) + char;
-		hash = hash & hash; // Convert to 32-bit integer
+		hash = hash | 0; // Convert to 32-bit integer
 	}
 	
 	// Return hex representation with prefix
