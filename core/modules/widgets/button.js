@@ -72,7 +72,7 @@ ButtonWidget.prototype.render = function(parent,nextSibling) {
 	if(this.tooltip) {
 		domNode.setAttribute("title",this.tooltip);
 	}
-	if (this.role) {
+	if(this.role) {
 		domNode.setAttribute("role", this.role);
 	}
 	if(this.popup || this.popupTitle) {
@@ -144,7 +144,7 @@ ButtonWidget.prototype.getBoundingClientRect = function() {
 };
 
 ButtonWidget.prototype.isSelected = function() {
-    return this.setTitle ? (this.setField ? this.wiki.getTiddler(this.setTitle).getFieldString(this.setField) === this.setTo :
+	return this.setTitle ? (this.setField ? this.wiki.getTiddler(this.setTitle).getFieldString(this.setField) === this.setTo :
 		(this.setIndex ? this.wiki.extractTiddlerDataItem(this.setTitle,this.setIndex) === this.setTo :
 			this.wiki.getTiddlerText(this.setTitle))) || this.defaultSetValue || this.getVariable("currentTiddler") :
 		this.wiki.getTextReference(this.set,this.defaultSetValue,this.getVariable("currentTiddler")) === this.setTo;
@@ -196,7 +196,7 @@ ButtonWidget.prototype.triggerPopup = function(event) {
 ButtonWidget.prototype.setTiddler = function() {
 	if(this.setTitle) {
 		this.setField ? this.wiki.setText(this.setTitle,this.setField,undefined,this.setTo) :
-				(this.setIndex ? this.wiki.setText(this.setTitle,undefined,this.setIndex,this.setTo) :
+			(this.setIndex ? this.wiki.setText(this.setTitle,undefined,this.setIndex,this.setTo) :
 				this.wiki.setText(this.setTitle,"text",undefined,this.setTo));
 	} else {
 		this.wiki.setTextReference(this.set,this.setTo,this.getVariable("currentTiddler"));

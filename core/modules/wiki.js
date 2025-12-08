@@ -200,7 +200,7 @@ exports.generateNewTitle = function(baseTitle,options) {
 		c = (parseInt(options.startCount,10) > 0) ? parseInt(options.startCount,10) : 0,
 		prefix = (typeof(options.prefix) === "string") ? options.prefix : " ";
 
-	if (template) {
+	if(template) {
 		// "count" is important to avoid an endless loop in while(...)!!
 		template = (/\$count:?(\d+)?\$/i.test(template)) ? template : template + "$count$";
 		// .formatTitleString() expects strings as input
@@ -209,7 +209,7 @@ exports.generateNewTitle = function(baseTitle,options) {
 			title = $tw.utils.formatTitleString(template,{"base":baseTitle,"separator":prefix,"counter":(++c)+""});
 		}
 	} else {
-		if (c > 0) {
+		if(c > 0) {
 			title = baseTitle + prefix + c;
 		}
 		while(this.tiddlerExists(title) || this.isShadowTiddler(title) || this.findDraft(title)) {
@@ -578,7 +578,7 @@ exports.extractTranscludes = function(parseTreeRoot, title) {
 							}
 						}
 					} else if(parseTreeNode.attributes.tiddler) {
-						if (parseTreeNode.attributes.tiddler.type === "string") {
+						if(parseTreeNode.attributes.tiddler.type === "string") {
 							// Old transclude widget usage
 							value = parseTreeNode.attributes.tiddler.value;
 						}
@@ -641,7 +641,7 @@ Return a hashmap of tiddler titles that are referenced but not defined. Each val
 exports.getMissingTitles = function() {
 	var self = this,
 		missing = [];
-// We should cache the missing tiddler list, even if we recreate it every time any tiddler is modified
+	// We should cache the missing tiddler list, even if we recreate it every time any tiddler is modified
 	this.forEachTiddler(function(title,tiddler) {
 		var links = self.getTiddlerLinks(title);
 		$tw.utils.each(links,function(link) {
@@ -734,7 +734,7 @@ exports.findListingsOfTiddler = function(targetTitle,fieldName) {
 				for(var i = 0; i < list.length; i++) {
 					var listItem = list[i],
 						listing = listings[listItem] || [];
-					if (listing.indexOf(title) === -1) {
+					if(listing.indexOf(title) === -1) {
 						listing.push(title);
 					}
 					listings[listItem] = listing;
@@ -782,7 +782,7 @@ exports.sortByList = function(array,listTitle) {
 					}
 				}
 				// If a new position is specified, let's move it
-				if (newPos !== -1) {
+				if(newPos !== -1) {
 					// get its current Pos, and make sure
 					// sure that it's _actually_ in the list
 					// and that it would _actually_ move
@@ -1059,7 +1059,7 @@ Options include:
 exports.parseText = function(type,text,options) {
 	text = text || "";
 	options = options || {};
-	var Parser = $tw.utils.getParser(type,options)
+	var Parser = $tw.utils.getParser(type,options);
 	// Return the parser instance
 	return new Parser(type,text,{
 		parseAsInline: options.parseAsInline,
@@ -1078,11 +1078,11 @@ exports.parseTiddler = function(title,options) {
 		tiddler = this.getTiddler(title),
 		self = this;
 	return tiddler ? this.getCacheForTiddler(title,cacheType,function() {
-			if(tiddler.hasField("_canonical_uri")) {
-				options._canonical_uri = tiddler.fields._canonical_uri;
-			}
-			return self.parseText(tiddler.fields.type,tiddler.fields.text,options);
-		}) : null;
+		if(tiddler.hasField("_canonical_uri")) {
+			options._canonical_uri = tiddler.fields._canonical_uri;
+		}
+		return self.parseText(tiddler.fields.type,tiddler.fields.text,options);
+	}) : null;
 };
 
 exports.parseTextReference = function(title,field,index,options) {
@@ -1138,7 +1138,7 @@ exports.getTextReferenceParserInfo = function(title,field,index,options) {
 		parserInfo.parserType = null;
 	}
 	return parserInfo;
-}
+};
 
 /*
 Parse a block of text of a specified MIME type
@@ -1164,7 +1164,7 @@ exports.getSubstitutedText = function(text,widget,options) {
 	});
 	// Substitute any variable references with their values
 	return output.replace(/\$\((.+?)\)\$/g, function(match,varname) {
-		return widget.getVariable(varname,{defaultValue: ""})
+		return widget.getVariable(varname,{defaultValue: ""});
 	});
 };
 
@@ -1242,7 +1242,7 @@ exports.makeTranscludeWidget = function(title,options) {
 					name: "recursionMarker",
 					type: "string",
 					value: options.recursionMarker || "yes"
-					},
+				},
 				tiddler: {
 					name: "tiddler",
 					type: "string",
@@ -1385,7 +1385,7 @@ exports.search = function(text,options) {
 			}
 		}
 	}
-// Accumulate the array of fields to be searched or excluded from the search
+	// Accumulate the array of fields to be searched or excluded from the search
 	var fields = [];
 	if(options.field) {
 		if($tw.utils.isArray(options.field)) {
@@ -1518,7 +1518,7 @@ exports.checkTiddlerText = function(title,targetText,options) {
 		targetText = targetText.toLowerCase();
 	}
 	return text === targetText;
-}
+};
 
 /*
 Execute an action string without an associated context widget
@@ -1642,7 +1642,7 @@ exports.findDraft = function(targetTitle) {
 		}
 	});
 	return draftTitle;
-}
+};
 
 /*
 Check whether the specified draft tiddler has been modified.
@@ -1669,7 +1669,7 @@ historyTitle: title of history tiddler (defaults to $:/HistoryList)
 exports.addToHistory = function(title,fromPageRect,historyTitle) {
 	var story = new $tw.Story({wiki: this, historyTitle: historyTitle});
 	story.addToHistory(title,fromPageRect);
-	console.log("$tw.wiki.addToHistory() is deprecated since V5.1.23! Use the this.story.addToHistory() from the story-object!")
+	console.log("$tw.wiki.addToHistory() is deprecated since V5.1.23! Use the this.story.addToHistory() from the story-object!");
 };
 
 /*
@@ -1682,7 +1682,7 @@ options: see story.js
 exports.addToStory = function(title,fromTitle,storyTitle,options) {
 	var story = new $tw.Story({wiki: this, storyTitle: storyTitle});
 	story.addToStory(title,fromTitle,options);
-	console.log("$tw.wiki.addToStory() is deprecated since V5.1.23! Use the this.story.addToStory() from the story-object!")
+	console.log("$tw.wiki.addToStory() is deprecated since V5.1.23! Use the this.story.addToStory() from the story-object!");
 };
 
 /*

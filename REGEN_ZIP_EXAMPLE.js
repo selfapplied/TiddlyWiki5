@@ -12,234 +12,234 @@ that create assets from seeds rather than storing pre-generated content.
 
 (function() {
 
-"use strict";
+	"use strict";
 
-exports.name = "regen-zip-example";
-exports.platforms = ["browser", "node"];
-exports.after = ["startup"];
-exports.synchronous = true;
+	exports.name = "regen-zip-example";
+	exports.platforms = ["browser", "node"];
+	exports.after = ["startup"];
+	exports.synchronous = true;
 
-exports.startup = function() {
+	exports.startup = function() {
 	// Initialize the REGEN-ZIP VM if not already present
-	if(!$tw.regenZipVM && $tw.utils.RegenZipVM) {
-		$tw.regenZipVM = new $tw.utils.RegenZipVM($tw.wiki);
+		if(!$tw.regenZipVM && $tw.utils.RegenZipVM) {
+			$tw.regenZipVM = new $tw.utils.RegenZipVM($tw.wiki);
 		
-		// Register example generators
-		registerExampleGenerators();
+			// Register example generators
+			registerExampleGenerators();
 		
-		console.log("REGEN-ZIP VM initialized with example generators");
-	}
-};
+			console.log("REGEN-ZIP VM initialized with example generators");
+		}
+	};
 
-/*
+	/*
 Register example generators demonstrating the VM concept
 */
-function registerExampleGenerators() {
-	var vm = $tw.regenZipVM;
+	function registerExampleGenerators() {
+		var vm = $tw.regenZipVM;
 	
-	// Example 1: Text Pattern Generator
-	// Generates text patterns from seeds
-	vm.registerGenerator("textPatternGenerator", function(context) {
-		var seed = context.seed || "default";
-		var rng = context.rng;
-		var patterns = ["stars", "waves", "spirals", "fractals"];
+		// Example 1: Text Pattern Generator
+		// Generates text patterns from seeds
+		vm.registerGenerator("textPatternGenerator", function(context) {
+			var seed = context.seed || "default";
+			var rng = context.rng;
+			var patterns = ["stars", "waves", "spirals", "fractals"];
 		
-		// Use RNG to select pattern deterministically
-		var patternIndex = Math.floor(rng() * patterns.length);
-		var selectedPattern = patterns[patternIndex];
+			// Use RNG to select pattern deterministically
+			var patternIndex = Math.floor(rng() * patterns.length);
+			var selectedPattern = patterns[patternIndex];
 		
-		// Generate pattern description
-		var description = "Pattern '" + selectedPattern + "' generated from seed: " + seed;
+			// Generate pattern description
+			var description = "Pattern '" + selectedPattern + "' generated from seed: " + seed;
 		
-		return {
-			assets: [
-				{
-					name: "pattern.txt",
-					type: "text/plain",
-					data: description,
-					checksum: context.wiki ? null : null // Skip checksum in example
-				}
-			]
-		};
-	}, {
-		version: "1.0.0",
-		seed: "pattern-seed",
-		zp35: "0.500000.10",
-		description: "Generates text patterns from seeds"
-	});
-	
-	// Example 2: Color Palette Generator
-	// Generates color schemes deterministically
-	vm.registerGenerator("colorPaletteGenerator", function(context) {
-		var rng = context.rng;
-		var colors = [];
-		
-		// Generate 5 colors deterministically
-		for(var i = 0; i < 5; i++) {
-			var hue = Math.floor(rng() * 360);
-			var saturation = 50 + Math.floor(rng() * 50);
-			var lightness = 40 + Math.floor(rng() * 40);
-			
-			colors.push("hsl(" + hue + ", " + saturation + "%, " + lightness + "%)");
-		}
-		
-		var paletteCSS = "/* Generated Color Palette */\n";
-		colors.forEach(function(color, index) {
-			paletteCSS += ".color-" + (index + 1) + " { background-color: " + color + "; }\n";
+			return {
+				assets: [
+					{
+						name: "pattern.txt",
+						type: "text/plain",
+						data: description,
+						checksum: context.wiki ? null : null // Skip checksum in example
+					}
+				]
+			};
+		}, {
+			version: "1.0.0",
+			seed: "pattern-seed",
+			zp35: "0.500000.10",
+			description: "Generates text patterns from seeds"
 		});
-		
-		return {
-			assets: [
-				{
-					name: "palette.css",
-					type: "text/css",
-					data: paletteCSS
-				}
-			]
-		};
-	}, {
-		version: "1.0.0",
-		zp35: "0.618034.12",
-		description: "Generates deterministic color palettes"
-	});
 	
-	// Example 3: Data Table Generator
-	// Generates sample data tables
-	vm.registerGenerator("dataTableGenerator", function(context) {
-		var rng = context.rng;
-		var seed = context.seed || "table";
-		var rowCount = 10;
+		// Example 2: Color Palette Generator
+		// Generates color schemes deterministically
+		vm.registerGenerator("colorPaletteGenerator", function(context) {
+			var rng = context.rng;
+			var colors = [];
 		
-		var table = "| ID | Value | Status |\n";
-		table += "|-----|-------|--------|\n";
-		
-		for(var i = 1; i <= rowCount; i++) {
-			var value = Math.floor(rng() * 1000);
-			var status = rng() > 0.5 ? "Active" : "Inactive";
-			table += "| " + i + " | " + value + " | " + status + " |\n";
-		}
-		
-		return {
-			assets: [
-				{
-					name: "data.md",
-					type: "text/markdown",
-					data: table
-				}
-			]
-		};
-	}, {
-		version: "1.0.0",
-		zp35: "0.382000.15",
-		description: "Generates sample data tables"
-	});
-	
-	// Example 4: Simple Fractal Generator (ASCII art)
-	// Generates ASCII fractal patterns
-	vm.registerGenerator("asciiFractalGenerator", function(context) {
-		var rng = context.rng;
-		var width = 40;
-		var height = 20;
-		var output = "";
-		
-		// Simple fractal pattern generation
-		for(var y = 0; y < height; y++) {
-			for(var x = 0; x < width; x++) {
-				// Use deterministic RNG for each position
-				var value = rng();
-				
-				// Create pattern based on position and RNG
-				var pattern = ((x + y) % 3 === 0) && (value > 0.5);
-				output += pattern ? "*" : " ";
+			// Generate 5 colors deterministically
+			for(var i = 0; i < 5; i++) {
+				var hue = Math.floor(rng() * 360);
+				var saturation = 50 + Math.floor(rng() * 50);
+				var lightness = 40 + Math.floor(rng() * 40);
+			
+				colors.push("hsl(" + hue + ", " + saturation + "%, " + lightness + "%)");
 			}
-			output += "\n";
-		}
 		
-		return {
-			assets: [
-				{
-					name: "fractal.txt",
-					type: "text/plain",
-					data: output
-				}
-			]
-		};
-	}, {
-		version: "1.0.0",
-		zp35: "0.618034.18",
-		description: "Generates ASCII fractal patterns"
-	});
+			var paletteCSS = "/* Generated Color Palette */\n";
+			colors.forEach(function(color, index) {
+				paletteCSS += ".color-" + (index + 1) + " { background-color: " + color + "; }\n";
+			});
+		
+			return {
+				assets: [
+					{
+						name: "palette.css",
+						type: "text/css",
+						data: paletteCSS
+					}
+				]
+			};
+		}, {
+			version: "1.0.0",
+			zp35: "0.618034.12",
+			description: "Generates deterministic color palettes"
+		});
 	
-	// Example 5: Markdown Document Generator
-	// Generates documentation from metadata
-	vm.registerGenerator("docGenerator", function(context) {
-		var tiddler = context.tiddler;
-		var title = tiddler.fields.title;
-		var seed = context.seed || "docs";
+		// Example 3: Data Table Generator
+		// Generates sample data tables
+		vm.registerGenerator("dataTableGenerator", function(context) {
+			var rng = context.rng;
+			var seed = context.seed || "table";
+			var rowCount = 10;
 		
-		var doc = "# " + title + "\n\n";
-		doc += "**Generated from seed:** `" + seed + "`\n\n";
-		doc += "## Overview\n\n";
-		doc += "This documentation was automatically generated by the REGEN-ZIP VM.\n\n";
-		doc += "## Details\n\n";
-		doc += "- **Tiddler:** " + title + "\n";
-		doc += "- **Seed:** " + seed + "\n";
-		doc += "- **Generator:** docGenerator v1.0.0\n\n";
-		doc += "## Features\n\n";
-		doc += "- Deterministic generation\n";
-		doc += "- Minimal storage footprint\n";
-		doc += "- Regenerates on demand\n";
+			var table = "| ID | Value | Status |\n";
+			table += "|-----|-------|--------|\n";
 		
-		return {
-			assets: [
-				{
-					name: "documentation.md",
-					type: "text/markdown",
-					data: doc
-				}
-			]
-		};
-	}, {
-		version: "1.0.0",
-		zp35: "0.500000.20",
-		description: "Generates documentation from tiddler metadata"
-	});
+			for(var i = 1; i <= rowCount; i++) {
+				var value = Math.floor(rng() * 1000);
+				var status = rng() > 0.5 ? "Active" : "Inactive";
+				table += "| " + i + " | " + value + " | " + status + " |\n";
+			}
+		
+			return {
+				assets: [
+					{
+						name: "data.md",
+						type: "text/markdown",
+						data: table
+					}
+				]
+			};
+		}, {
+			version: "1.0.0",
+			zp35: "0.382000.15",
+			description: "Generates sample data tables"
+		});
 	
-	console.log("Registered " + Object.keys(vm.generators).length + " example generators");
-}
+		// Example 4: Simple Fractal Generator (ASCII art)
+		// Generates ASCII fractal patterns
+		vm.registerGenerator("asciiFractalGenerator", function(context) {
+			var rng = context.rng;
+			var width = 40;
+			var height = 20;
+			var output = "";
+		
+			// Simple fractal pattern generation
+			for(var y = 0; y < height; y++) {
+				for(var x = 0; x < width; x++) {
+				// Use deterministic RNG for each position
+					var value = rng();
+				
+					// Create pattern based on position and RNG
+					var pattern = ((x + y) % 3 === 0) && (value > 0.5);
+					output += pattern ? "*" : " ";
+				}
+				output += "\n";
+			}
+		
+			return {
+				assets: [
+					{
+						name: "fractal.txt",
+						type: "text/plain",
+						data: output
+					}
+				]
+			};
+		}, {
+			version: "1.0.0",
+			zp35: "0.618034.18",
+			description: "Generates ASCII fractal patterns"
+		});
+	
+		// Example 5: Markdown Document Generator
+		// Generates documentation from metadata
+		vm.registerGenerator("docGenerator", function(context) {
+			var tiddler = context.tiddler;
+			var title = tiddler.fields.title;
+			var seed = context.seed || "docs";
+		
+			var doc = "# " + title + "\n\n";
+			doc += "**Generated from seed:** `" + seed + "`\n\n";
+			doc += "## Overview\n\n";
+			doc += "This documentation was automatically generated by the REGEN-ZIP VM.\n\n";
+			doc += "## Details\n\n";
+			doc += "- **Tiddler:** " + title + "\n";
+			doc += "- **Seed:** " + seed + "\n";
+			doc += "- **Generator:** docGenerator v1.0.0\n\n";
+			doc += "## Features\n\n";
+			doc += "- Deterministic generation\n";
+			doc += "- Minimal storage footprint\n";
+			doc += "- Regenerates on demand\n";
+		
+			return {
+				assets: [
+					{
+						name: "documentation.md",
+						type: "text/markdown",
+						data: doc
+					}
+				]
+			};
+		}, {
+			version: "1.0.0",
+			zp35: "0.500000.20",
+			description: "Generates documentation from tiddler metadata"
+		});
+	
+		console.log("Registered " + Object.keys(vm.generators).length + " example generators");
+	}
 
-/*
+	/*
 Helper function to execute a generator for a tiddler
 Can be called from tiddler code or widgets
 */
-$tw.executeRegenZip = function(tiddlerTitle) {
-	if(!$tw.regenZipVM) {
-		console.error("REGEN-ZIP VM not initialized");
-		return null;
-	}
-	
-	var tiddler = $tw.wiki.getTiddler(tiddlerTitle);
-	if(!tiddler) {
-		console.error("Tiddler not found:", tiddlerTitle);
-		return null;
-	}
-	
-	var vm = $tw.regenZipVM;
-	vm.reset();
-	
-	if(vm.load(tiddler)) {
-		var result = vm.run();
-		
-		if(result.success) {
-			console.log("Generated", result.assets.length, "assets for:", tiddlerTitle);
-			return result;
-		} else {
-			console.error("Generation failed:", result.error);
+	$tw.executeRegenZip = function(tiddlerTitle) {
+		if(!$tw.regenZipVM) {
+			console.error("REGEN-ZIP VM not initialized");
 			return null;
 		}
-	}
 	
-	return null;
-};
+		var tiddler = $tw.wiki.getTiddler(tiddlerTitle);
+		if(!tiddler) {
+			console.error("Tiddler not found:", tiddlerTitle);
+			return null;
+		}
+	
+		var vm = $tw.regenZipVM;
+		vm.reset();
+	
+		if(vm.load(tiddler)) {
+			var result = vm.run();
+		
+			if(result.success) {
+				console.log("Generated", result.assets.length, "assets for:", tiddlerTitle);
+				return result;
+			} else {
+				console.error("Generation failed:", result.error);
+				return null;
+			}
+		}
+	
+		return null;
+	};
 
 })();

@@ -11,10 +11,10 @@ The image parser parses an image into an embeddable HTML element
 
 var ImageParser = function(type,text,options) {
 	var element = {
-			type: "element",
-			tag: "img",
-			attributes: {}
-		};
+		type: "element",
+		tag: "img",
+		attributes: {}
+	};
 	if(options._canonical_uri) {
 		element.attributes.src = {type: "string", value: options._canonical_uri};
 	} else if(text) {
