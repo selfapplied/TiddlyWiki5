@@ -391,9 +391,10 @@ describe("CE Tower", function() {
 			tower.initializeStandardRules();
 			
 			// Create a finely sampled discrete path to match geodesic closely
+			var PATH_SAMPLES = 10;
 			var discretePath = [];
-			for(var i = 0; i <= 10; i++) {
-				discretePath.push({ coordinate: i / 10 });
+			for(var i = 0; i <= PATH_SAMPLES; i++) {
+				discretePath.push({ coordinate: i / PATH_SAMPLES });
 			}
 			
 			var transformation = {

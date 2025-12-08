@@ -101,7 +101,7 @@ Store models as spectral signatures instead of explicit weights:
 
 ```javascript
 // Traditional: 4GB of weights
-model.weights = Float32Array(1_000_000_000);
+model.weights = Float32Array(1000000000);  // 1 billion parameters
 
 // Unified: 4KB of generators
 model.signature = {

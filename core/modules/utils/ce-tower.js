@@ -120,7 +120,7 @@ CETower.prototype.getDepth = function(obj) {
 	// Check various possible depth fields
 	return obj.depth || 
 	       obj.compositional_depth || 
-	       obj.fields?.depth || 
+	       (obj.fields && obj.fields.depth) || 
 	       0;
 };
 
@@ -356,7 +356,9 @@ CETower.prototype.spectralDistance = function(spectrum1, spectrum2) {
 	// Compute L2 distance between eigenvalue vectors
 	var sumSquares = 0;
 	for(var i = 0; i < ev1.length; i++) {
-		var diff = (ev1[i] || 0) - (ev2[i] || 0);
+		var val1 = (ev1[i] !== undefined) ? ev1[i] : 0;
+		var val2 = (ev2[i] !== undefined) ? ev2[i] : 0;
+		var diff = val1 - val2;
 		sumSquares += diff * diff;
 	}
 	
