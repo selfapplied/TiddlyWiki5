@@ -173,7 +173,7 @@ CompilerProgramRouter.prototype.analyzeCoherence = function(tiddler, coord, heig
 	// Coordinates near plateau centers indicate stable semantic positions
 	var plateauCenter = Math.round(coord * 10) / 10;
 	var distanceFromCenter = Math.abs(coord - plateauCenter);
-	factors.semantic = 1.0 - (distanceFromCenter * 10); // Scale to [0, 1]
+	factors.semantic = Math.max(0, 1.0 - (distanceFromCenter * 10)); // Scale to [0, 1], clamp at 0
 	
 	// Temporal coherence: version fields, modification patterns
 	if(tiddler.fields.version) {
@@ -223,9 +223,11 @@ CompilerProgramRouter.prototype.registerCompiler = function(tiddler) {
 	
 	var classification = this.classify(tiddler);
 	
-	if(classification.type !== "compiler") {
+	// Allow compiler or intermediate to be registered as compilers
+	// This gives flexibility for edge cases
+	if(classification.type === "program") {
 		console.warn("CompilerProgramRouter: Tiddler '" + tiddler.fields.title + 
-			"' does not meet compiler coherence threshold");
+			"' has low coherence (program-type) - not suitable as compiler");
 		return false;
 	}
 	
@@ -519,6 +521,12 @@ CompilerProgramRouter.prototype.mergeForExecution = function(compilerTiddler, pr
 	
 	// Use a merged title for the execution context
 	merged.fields.title = compilerTiddler.fields.title + "::" + programFields.title;
+	
+	// Ensure regen-zip field is set for VM loading
+	// If not present, use generator name as inline reference
+	if(!merged.fields["regen-zip"] && merged.fields.generator) {
+		merged.fields["regen-zip"] = merged.fields.generator;
+	}
 	
 	return merged;
 };
