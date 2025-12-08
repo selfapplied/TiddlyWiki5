@@ -718,8 +718,22 @@ By making the compiler-program distinction explicit, we get a toy model of "trai
 
 ---
 
-**See Also:**
-- `REGEN_ZIP_VM.md` - REGEN-ZIP VM specification
-- `ZP35_GOLDEN_OPERATOR.md` - ZP35 mathematical foundations
+## See Also
+
+**Unified Theory**: The Compiler-Program Pattern represents the **continuous/Lie algebra view** of the semantic manifold (ML-inspired routing and transformation). To understand how this fits into the complete unified theory, see:
+
+- **UNIFIED_COMPUTATIONAL_THEORY.md** - Complete unified theory (Section 2: ML as Lie Algebra)
+- **UNIFIED_THEORY_README.md** - Quick reference guide
+- **core/modules/utils/ce-tower.js** - CE Tower ensuring discrete-continuous compatibility
+
+**Related Documentation**:
+
+- `REGEN_ZIP_VM.md` - How VMs implement the discrete skeleton
+- `ZP35_GOLDEN_OPERATOR.md` - Mathematical foundations of coherence
+- `SHADOW_INDUCTION.md` - How spectral extraction enables self-compilation
 - `COMPILER_PROGRAM_EXAMPLE.js` - Complete code examples
-- `core/modules/utils/compiler-program-router.js` - Implementation
+
+**Implementation Files**:
+
+- `core/modules/utils/compiler-program-router.js` - Router implementation
+- `core/modules/utils/zp35-operator.js` - Distance metrics and coherence

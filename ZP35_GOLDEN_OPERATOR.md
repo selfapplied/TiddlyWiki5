@@ -491,7 +491,23 @@ It is:
 
 ---
 
+## See Also
+
+**Unified Theory**: This document provides the mathematical foundations for the golden operator. For the complete unified theory that connects VMs, ML, compression, and the CE Tower, see:
+
+- **UNIFIED_COMPUTATIONAL_THEORY.md** - Complete unified theory (master document)
+- **UNIFIED_THEORY_README.md** - Quick reference and practical guide
+- **core/modules/utils/ce-tower.js** - Executable CE Tower implementation
+
+**Related Documentation**:
+
+- **REGEN_ZIP_VM.md** - How VMs implement the discrete skeleton view
+- **COMPILER_PROGRAM_PATTERN.md** - How ML/routing implements continuous flow
+- **SHADOW_INDUCTION.md** - How spectral extraction works
+
+---
+
 **Version:** 1.0  
 **Status:** Technical Reference  
-**Last Updated:** December 7, 2024  
+**Last Updated:** December 8, 2024  
 **Maintainer:** TiddlyWiki Development Team

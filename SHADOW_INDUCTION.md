@@ -513,3 +513,26 @@ Shadow Induction transforms TiddlyWiki into a **self-compiling semantic organism
 This completes the compiler-program pattern and enables true semantic autonomy for tiddlers while maintaining the safety guarantees of ZP35 coherence geometry.
 
 The system now mirrors how natural languages work: every utterance contains both the grammar that explains it and the content that uses that grammar. TiddlyWiki tiddlers have become living semantic entities with their own built-in interpretation rules.
+
+---
+
+## See Also
+
+**Unified Theory**: Shadow Induction represents the **spectral/compression view** of the semantic manifold (eigenstructure extraction and harmonic analysis). To understand how this fits into the complete unified theory, see:
+
+- **UNIFIED_COMPUTATIONAL_THEORY.md** - Complete unified theory (Section 3: Compression as Spectral Signature)
+- **UNIFIED_THEORY_README.md** - Quick reference guide
+- **core/modules/utils/ce-tower.js** - CE Tower ensuring spectral invariance (CE3)
+
+**Related Documentation**:
+
+* [Compiler-Program Pattern](COMPILER_PROGRAM_PATTERN.md) - How routing uses induced compilers
+* [REGEN-ZIP VM](REGEN_ZIP_VM.md) - How generators act as spectral modes
+* [ZP35 Golden Operator](ZP35_GOLDEN_OPERATOR.md) - Mathematical foundations
+* [ZP35 TiddlyWiki Enhancements](ZP35_TIDDLYWIKI_ENHANCEMENTS.md) - Integration guide
+
+**Implementation Files**:
+
+* `core/modules/utils/induce-shadow.js` - Shadow induction implementation
+* `core/modules/utils/zp35-operator.js` - Coherence analysis
+* `editions/test/tiddlers/tests/test-shadow-induction.js` - Test suite
