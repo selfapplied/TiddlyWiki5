@@ -239,10 +239,24 @@ RegenZipVM.prototype.executeGenerator = function(generatorName, seed, version) {
 	
 	var result = generator.fn(generatorContext);
 	
-	// Store generated assets
-	if(result && result.assets) {
-		this.assets = this.assets.concat(result.assets);
+	// Validate result format
+	if(!result) {
+		console.warn("RegenZipVM: Generator '" + generatorName + "' returned no result");
+		return;
 	}
+	
+	if(!result.assets) {
+		console.warn("RegenZipVM: Generator '" + generatorName + "' returned result without 'assets' property");
+		return;
+	}
+	
+	if(!Array.isArray(result.assets)) {
+		console.warn("RegenZipVM: Generator '" + generatorName + "' returned non-array 'assets' property");
+		return;
+	}
+	
+	// Store generated assets
+	this.assets = this.assets.concat(result.assets);
 };
 
 /*
@@ -347,15 +361,28 @@ RegenZipVM.prototype.calculateZP35Distance = function(sig1, sig2) {
 
 /*
 Create seeded random number generator
+Uses xorshift128 algorithm for better statistical properties than LCG
 */
 RegenZipVM.prototype.createSeededRNG = function(seed) {
 	var hash = this.hashString(seed);
-	var state = hash;
+	
+	// Initialize xorshift128 state from seed
+	var x = hash & 0xFFFFFFFF;
+	var y = (hash >>> 16) & 0xFFFFFFFF;
+	var z = 362436069;
+	var w = 88675123;
 	
 	return function() {
-		// Simple LCG (Linear Congruential Generator)
-		state = (state * 1664525 + 1013904223) % 4294967296;
-		return state / 4294967296;
+		// xorshift128 algorithm
+		var t = x ^ (x << 11);
+		x = y;
+		y = z;
+		z = w;
+		w = (w ^ (w >>> 19)) ^ (t ^ (t >>> 8));
+		
+		// Ensure w stays positive for division
+		var result = (w >>> 0) / 4294967296;
+		return result;
 	};
 };
 
@@ -374,18 +401,53 @@ RegenZipVM.prototype.hashString = function(str) {
 
 /*
 Compute checksum for data
+Note: This is a simple checksum for development/testing.
+Production use should employ cryptographic hash functions (e.g., SHA-256)
+from $tw.utils.crypto if available.
 */
 RegenZipVM.prototype.computeChecksum = function(data) {
-	// Simple checksum - would use proper hash in production
-	return this.hashString(String(data)).toString(16);
+	var dataStr = String(data);
+	
+	// Check if crypto module is available for secure hashing
+	if($tw && $tw.utils && $tw.utils.sha256) {
+		return $tw.utils.sha256(dataStr);
+	}
+	
+	// Fallback to simple hash (non-cryptographic)
+	// This provides basic integrity checking but not security
+	return "simple:" + this.hashString(dataStr).toString(16);
 };
 
 /*
 Check if string is base64 encoded
 */
 RegenZipVM.prototype.isBase64 = function(str) {
+	if(!str || typeof str !== "string") {
+		return false;
+	}
+	
+	// Remove whitespace and check against base64 pattern
+	var cleaned = str.replace(/\s/g, "");
+	
+	// Base64 pattern: alphanumeric, +, /, and optional = padding
+	var base64Pattern = /^[A-Za-z0-9+/]*={0,2}$/;
+	
+	if(!base64Pattern.test(cleaned)) {
+		return false;
+	}
+	
+	// Length should be multiple of 4
+	if(cleaned.length % 4 !== 0) {
+		return false;
+	}
+	
+	// Try to decode and re-encode
 	try {
-		return btoa(atob(str)) === str;
+		if(typeof atob !== "undefined") {
+			atob(cleaned);
+			return true;
+		}
+		return true; // In Node.js, assume valid if pattern matches
 	} catch(e) {
 		return false;
 	}

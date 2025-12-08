@@ -52,7 +52,7 @@
     "zp35": {
       "type": "string",
       "description": "ZP35 coherence signature (format: {fractalCoord}.{ordinalHeight})",
-      "pattern": "^[0-1]\\.[0-9]{6}\\.[0-9]+$"
+      "pattern": "^[0-1]\\.[0-9]+\\.[0-9]+$"
     },
     "version": {
       "type": "string",
@@ -131,7 +131,7 @@
         "zp35": {
           "type": "string",
           "description": "Generator's ZP35 signature",
-          "pattern": "^[0-1]\\.[0-9]{6}\\.[0-9]+$",
+          "pattern": "^[0-1]\\.[0-9]+\\.[0-9]+$",
           "nullable": true
         },
         "description": {

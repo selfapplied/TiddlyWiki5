@@ -90,9 +90,23 @@ ZP35Operator.prototype.calculateOrdinalHeight = function(tiddler) {
 	
 	// Add depth from tags (clustering indicator)
 	if(tiddler.fields.tags) {
-		var tagCount = Array.isArray(tiddler.fields.tags) ? 
-			tiddler.fields.tags.length : 
-			tiddler.fields.tags.split(" ").length;
+		var tagCount;
+		if(Array.isArray(tiddler.fields.tags)) {
+			tagCount = tiddler.fields.tags.length;
+		} else if(typeof tiddler.fields.tags === "string") {
+			// TiddlyWiki tags can be stored as strings
+			// Parse using TiddlyWiki's tag parsing if available
+			if($tw && $tw.utils && $tw.utils.parseStringArray) {
+				tagCount = $tw.utils.parseStringArray(tiddler.fields.tags).length;
+			} else {
+				// Fallback: simple space split (may not handle all cases)
+				tagCount = tiddler.fields.tags.split(/\s+/).filter(function(t) {
+					return t.length > 0;
+				}).length;
+			}
+		} else {
+			tagCount = 0;
+		}
 		height += tagCount * 2; // Tags contribute more to clustering
 	}
 	
@@ -315,9 +329,32 @@ ZP35Operator.prototype.verifySignature = function(tiddler, signature) {
 		var computedParts = computed.split(".");
 		var expectedParts = signature.split(".");
 		
+		// Validate signature format (should have at least 3 parts: integer, decimal, height)
+		if(computedParts.length < 3 || expectedParts.length < 3) {
+			return {
+				valid: false,
+				computed: computed,
+				expected: signature,
+				distance: 1.0,
+				message: "Invalid signature format"
+			};
+		}
+		
 		// Reconstruct fractal coordinate (first two parts: "0" and "618034")
 		var computedCoord = parseFloat(computedParts[0] + "." + (computedParts[1] || "0"));
 		var expectedCoord = parseFloat(expectedParts[0] + "." + (expectedParts[1] || "0"));
+		
+		// Validate parsed coordinates are valid numbers
+		if(isNaN(computedCoord) || isNaN(expectedCoord)) {
+			return {
+				valid: false,
+				computed: computed,
+				expected: signature,
+				distance: 1.0,
+				message: "Unable to parse signature coordinates"
+			};
+		}
+		
 		var distance = Math.abs(computedCoord - expectedCoord);
 		
 		return {
