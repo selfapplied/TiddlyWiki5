@@ -97,8 +97,10 @@ This module analyzes TiddlyWiki plugins to extract:
 				entity.transclusions = entity.transclusions.concat(transclusionMatches);
 			}
 		
-			// Detect field modifications
-			if(text.indexOf("addTiddler") !== -1 || text.indexOf("setTiddlerData") !== -1) {
+			// Detect field modifications using regex patterns
+			// Matches: addTiddler, setTiddlerData, deleteTiddler, setText, setFieldData
+			var fieldModRegex = /\.(addTiddler|setTiddlerData|deleteTiddler|setText|setFieldData)\s*\(/;
+			if(fieldModRegex.test(text)) {
 				entity.fieldModifications.push(shadowTitle);
 				entity.statefulness = "impure";
 			}

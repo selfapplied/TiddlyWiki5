@@ -250,7 +250,7 @@ describe("ZP35 Golden Operator", function() {
 				type: "editor",
 				hooks: ["h1", "h2", "h3"],
 				fieldModifications: ["f1", "f2"],
-				transclusions: Array(20).fill("T")
+				transclusions: Array.from({length: 20}, function(_, i) { return "T" + i; })
 			};
 			var entityB = {
 				type: "storage",
@@ -321,8 +321,8 @@ describe("ZP35 Golden Operator", function() {
 		it("should calculate distortion for very different entities", function() {
 			var entityA = {
 				type: "editor",
-				transclusions: Array(50).fill("T"),
-				macros: Array(30).fill("M")
+				transclusions: Array.from({length: 50}, function(_, i) { return "T" + i; }),
+				macros: Array.from({length: 30}, function(_, i) { return "M" + i; })
 			};
 			var entityB = {
 				type: "storage"

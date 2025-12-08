@@ -153,17 +153,21 @@ Codecs:
 		var svg = this.generateFractalSVG(seed, params);
 	
 		// Return as data URL
-		// Use Buffer for Node.js compatibility
+		// Prefer base64 encoding for consistency and compatibility
 		var base64;
-		if(typeof btoa !== "undefined") {
-			base64 = btoa(svg);
-		} else if(typeof Buffer !== "undefined") {
+		if(typeof Buffer !== "undefined") {
+			// Node.js environment - use Buffer
 			base64 = Buffer.from(svg).toString("base64");
+			return "data:image/svg+xml;base64," + base64;
+		} else if(typeof btoa !== "undefined") {
+			// Browser environment - use btoa
+			base64 = btoa(svg);
+			return "data:image/svg+xml;base64," + base64;
 		} else {
-		// Fallback: return raw SVG
+			// Fallback for other environments - use URL encoding
+			// Note: This returns a different format but is still a valid data URL
 			return "data:image/svg+xml," + encodeURIComponent(svg);
 		}
-		return "data:image/svg+xml;base64," + base64;
 	};
 
 	/**

@@ -85,12 +85,20 @@ Based on ZP35 framework mathematical foundations, this module provides:
 
 	/**
  * Golden scaling - apply golden ratio for minimal distortion
- * @param {number} coord - Coordinate to scale
- * @param {number} phi - Golden ratio
- * @returns {number} Scaled coordinate
+ * 
+ * This function applies φ-scaling to maintain self-similarity across scales.
+ * The golden ratio provides minimal distortion when mapping between coordinate spaces.
+ * 
+ * Mathematical basis: φ = (1+√5)/2 ≈ 1.618 is the unique positive solution to φ² = φ + 1
+ * This property ensures that scaled structures maintain proportional relationships.
+ * 
+ * @param {number} coord - Coordinate to scale (should be in [0,1])
+ * @param {number} phi - Golden ratio (φ ≈ 1.618)
+ * @returns {number} Scaled coordinate in [0, 1/φ]
  */
 	function goldenScale(coord, phi) {
-	// Apply golden ratio scaling to maintain self-similarity
+		// Apply golden ratio scaling to maintain self-similarity
+		// Division by φ ensures the plateau structure is preserved
 		return coord / phi;
 	}
 
