@@ -64,12 +64,14 @@ Compiler-Program Router Constructor
 @param {object} zp35Operator - ZP35 operator instance
 @param {object} regenZipVM - REGEN-ZIP VM instance
 @param {object} shadowInducer - Optional shadow inducer instance
+@param {object} transformer - Optional non-parametric transformer instance
 */
-function CompilerProgramRouter(wiki, zp35Operator, regenZipVM, shadowInducer) {
+function CompilerProgramRouter(wiki, zp35Operator, regenZipVM, shadowInducer, transformer) {
 	this.wiki = wiki;
 	this.zp35 = zp35Operator;
 	this.vm = regenZipVM;
 	this.shadowInducer = shadowInducer || null;
+	this.transformer = transformer || null;
 	
 	// Registry of compiler tiddlers
 	this.compilers = {};
@@ -603,6 +605,96 @@ Useful when tiddlers have been modified
 */
 CompilerProgramRouter.prototype.clearCache = function() {
 	this.routingCache = {};
+};
+
+/*
+Apply a non-parametric transformer to migrate a program between compilers
+Pure morphism that respects ZP35 geometry and seed determinism
+
+@param {string} transformerTitle - Title of transformer to apply
+@param {object} programTiddler - Program tiddler to transform
+@returns {object} - Transformation result with new program
+*/
+CompilerProgramRouter.prototype.applyTransformer = function(transformerTitle, programTiddler) {
+	if(!this.transformer) {
+		return {
+			success: false,
+			message: "Non-parametric transformer not available"
+		};
+	}
+	
+	// Apply transformation
+	var result = this.transformer.applyTransformer(transformerTitle, programTiddler);
+	
+	if(!result.success) {
+		return result;
+	}
+	
+	// The transformed program can now be routed to its target compiler
+	return {
+		success: true,
+		transformedProgram: result.transformedProgram,
+		transformer: transformerTitle,
+		sourceCompiler: result.sourceCompiler,
+		targetCompiler: result.targetCompiler,
+		geometry: result.geometry,
+		seed: result.seed,
+		message: "Program transformed successfully"
+	};
+};
+
+/*
+Execute a program through a transformer chain, then through target compiler
+Supports composition of multiple transformers
+
+@param {array} transformerTitles - Array of transformer titles to apply in sequence
+@param {object} programTiddler - Original program tiddler
+@returns {object} - Execution result
+*/
+CompilerProgramRouter.prototype.executeWithTransformers = function(transformerTitles, programTiddler) {
+	if(!this.transformer) {
+		return {
+			success: false,
+			message: "Non-parametric transformer not available"
+		};
+	}
+	
+	var currentProgram = programTiddler;
+	var transformationChain = [];
+	
+	// Apply transformers in sequence
+	for(var i = 0; i < transformerTitles.length; i++) {
+		var transformerTitle = transformerTitles[i];
+		var result = this.transformer.applyTransformer(transformerTitle, currentProgram);
+		
+		if(!result.success) {
+			return {
+				success: false,
+				message: "Transformation failed at step " + (i + 1) + ": " + result.error,
+				transformationChain: transformationChain
+			};
+		}
+		
+		transformationChain.push({
+			transformer: transformerTitle,
+			geometry: result.geometry,
+			seed: result.seed
+		});
+		
+		currentProgram = result.transformedProgram;
+	}
+	
+	// Execute transformed program
+	var execResult = this.execute(currentProgram);
+	
+	return {
+		success: execResult.success,
+		assets: execResult.assets,
+		metadata: execResult.metadata,
+		transformationChain: transformationChain,
+		finalProgram: currentProgram,
+		message: execResult.message
+	};
 };
 
 /*
