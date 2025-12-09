@@ -1,0 +1,92 @@
+title: $:/changenotes/5.4.0/wave-scheduler
+description: Wave Scheduler - Operator-Based Scheduling Primitive
+release: 5.4.0
+tags: $:/tags/ChangeNote
+change-type: enhancement
+change-category: hackability
+github-links: https://github.com/selfapplied/TiddlyWiki5/pull/[PR_NUMBER]
+github-contributors: copilot
+
+This PR introduces the Wave Scheduler, a new programming primitive that reimagines scheduling through operator evolution rather than traditional loops, timers, or event queues.
+
+!! Core Concept
+
+Instead of manually enumerating event times, the Wave Scheduler uses state evolution:
+
+```
+state[n+1] = E(state[n])
+event_time[n] = f(state[n])
+```
+
+Event times emerge from sampling the orbit of operator E, transforming scheduling from procedural sequences into declarative laws of motion.
+
+!! Implementation
+
+The Wave Scheduler is implemented as a core utility module (`$tw.utils.WaveScheduler`) with:
+
+* Core constructor: `WaveScheduler(operator, phase, sample)`
+* Methods: `next()`, `peek(n)`, `reset()`, `getState()`
+* 7 built-in scheduler factories:
+** `createFibonacci` - exponential growth at golden ratio
+** `createLinearRecurrence` - general k-order recurrence relations
+** `createHarmonic` - pure oscillation via 2D rotation
+** `createExponentialBackoff` - capped exponential for retries
+** `createDampedOscillator` - spring physics with natural decay
+** `createComposite` - algebraic superposition of schedulers
+** `createCEScheduler` - CE Tower multi-level adaptive scheduling
+
+!! Benefits
+
+Wave scheduling makes schedules:
+
+* **Self-similar** - natural patterns emerge from operators
+* **Resilient** - self-correcting through state evolution
+* **Declarative** - specify the law of motion, not the sequence
+* **Composable** - operators combine algebraically
+* **Efficient** - O(k) time/space vs O(n) for event queues
+
+!! Use Cases
+
+* Adaptive auto-save with Fibonacci backoff
+* Smart retry with exponential backoff
+* Heartbeat monitoring with harmonic oscillation
+* Spring-physics animations
+* Multi-rhythm attention systems
+* Learning schedulers that adapt over time
+
+!! Mathematical Foundation
+
+Based on dynamical systems theory, operator algebra, and spectral decomposition:
+
+* Linear recurrence relations → companion matrices
+* Harmonic schedulers → rotation operators with complex eigenvalues
+* Fibonacci scheduling → dominant eigenmode at φ (golden ratio)
+* Integration with CE Tower compositional learning architecture
+
+!! Documentation
+
+* `WAVE_SCHEDULER_README.md` - quick start guide
+* `WAVE_SCHEDULER.md` - complete API reference and user guide
+* `WAVE_SCHEDULER_THEORY.md` - mathematical foundations
+* `WAVE_SCHEDULER_EXAMPLES.js` - 10 practical implementation examples
+* Comprehensive test suite with 34 passing tests
+
+!! Example
+
+```javascript
+// Traditional exponential backoff
+var delay = 100;
+setTimeout(retry1, delay);
+delay *= 2;
+setTimeout(retry2, delay);
+delay *= 2;
+setTimeout(retry3, delay);
+
+// Wave scheduler
+var scheduler = $tw.utils.WaveScheduler.createExponentialBackoff(100, 2, 30000);
+setTimeout(retry1, scheduler.next()); // 200ms
+setTimeout(retry2, scheduler.next()); // 400ms
+setTimeout(retry3, scheduler.next()); // 800ms
+```
+
+The Wave Scheduler realizes the vision of programming as specifying laws of motion rather than enumerating steps, making it a fundamental new primitive alongside functions and types.
